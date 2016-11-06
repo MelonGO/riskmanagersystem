@@ -1,6 +1,6 @@
 node {
     stage('SCM') {
-        git 'https://majormark@bitbucket.org/majormark/riskmanagersystem.git'
+        git 'https://github.com/MelonGO/riskmanagersystem.git'
     }
     stage('QA') {
         sh 'sonar-scanner'
