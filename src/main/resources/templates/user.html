@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Risk Manager System - User</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/stytles/mystyle.css" rel="stylesheet">
+    <link href="/stytles/queries.css" rel="stylesheet">
+    <script src="/scripts/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse"
+                data-target="#example-navbar-collapse">
+            <span class="sr-only">切换导航</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="">Risk Manager System</a>
+    </div>
+    <div>
+    	<ul class="nav navbar-nav navbar-right navbar-right-padding">
+    		<li class="dropdown">
+    			<a href="" class="dropdown-toggle" data-toggle="dropdown">
+    				<i class="fa fa-user fa-2x"> $!{user.name}</i>
+    			</a>
+    			<ul class="dropdown-menu">
+    				<li><a href="/">登出</a></li>
+    			</ul>
+    		</li>
+    	</ul>
+    </div>  
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 risk-manager">
+            <h2>风险条目管理</h2>
+            <table class="table waiter-list">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>名字</th>
+                    <th>内容</th>
+                    <th>可能性</th>
+                    <th>影响程度</th>
+                    <th>触发器/阈值</th>
+                    <th>提交者</th>
+                    <th>跟踪者</th>
+                    <th>创建时间</th>
+                </tr>
+                </thead>
+                #foreach($risk in $riskList)
+                <tr>
+                	<td>$!{risk.id}</td>
+                	<td>$!{risk.name}</td>
+                	<td>$!{risk.content}</td>
+                	<td>$!{risk.probability}</td>
+                	<td>$!{risk.influence}</td>
+                	<td>$!{risk.triggerOrThreshold}</td>
+                    <td>$!{risk.submitter}</td>
+                    <td>$!{risk.stalker}</td>
+                    <td>$!{risk.date}
+                    	<button type="button" onclick='deleteRisk($!{risk.id})'
+                    		class="btn btn-warning pull-right fa fa-trash"></button>
+                    </td>
+                </tr>
+				#end
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div>
+        <button class="btn btn-default btn-block fa fa-plus fa-3x" 
+        		data-toggle="modal" data-target="#add"></button>
+    	</div>
+    	<br>
+    </div>
+</div>
+
+<div class="modal fade" id="add" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">×
+                </button>
+                <h4 class="modal-title" id="myModalLabel_1">
+                    添加风险条目
+                </h4>
+            </div>
+            <form class="form-horizontal" role="form" 
+            	action="/addRisk" method="post" onsubmit="return(risk_create())">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="name" class="col-sm-2 control-label">风险名称:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="name"
+                                   placeholder="请输入名称" name="name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="content" class="col-sm-2 control-label">风险内容:</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" id="content"
+                            	style="height:80px" placeholder="请输入内容" name="content"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="triggerOrThreshold" class="col-sm-3 control-label">触发器/阈值:</label>
+                        <div class="col-sm-9">
+                        	<input type="text" class="form-control" id="triggerOrThreshold"
+                        		placeholder="请输入触发器/阈值" name="triggerOrThreshold">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="submitter" class="col-sm-2 control-label">提交者:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="submitter"
+                                   placeholder="请输入提交者" name="submitter">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="stalker" class="col-sm-2 control-label">跟踪者:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="stalker"
+                                   placeholder="请输入跟踪者" name="stalker">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                    	<label for="probability" class="col-sm-2 control-label">可能性:</label>
+                    	<div class="col-sm-10">
+                    		<select class="form-control" name="probability">
+                    			<option value="high">高</option>
+                    			<option value="mid">中</option>
+                    			<option value="low">低</option>
+                    		</select>
+                    	</div>
+                    </div>
+                    <div class="form-group">
+                    	<label for="influence" class="col-sm-2 control-label">影响程度:</label>
+                    		<div class="col-sm-10">
+                    			<select class="form-control" name="influence">
+                    				<option value="high">高</option>
+                    				<option value="mid">中</option>
+                    				<option value="low">低</option>
+                    			</select>
+                    		</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal" onclick="clear_all()">
+                        取消
+                    </button>
+                    <button type="submit" class="btn btn-primary" onsubmit="">
+                        确认
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function clear_all() {
+    document.getElementById("name").value = "";
+    document.getElementById("content").value = "";
+    document.getElementById("triggerOrThreshold").value = "";
+    document.getElementById("submitter").value = "";
+    document.getElementById("stalker").value = "";
+}
+
+function deleteRisk(riskId){
+	var postUrl = "/deleteRisk/" + riskId;
+	var ExportForm = document.createElement("FORM");
+    document.body.appendChild(ExportForm);
+    ExportForm.method = "POST";
+    ExportForm.action = postUrl;
+    ExportForm.submit();
+}
+
+function addRisk(){
+	var postUrl = "/addRisk/";
+	var ExportForm = document.createElement("FORM");
+    document.body.appendChild(ExportForm);
+    ExportForm.method = "POST";
+    ExportForm.action = postUrl;
+    ExportForm.submit();
+}
+
+function risk_create() {
+    var msg = "";
+    if ($("#name").val().length == 0) {
+        msg = "请输入风险名称!";
+        alert(msg);
+        return false;
+    }
+    if ($("#content").val().length == 0) {
+        msg = "请输入风险内容!";
+        alert(msg);
+        return false;
+    }
+    if ($("#triggerOrThreshold").val().length == 0) {
+        msg = "请输入触发器/阈值!";
+        alert(msg);
+        return false;
+    }
+    if ($("#submitter").val().length == 0) {
+        msg = "请输入提交者!";
+        alert(msg);
+        return false;
+    }
+    if ($("#stalker").val().length == 0) {
+        msg = "请输入跟踪者!";
+        alert(msg);
+        return false;
+    }
+}
+</script>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <ul class="legals">
+                    <li><a href="#">More Information</a></li>
+                    <li><a href="#">Risk Manager System</a></li>
+                </ul>
+            </div>
+            <div class="col-md-6 credit">
+                <p>&copy;Copyright 2016 - RMS</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
+
+
