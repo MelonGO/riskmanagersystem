@@ -21,11 +21,10 @@ import com.major.model.Demo;
 @Controller
 public class HomeController {
 
-    @RequestMapping(value = {"/", "/index"})
-    @ResponseBody //返回值会直接被放到响应体，不会去找模板
-    public String index() {
-        return "hello world";
-    }
+//    @RequestMapping(path = {"/", "/index"})
+//    public String index() {
+//        return "";
+//    }
     
     //举个例子 http://localhost:8080/profile/12/45?type=111  这个会匹配这样的url
     @RequestMapping(value = {"/profile/{groupId}/{userId}"})
