@@ -10,12 +10,12 @@ import com.major.model.Risk;
 @Mapper
 public interface RiskDAO {
 	String TABLE_NAME = "risk";
-    String INSET_FIELDS = " name, content, probability, influence, triggerOrThreshold, "
+    String INSET_FIELDS = " project_id, type, content, probability, influence, triggerOrThreshold, "
     		+ "submitter, tracer ";
-    String SELECT_FIELDS = " id, name, content, probability, influence, triggerOrThreshold, submitter, tracer ";
+    String SELECT_FIELDS = " id, project_id as projectId, type, content, probability, influence, triggerOrThreshold, submitter, tracer ";
 
     @Insert({"insert into ", TABLE_NAME, "(", INSET_FIELDS,
-            ") values (#{name},#{content},#{probability},#{influence},#{triggerOrThreshold},#{submitter},#{tracer})"})
+            ") values (#{projectId}, #{name},#{content},#{probability},#{influence},#{triggerOrThreshold},#{submitter},#{tracer})"})
     @SelectKey(statement="select last_insert_id() as id", keyProperty="id", before=false, resultType=Integer.class,
             statementType = StatementType.PREPARED)
     int addRisk(Risk risk);

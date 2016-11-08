@@ -2,6 +2,7 @@ package com.major.model;
 
 public class Risk {
 	private int id;
+	private int projectId;
 	private String name;
 	private String content;
 	private String probability;
@@ -9,6 +10,13 @@ public class Risk {
 	private String triggerOrThreshold;
 	private Integer submitter;
 	private Integer tracer;
+	
+	public int getProjectId() {
+		return projectId;
+	}
+	public void setProjectId(int projectId) {
+		this.projectId = projectId;
+	}
 	
 	public Integer getSubmitter() {
 		return submitter;
