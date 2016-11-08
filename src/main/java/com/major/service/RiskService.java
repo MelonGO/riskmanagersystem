@@ -1,6 +1,5 @@
 package com.major.service;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +21,8 @@ public class RiskService {
 	}
 
 	public Map<String, Object> addRisk(String name, String content, String probability,
-			String influence, String triggerOrThreshold, String submitter,
-			String stalker) {
+			String influence, String triggerOrThreshold, int submitter,
+			Integer tracer) {
 		Map<String, Object> msgMap = new HashMap<>();
 		Risk riskNew = new Risk();
 		riskNew.setName(name);
@@ -32,8 +31,7 @@ public class RiskService {
 		riskNew.setInfluence(influence);
 		riskNew.setTriggerOrThreshold(triggerOrThreshold);
 		riskNew.setSubmitter(submitter);
-		riskNew.setStalker(stalker);
-		riskNew.setDate(new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+		riskNew.setTracer(tracer);
 		riskDao.addRisk(riskNew);
 		msgMap.put("msg", "添加成功!");
 		return msgMap;

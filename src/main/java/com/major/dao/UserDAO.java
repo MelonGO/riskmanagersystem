@@ -2,11 +2,10 @@ package com.major.dao;
 
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.StatementType;
-import org.mybatis.spring.annotation.MapperScan;
 
 import com.major.model.User;
 
-@MapperScan
+@Mapper
 public interface UserDAO {
     String TABLE_NAME = "user";
     String INSET_FIELDS = " name, password, role ";

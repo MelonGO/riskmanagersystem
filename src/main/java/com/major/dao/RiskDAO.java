@@ -4,19 +4,18 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.StatementType;
-import org.mybatis.spring.annotation.MapperScan;
 
 import com.major.model.Risk;
 
-@MapperScan
+@Mapper
 public interface RiskDAO {
 	String TABLE_NAME = "risk";
     String INSET_FIELDS = " name, content, probability, influence, triggerOrThreshold, "
-    		+ "submitter, stalker, date ";
-    String SELECT_FIELDS = " id, name, content, probability, influence, triggerOrThreshold, submitter, stalker, date ";
+    		+ "submitter, tracer ";
+    String SELECT_FIELDS = " id, name, content, probability, influence, triggerOrThreshold, submitter, tracer ";
 
     @Insert({"insert into ", TABLE_NAME, "(", INSET_FIELDS,
-            ") values (#{name},#{content},#{probability},#{influence},#{triggerOrThreshold},#{submitter},#{stalker},#{date})"})
+            ") values (#{name},#{content},#{probability},#{influence},#{triggerOrThreshold},#{submitter},#{tracer})"})
     @SelectKey(statement="select last_insert_id() as id", keyProperty="id", before=false, resultType=Integer.class,
             statementType = StatementType.PREPARED)
     int addRisk(Risk risk);

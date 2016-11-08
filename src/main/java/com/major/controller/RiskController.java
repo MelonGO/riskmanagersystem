@@ -48,12 +48,12 @@ public class RiskController {
 			@RequestParam("probability") String probability,
 			@RequestParam("influence") String influence,
 			@RequestParam("triggerOrThreshold") String triggerOrThreshold,
-			@RequestParam("submitter") String submitter,
-			@RequestParam("stalker") String stalker,
+			@RequestParam("submitter") Integer submitter,
+			@RequestParam("tracher") Integer tracer,
 			HttpServletRequest request,
             HttpServletResponse response){
 		riskService.addRisk(name, content, probability, influence,
-				triggerOrThreshold, submitter, stalker);
+				triggerOrThreshold, submitter, tracer);
 		
 		session = request.getSession(false);
 		User user = (User)session.getAttribute("user");

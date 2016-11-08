@@ -7,10 +7,21 @@ public class Risk {
 	private String probability;
 	private String influence;
 	private String triggerOrThreshold;
-	private String submitter;
-	private String stalker;
-	private String date;
+	private Integer submitter;
+	private Integer tracer;
 	
+	public Integer getSubmitter() {
+		return submitter;
+	}
+	public void setSubmitter(Integer submitter) {
+		this.submitter = submitter;
+	}
+	public Integer getTracer() {
+		return tracer;
+	}
+	public void setTracer(Integer tracer) {
+		this.tracer = tracer;
+	}
 	public int getId() {
 		return id;
 	}
@@ -52,26 +63,4 @@ public class Risk {
 	public void setTriggerOrThreshold(String triggerOrThreshold) {
 		this.triggerOrThreshold = triggerOrThreshold;
 	}
-	
-	public String getSubmitter() {
-		return submitter;
-	}
-	public void setSubmitter(String submitter) {
-		this.submitter = submitter;
-	}
-	
-	public String getStalker() {
-		return stalker;
-	}
-	public void setStalker(String stalker) {
-		this.stalker = stalker;
-	}
-	
-	public String getDate() {
-		return date;
-	}
-	public void setDate(String date) {
-		this.date = date;
-	}
-
 }
