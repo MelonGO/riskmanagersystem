@@ -35,7 +35,7 @@ public class LoginController {
 		return "login";
 	}
 
-	@RequestMapping(path = { "//loginUserHome" }, method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(path = { "/loginUserHome" }, method = { RequestMethod.GET, RequestMethod.POST })
 	public String login(Model model, 
 			@RequestParam("username") String username,
 			@RequestParam("password") String password,
