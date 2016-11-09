@@ -4,29 +4,29 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12 risk-manager">
-            <h2>软件项目管理</h2>
+            <h2>风险状态跟踪</h2>
             <table class="table waiter-list">
                 <thead>
                 <tr>
                     
-                    <th>项目名称</th>
+                    <th>状态名</th>
+                    <th>描述</th>
                     <th>创建时间</th>
                     <th>更新时间</th>
                     <th>操作</th>
                 </tr>
                 </thead>
-                #foreach($project in $projectList)
+                #foreach($riskStateTrace in $riskStateTraceList)
                 <tr>
-                	<td>$!{project.name}</td>
-                	<td>$!{project.createTime}</td>
-                	<td>$!{project.updateTime}</td>
+                	<td>$!{riskStateTrace.name}</td>
+                	<td>$!{riskStateTrace.description}</td>
+                	<td>$!{riskStateTrace.createTime}</td>
+                	<td>$!{riskStateTrace.updateTime}</td>
                 	<td>
-                		<button type="button" onclick="location.href='riskList?projectId=$!{project.id}'"
-                    		class="btn btn-warning pull-right fa fa-reorder"
-                    		></button>
-                    	<button type="button" onclick='deleteProject($!{project.id})'
+                		
+                    	<button type="button" onclick='deleteStateTrace($!{riskStateTrace.id})'
                     		class="btn btn-warning pull-right fa fa-trash"></button>
-                    	<button type="button" onclick='updateProject($!{project.id})'
+                    	<button type="button" onclick='updateStateTrace($!{riskStateTrace.id})'
                     		class="btn btn-warning pull-right fa fa-wrench"
                     		data-toggle="modal" data-target="#edit"></button>
                     	
@@ -39,7 +39,7 @@
         </div>
         <div>
         <button class="btn btn-default btn-block fa fa-plus fa-3x" 
-        		data-toggle="modal" data-target="#edit" onclick="addProject()"></button>
+        		data-toggle="modal" data-target="#edit" onclick="addStateTrace()"></button>
     	</div>
     	<br>
     </div>
@@ -51,28 +51,36 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"
-                        aria-hidden="true" onclick="clearAll()">×
+                        aria-hidden="true" onclick="clear_all()">×
                 </button>
                 <h4 class="modal-title" id="myModalLabel_1">
-                  	  编辑项目
+                  	  编辑状态
                 </h4>
             </div>
             <form class="form-horizontal" role="form" >
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="name" class="col-sm-2 control-label">项目名称:</label>
+                        <label for="name" class="col-sm-2 control-label">状态名:</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="name"
                                    placeholder="请输入名称" name="name">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="description" class="col-sm-2 control-label">描述:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="description"
+                                   placeholder="请输入描述" name="description">
+                        </div>
+                    </div>
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default"
                             data-dismiss="modal" onclick="clearAll()">
                         	取消
                     </button>
-                    <button type="submit" class="btn btn-primary" onclick="edit()">
+                    <button type="button" class="btn btn-primary" onclick="edit()">
                         	确认
                     </button>
                 </div>
@@ -83,41 +91,46 @@
 
 <script>
 	var operation;
-	var projectId;
-   function deleteProject(id) {
-	   $.post('deleteProjectById',{projectId : id}, function (r) {
+	var riskStateTraceId;
+   function deleteStateTrace(id) {
+	   $.post('deleteRiskStateTraceById',{riskStateTraceId : id}, function (r) {
 		   alert(r);
 		   location.replace(location.href);
 	});
    }
    
-   function updateProject(id) {
+   function updateStateTrace(id) {
 	   operation = "update";
-	   projectId = id;
-	   $.get('getProjectById', {projectId:id}, function (r) {
+	   riskStateTraceId = id;
+	   $.get('getRiskStateTraceById', {riskStateTraceId:id}, function (r) {
 			$('#name').val(r.name);
+			$('#description').val(r.description);
 	});
    }
 
-   function addProject() {
+   function addStateTrace() {
 	   operation = "add";
    }
    function clearAll() {
 	   $("#name").val('');
+	   $('#description').val('');
    }
    
    function edit() {
 	   var valid = true;
 	   var param = {};
 	   if(operation == 'update') {
-		   param.projectId = projectId;
+		   param.riskStateTraceId = riskStateTraceId;
 	   }
+	   param.riskId = $!{riskId};
 	   param.name = $('#name').val();
+	   param.description = $('#description').val();
+	   
 	   if($.trim(param.name) == '') {
 		   valid = false;
 	   }
 	   if(valid) {
-		   $.post('editProject', param, function (r) {
+		   $.post('editRiskStateTrace', param, function (r) {
 				alert(r);
 				location.replace(location.href);
 			});

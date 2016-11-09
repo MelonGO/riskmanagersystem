@@ -29,6 +29,7 @@ public class RiskController {
 		model.addAttribute("user", (User) session.getAttribute("user"));
 		List<Risk> riskList = riskService.getAllRisks();
 		model.addAttribute("riskList", riskList);
+		model.addAttribute("projectId", projectId);
 		return "riskList";
 	}
 	

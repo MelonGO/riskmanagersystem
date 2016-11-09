@@ -25,10 +25,14 @@ public class RiskStateTraceController {
 	RiskStateTraceService riskStateTraceService;
 	
 	@RequestMapping(path = {"/riskStateTraceList" })
-	public String projectList(Model model, HttpSession session) {
+	public String projectList(Model model, 
+			@RequestParam("riskId") Integer riskId, 
+			HttpSession session) {
+		
 		List<RiskStateTrace> riskStateTraceList = riskStateTraceService.getAllRiskStateTraces();
 		model.addAttribute("riskStateTraceList", riskStateTraceList);
 		model.addAttribute("user", (User) session.getAttribute("user"));
+		model.addAttribute("riskId", riskId);
 		
 		return "riskStateTraceList";
 	}
