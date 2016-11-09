@@ -47,17 +47,10 @@ public class RegisterController {
 		String msg = (String)map.get("msg");
 		if(msg.equals("该用户已经被注册!")){
 			model.addAttribute("error", msg);
-			return "Error";
+			return "error";
 		}
 		
-		model.addAttribute("user", (User)map.get("user"));
-		session = request.getSession(true);
-		session.setAttribute("user", (User)map.get("user"));
-		
-		List<Risk> riskList = riskService.getAllRisks();
-		model.addAttribute("riskList", riskList);
-		
-		return "user";
+		return "redirect:login";
 		
 	}
 
