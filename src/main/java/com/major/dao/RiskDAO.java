@@ -30,7 +30,7 @@ public interface RiskDAO {
     void updateRisk(Risk risk);
     
     @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where project_id=#{projectId}"})
-    Risk getByProjectId(int projectId);
+    List<Risk> getByProjectId(int projectId);
     
     
 }

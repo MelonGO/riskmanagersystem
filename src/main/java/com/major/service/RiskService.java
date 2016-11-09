@@ -19,7 +19,7 @@ public class RiskService {
 	public Risk getRisk(int id) {
 		return riskDao.selectById(id);
 	}
-	public Risk getByProjectId(int projectId) {
+	public List<Risk> getByProjectId(int projectId) {
 		return riskDao.getByProjectId(projectId);
 	}
 

@@ -31,7 +31,7 @@ public interface RiskStateTraceDAO {
 	void updateRiskStateTrace(RiskStateTrace riskStateTrace);
 	
 	@Select({ "select ", SELECT_FIELDS, " from ", TABLE_NAME, " where risk_id=#{riskId}" })
-	RiskStateTrace getByRiskId(int riskId);
+	List<RiskStateTrace> getByRiskId(int riskId);
 
 	
 }
