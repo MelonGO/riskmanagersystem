@@ -46,7 +46,8 @@ public class RiskController {
 	@RequestMapping(value = { "/addRisk" })
 	@ResponseBody
 	public String addRisk(Model model,
-			@RequestParam("name") String name,
+			@RequestParam("projectId") Integer projectId,
+			@RequestParam("type") String type,
 			@RequestParam("content") String content,
 			@RequestParam("probability") String probability,
 			@RequestParam("influence") String influence,
@@ -54,7 +55,7 @@ public class RiskController {
 			@RequestParam("submitter") Integer submitter,
 			@RequestParam("tracer") Integer tracer
 			){
-		Map<String, Object> msg = riskService.addRisk(name, content, probability, influence,
+		Map<String, Object> msg = riskService.addRisk(projectId, type, content, probability, influence,
 				triggerOrThreshold, submitter, tracer);
 		
 		return (String) msg.get("msg");
