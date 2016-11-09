@@ -29,7 +29,7 @@ public class RiskStateTraceController {
 			@RequestParam("riskId") Integer riskId, 
 			HttpSession session) {
 		
-		List<RiskStateTrace> riskStateTraceList = riskStateTraceService.getAllRiskStateTraces();
+		List<RiskStateTrace> riskStateTraceList = riskStateTraceService.getByRiskId(riskId);
 		model.addAttribute("riskStateTraceList", riskStateTraceList);
 		model.addAttribute("user", (User) session.getAttribute("user"));
 		model.addAttribute("riskId", riskId);

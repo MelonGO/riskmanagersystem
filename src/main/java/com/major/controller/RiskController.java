@@ -25,9 +25,9 @@ public class RiskController {
 	RiskService riskService;
 	
 	@RequestMapping(value = { "/riskList" })
-	public String riskList(Model model, @RequestParam("projectId") String projectId, HttpSession session){
+	public String riskList(Model model, @RequestParam("projectId") Integer projectId, HttpSession session){
 		model.addAttribute("user", (User) session.getAttribute("user"));
-		List<Risk> riskList = riskService.getAllRisks();
+		List<Risk> riskList = riskService.getByProjectId(projectId);
 		model.addAttribute("riskList", riskList);
 		model.addAttribute("projectId", projectId);
 		return "riskList";
