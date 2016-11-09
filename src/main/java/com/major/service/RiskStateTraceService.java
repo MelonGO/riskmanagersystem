@@ -18,7 +18,9 @@ public class RiskStateTraceService {
 	public RiskStateTrace getRiskStateTrace(int id) {
 		return riskStateTraceDao.selectById(id);
 	}
-
+	public RiskStateTrace getByRiskId(int riskId) {
+		return riskStateTraceDao.getByRiskId(riskId);
+	}
 	public Map<String, Object> addRiskStateTrace(int riskId, String name, String description) {
 		Map<String, Object> msgMap = new HashMap<>();
 		RiskStateTrace riskStateTraceNew = new RiskStateTrace();
