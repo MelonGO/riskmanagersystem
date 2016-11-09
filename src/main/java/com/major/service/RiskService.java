@@ -19,6 +19,9 @@ public class RiskService {
 	public Risk getRisk(int id) {
 		return riskDao.selectById(id);
 	}
+	public List<Risk> getByProjectId(int projectId) {
+		return riskDao.getByProjectId(projectId);
+	}
 
 	public Map<String, Object> addRisk(int projectId,String type, String content, String probability,
 			String influence, String triggerOrThreshold, int submitter,

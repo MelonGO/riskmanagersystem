@@ -29,4 +29,9 @@ public interface RiskStateTraceDAO {
 	List<RiskStateTrace> selectAll();
 	@Update({"update ", TABLE_NAME, " set risk_id=#{riskId},name=#{name},description=#{description} where id=#{id}"})
 	void updateRiskStateTrace(RiskStateTrace riskStateTrace);
+	
+	@Select({ "select ", SELECT_FIELDS, " from ", TABLE_NAME, " where risk_id=#{riskId}" })
+	List<RiskStateTrace> getByRiskId(int riskId);
+
+	
 }

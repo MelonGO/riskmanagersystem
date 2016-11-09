@@ -29,4 +29,8 @@ public interface RiskDAO {
     @Update({"update ", TABLE_NAME, " set project_id=#{projectId},type=#{type},content=#{content},probability=#{probability},influence=#{influence},triggerOrThreshold=#{triggerOrThreshold},submitter=#{submitter},tracer=#{tracer}   where id=#{id}"})
     void updateRisk(Risk risk);
     
+    @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where project_id=#{projectId}"})
+    List<Risk> getByProjectId(int projectId);
+    
+    
 }
