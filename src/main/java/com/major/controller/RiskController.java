@@ -38,7 +38,7 @@ public class RiskController {
 		return riskService.getRisk(riskId);
 	}
 	
-	@RequestMapping(value = { "/deleteRisk" })
+	@RequestMapping(value = { "/deleteRiskById" })
 	@ResponseBody
 	public String deleteRisk(Model model, @RequestParam("riskId") String riskId){
 		riskService.deleteRisk(Integer.parseInt(riskId));

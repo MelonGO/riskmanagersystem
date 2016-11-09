@@ -66,14 +66,13 @@
                     	添加风险条目
                 </h4>
             </div>
-            <form class="form-horizontal" role="form" 
-            	action="/addRisk" method="post" onsubmit="return(risk_create())">
+            <form class="form-horizontal" role="form" >
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="name" class="col-sm-2 control-label">风险类型:</label>
+                        <label for="type" class="col-sm-2 control-label">风险类型:</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="type"
-                                   placeholder="请输入名称" name="name">
+                                   placeholder="请输入名称" name="type">
                         </div>
                     </div>
                     <div class="form-group">
@@ -130,7 +129,7 @@
                             data-dismiss="modal" onclick="clear_all()">
                         	取消
                     </button>
-                    <button type="submit" class="btn btn-primary" onsubmit="">
+                    <button type="submit" class="btn btn-primary" onclick="edit()">
                        	           确认
                     </button>
                 </div>
@@ -140,6 +139,9 @@
 </div>
 
 <script>
+var operation;
+var riskId;
+
 function clear_all() {
     $("#type").value = "";
     $("content").value = "";
@@ -148,51 +150,75 @@ function clear_all() {
     $("#tracer").value = "";
 }
 
-function deleteRisk(riskId){
-	var postUrl = "/deleteRisk/" + riskId;
-	var ExportForm = document.createElement("FORM");
-    document.body.appendChild(ExportForm);
-    ExportForm.method = "POST";
-    ExportForm.action = postUrl;
-    ExportForm.submit();
+function deleteRisk(id){
+	$.post('deleteRiskById',{riskId : id}, function (r) {
+		   alert(r);
+		   location.replace(location.href);
+	});
+   
 }
+
+function updateRisk(id) {
+	   operation = "update";
+	   $.get('getByRiskId', {riskId:id}, function (r) {
+			$('#type').val(r.type);
+	    	$("#content").val(r.content);
+	    	$("#triggerOrThreshold").val();
+	    	$("#submitter").val(r.submitter);
+	    	$("#tracer").val(r.tracer);
+	});
+}
+
 
 function addRisk(){
-	var postUrl = "/addRisk/";
-	var ExportForm = document.createElement("FORM");
-    document.body.appendChild(ExportForm);
-    ExportForm.method = "POST";
-    ExportForm.action = postUrl;
-    ExportForm.submit();
+	operation = "add";
 }
 
-function risk_create() {
+function edit() {
     var msg = "";
-    if ($("#name").val().length == 0) {
-        msg = "请输入风险名称!";
+    var param = {};
+    var valid = true;
+    if ($.trim($("#type").val()) == '') {
+        msg = "请输入风险类型!";
         alert(msg);
-        return false;
+        valid = false;
     }
     if ($("#content").val().length == 0) {
         msg = "请输入风险内容!";
         alert(msg);
-        return false;
+        valid = false;
     }
     if ($("#triggerOrThreshold").val().length == 0) {
         msg = "请输入触发器/阈值!";
         alert(msg);
-        return false;
+        valid = false;
     }
     if ($("#submitter").val().length == 0) {
         msg = "请输入提交者!";
         alert(msg);
-        return false;
+        valid = false;
     }
-    if ($("#stalker").val().length == 0) {
+    if ($("#tracer").val().length == 0) {
         msg = "请输入跟踪者!";
         alert(msg);
-        return false;
+        valid = false;
     }
+    
+    if(valid) {
+    	if(operation == 'update') {
+    		param.riskId = riskId;
+    	}
+    	param.type = $("#type").val();
+    	param.content = $("#content").val();
+    	param.triggerOrThreshold = $("#triggerOrThreshold").val();
+    	param.submitter = $("#submitter").val();
+    	param.tracer = $("#tracer").val();
+    	
+	   $.post('editRisk', param, function (r) {
+			alert(r);
+			location.replace(location.href);
+		});
+	}	
 }
 </script>
 
