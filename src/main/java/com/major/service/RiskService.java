@@ -36,6 +36,7 @@ public class RiskService {
 		riskDao.addRisk(riskNew);
 		msgMap.put("msg", "添加成功!");
 		return msgMap;
+		
 	}
 	
 	public List<Risk> getAllRisks() {
