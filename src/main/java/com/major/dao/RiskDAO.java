@@ -10,7 +10,7 @@ public interface RiskDAO {
 	String TABLE_NAME = "risk";
     String INSET_FIELDS = " project_id, type, content, probability, influence, triggerOrThreshold, "
     		+ "submitter, tracer ";
-    String SELECT_FIELDS = " id, project_id as projectId, type, content, probability, influence, triggerOrThreshold, submitter, tracer ";
+    String SELECT_FIELDS = " id, project_id as projectId, type, content, probability, influence, triggerOrThreshold, submitter, tracer ,create_time as createTime, update_time as updateTime";
 
     @Insert({"insert into ", TABLE_NAME, "(", INSET_FIELDS,
             ") values (#{projectId}, #{type},#{content},#{probability},#{influence},#{triggerOrThreshold},#{submitter},#{tracer})"})
