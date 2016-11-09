@@ -17,16 +17,16 @@ public class Project {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getcreateTime() {
+	public String getCreateTime() {
 		return createTime;
 	}
-	public void setcreateTime(String createTime) {
+	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
 	}
-	public String getupdateTime() {
+	public String getUpdateTime() {
 		return updateTime;
 	}
-	public void setupdateTime(String updateTime) {
+	public void setUpdateTime(String updateTime) {
 		this.updateTime = updateTime;
 	}
 	

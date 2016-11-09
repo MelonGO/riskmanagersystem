@@ -1,6 +1,5 @@
 package com.major.controller;
 
-import com.major.model.Risk;
 import com.major.model.User;
 import com.major.service.RiskService;
 import com.major.service.UserService;
@@ -11,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -45,10 +43,7 @@ public class LoginController {
 		model.addAttribute("user", (User)map.get("user"));
 		session.setAttribute("user", (User)map.get("user"));
 		
-		List<Risk> riskList = riskService.getAllRisks();
-		model.addAttribute("riskList", riskList);
-		
-		return "user";
+		return "redirect:projectList";
 	}
 
 	@RequestMapping(value = {"/logout"})
