@@ -2,13 +2,21 @@ package com.major.model;
 
 public class Risk {
 	private int id;
-	private String name;
+	private int projectId;
+	private String type;
 	private String content;
 	private String probability;
 	private String influence;
 	private String triggerOrThreshold;
 	private Integer submitter;
 	private Integer tracer;
+	
+	public int getProjectId() {
+		return projectId;
+	}
+	public void setProjectId(int projectId) {
+		this.projectId = projectId;
+	}
 	
 	public Integer getSubmitter() {
 		return submitter;
@@ -29,11 +37,11 @@ public class Risk {
 		this.id = id;
 	}
 	
-	public String getName() {
-		return name;
+	public String getType() {
+		return type;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 	public String getContent() {

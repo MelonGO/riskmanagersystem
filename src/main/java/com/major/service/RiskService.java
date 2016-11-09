@@ -20,12 +20,13 @@ public class RiskService {
 		return riskDao.selectById(id);
 	}
 
-	public Map<String, Object> addRisk(String name, String content, String probability,
+	public Map<String, Object> addRisk(int projectId,String type, String content, String probability,
 			String influence, String triggerOrThreshold, int submitter,
 			Integer tracer) {
 		Map<String, Object> msgMap = new HashMap<>();
 		Risk riskNew = new Risk();
-		riskNew.setName(name);
+		riskNew.setProjectId(projectId);
+		riskNew.setType(type);
 		riskNew.setContent(content);
 		riskNew.setProbability(probability);
 		riskNew.setInfluence(influence);
@@ -43,6 +44,13 @@ public class RiskService {
 	
 	public void deleteRisk(int id){
 		riskDao.deleteById(id);
+	}
+	public Map<String, Object> updateRisk(
+			Risk risk) {
+		Map<String, Object> msgMap = new HashMap<>();
+		riskDao.updateRisk(risk);
+		msgMap.put("msg", "修改成功!");
+		return msgMap;
 	}
 	
 	

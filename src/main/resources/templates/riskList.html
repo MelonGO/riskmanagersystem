@@ -8,9 +8,8 @@
             <table class="table waiter-list">
                 <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>名字</th>
-                    <th>内容</th>
+                    <th>风险内容</th>
+                    <th>风险类型</th>
                     <th>可能性</th>
                     <th>影响程度</th>
                     <th>触发器/阈值</th>
@@ -21,17 +20,23 @@
                 </thead>
                 #foreach($risk in $riskList)
                 <tr>
-                	<td>$!{risk.id}</td>
-                	<td>$!{risk.name}</td>
+                	
                 	<td>$!{risk.content}</td>
+                	<td>$!{risk.type}</td>
                 	<td>$!{risk.probability}</td>
                 	<td>$!{risk.influence}</td>
                 	<td>$!{risk.triggerOrThreshold}</td>
                     <td>$!{risk.submitter}</td>
                     <td>$!{risk.stalker}</td>
                     <td>$!{risk.date}
+                    	<!--  <button type="button" href="riskStateList?riskId=$!{project.id}"
+                    		class="btn btn-warning pull-right fa fa-reorder"
+                    		></button>-->
                     	<button type="button" onclick='deleteRisk($!{risk.id})'
                     		class="btn btn-warning pull-right fa fa-trash"></button>
+                    	<button type="button" onclick='updateRisk($!{risk.id})'
+                    		class="btn btn-warning pull-right fa fa-wrench"
+                    		data-toggle="modal" data-target="#edit"></button>
                     </td>
                 </tr>
 				#end
@@ -47,7 +52,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="add" tabindex="-1" role="dialog"
+<div class="modal fade" id="edit" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -56,14 +61,14 @@
                         aria-hidden="true">×
                 </button>
                 <h4 class="modal-title" id="myModalLabel_1">
-                    添加风险条目
+                    	添加风险条目
                 </h4>
             </div>
             <form class="form-horizontal" role="form" 
             	action="/addRisk" method="post" onsubmit="return(risk_create())">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="name" class="col-sm-2 control-label">风险名称:</label>
+                        <label for="name" class="col-sm-2 control-label">风险类型:</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="name"
                                    placeholder="请输入名称" name="name">
@@ -77,7 +82,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="triggerOrThreshold" class="col-sm-3 control-label">触发器/阈值:</label>
+                        <label for="triggerOrThreshold" class="col-sm-2 control-label">触发器/阈值:</label>
                         <div class="col-sm-9">
                         	<input type="text" class="form-control" id="triggerOrThreshold"
                         		placeholder="请输入触发器/阈值" name="triggerOrThreshold">
