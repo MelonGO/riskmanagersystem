@@ -6,7 +6,7 @@
         <h1 class="font-big">
             注册
         </h1>
-        <form role="form" action="/register_user_home" method="post" onsubmit="return(registerbtn_click())">
+        <form role="form" action="register_user_home" method="post" onsubmit="return(registerbtn_click())">
             <div class="form-group">
                 <label for="username">用户名：</label>
                 <input type="text" class="form-control input-lg" name="username" id="username" value="">
@@ -41,6 +41,7 @@
             alert(msg);
             return false;
         }
+        alert("注册成功！");
     }
 </script>
 #parse("common/footer.html")
