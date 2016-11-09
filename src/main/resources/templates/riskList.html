@@ -16,6 +16,7 @@
                     <th>提交者</th>
                     <th>跟踪者</th>
                     <th>创建时间</th>
+                    <th>操作</th>
                 </tr>
                 </thead>
                 #foreach($risk in $riskList)
@@ -27,8 +28,9 @@
                 	<td>$!{risk.influence}</td>
                 	<td>$!{risk.triggerOrThreshold}</td>
                     <td>$!{risk.submitter}</td>
-                    <td>$!{risk.stalker}</td>
-                    <td>$!{risk.date}
+                    <td>$!{risk.tracer}</td>
+                    <td>$!{risk.createTime}</td>
+                    <td>
                     	<!--  <button type="button" href="riskStateList?riskId=$!{project.id}"
                     		class="btn btn-warning pull-right fa fa-reorder"
                     		></button>-->
