@@ -10,7 +10,20 @@ public class Risk {
 	private String triggerOrThreshold;
 	private Integer submitter;
 	private Integer tracer;
-	
+	private String createTime;
+	private String updateTime;
+	public String getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
+	}
+	public String getUpdateTime() {
+		return updateTime;
+	}
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime;
+	}
 	public int getProjectId() {
 		return projectId;
 	}
