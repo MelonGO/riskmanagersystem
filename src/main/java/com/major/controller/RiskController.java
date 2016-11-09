@@ -3,6 +3,7 @@ package com.major.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.major.model.Risk;
 import com.major.model.User;
 import com.major.service.RiskService;
+
+import tools.RequestUtil;
 
 @Controller
 public class RiskController {
@@ -43,7 +46,7 @@ public class RiskController {
 		return "删除成功！";
 	}
 	
-	@RequestMapping(value = { "/addRisk" })
+	@RequestMapping(value = { "/editRisk" })
 	@ResponseBody
 	public String addRisk(Model model,
 			@RequestParam("projectId") Integer projectId,
@@ -53,12 +56,29 @@ public class RiskController {
 			@RequestParam("influence") String influence,
 			@RequestParam("triggerOrThreshold") String triggerOrThreshold,
 			@RequestParam("submitter") Integer submitter,
-			@RequestParam("tracer") Integer tracer
+			@RequestParam("tracer") Integer tracer,
+			HttpServletRequest request
 			){
-		Map<String, Object> msg = riskService.addRisk(projectId, type, content, probability, influence,
+		Integer riskId = RequestUtil.GetPositiveInteger(request, "riskId", null);
+		if(riskId == null) {
+			Map<String, Object> msg = riskService.addRisk(projectId, type, content, probability, influence,
 				triggerOrThreshold, submitter, tracer);
+			return (String) msg.get("msg");
+		} else {
+			Risk risk = new Risk();
+			risk.setId(riskId);
+			risk.setContent(content);
+			risk.setInfluence(influence);
+			risk.setProbability(probability);
+			risk.setProjectId(projectId);
+			risk.setSubmitter(submitter);
+			risk.setTracer(tracer);
+			risk.setTriggerOrThreshold(triggerOrThreshold);
+			risk.setType(type);
+			Map<String, Object> msg = riskService.updateRisk(risk);
+			return (String) msg.get("msg");
+		}
 		
-		return (String) msg.get("msg");
 	}
 	
 }

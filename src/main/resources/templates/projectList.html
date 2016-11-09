@@ -21,7 +21,7 @@
                 	<td>$!{project.createTime}</td>
                 	<td>$!{project.updateTime}</td>
                 	<td>
-                		<button type="button" href="riskList?projectId=$!{project.id}"
+                		<button type="submit" onclick="location.href='riskList?projectId=$!{project.id}'"
                     		class="btn btn-warning pull-right fa fa-reorder"
                     		></button>
                     	<button type="button" onclick='deleteProject($!{project.id})'

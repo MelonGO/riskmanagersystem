@@ -51,7 +51,13 @@ public class RiskStateTraceController {
 			Map<String, Object> msgMap = riskStateTraceService.addRiskStateTrace(riskId, name, description);
 			return (String) msgMap.get("msg");
 		} else {
-			return null;
+			RiskStateTrace riskStateTrace = new RiskStateTrace();
+			riskStateTrace.setId(riskStateTraceId);
+			riskStateTrace.setriskId(riskId);
+			riskStateTrace.setName(name);
+			riskStateTrace.setDescription(description);
+			Map<String, Object> msgMap = riskStateTraceService.updateRiskStateTrace(riskStateTrace);
+			return (String) msgMap.get("msg");
 		}
 	}
 	

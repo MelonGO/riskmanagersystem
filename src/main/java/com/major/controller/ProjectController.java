@@ -48,7 +48,10 @@ public class ProjectController {
 			Map<String, Object> msgMap = projectService.addProject(name);
 			return (String) msgMap.get("msg");
 		} else {
-			return null;
+			Project newProject = new Project();
+			newProject.setName(name);
+			Map<String, Object> msgMap = projectService.updateProject(newProject);
+			return (String) msgMap.get("msg");
 		}
 	}
 	
