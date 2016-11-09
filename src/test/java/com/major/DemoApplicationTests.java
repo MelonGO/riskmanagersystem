@@ -30,7 +30,7 @@ public class DemoApplicationTests {
 //		RiskStateTrace rst=rs.getRiskStateTrace(1);
 //		rst.setName("sdsd");
 //		rs.updateRiskStateTrace(rst);
-		rs1.addRisk(122,"类型", "nei", "ke", "ying", "chufa", 1, 2);
+	//	rs1.addRisk(122,"类型", "nei", "ke", "ying", "chufa", 1, 2);
 //		Risk risk=rs1.getRisk(1);
 //		risk.setProjectId(12);
 //		risk.setContent("binan");
