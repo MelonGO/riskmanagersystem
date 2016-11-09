@@ -36,4 +36,11 @@ public class ProjectService {
 	public void deleteProject(int id){
 		projectDao.deleteById(id);
 	}
+	public Map<String, Object> updateProject(
+			Project project) {
+		Map<String, Object> msgMap = new HashMap<>();
+		projectDao.updateProject(project);
+		msgMap.put("msg", "修改成功!");
+		return msgMap;
+	}
 }

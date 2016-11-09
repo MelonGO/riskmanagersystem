@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.mapping.StatementType;
 
 import com.major.model.Project;
@@ -29,4 +30,6 @@ public interface ProjectDAO {
 
 	@Select({ "select ", SELECT_FIELDS, " from ", TABLE_NAME })
 	List<Project> selectAll();
+	@Update({"update ", TABLE_NAME, " set name=#{name} where id=#{id}"})
+	void updateProject(Project project);
 }

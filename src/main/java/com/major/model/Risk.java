@@ -3,7 +3,7 @@ package com.major.model;
 public class Risk {
 	private int id;
 	private int projectId;
-	private String name;
+	private String type;
 	private String content;
 	private String probability;
 	private String influence;
@@ -37,11 +37,11 @@ public class Risk {
 		this.id = id;
 	}
 	
-	public String getName() {
-		return name;
+	public String getType() {
+		return type;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 	public String getContent() {

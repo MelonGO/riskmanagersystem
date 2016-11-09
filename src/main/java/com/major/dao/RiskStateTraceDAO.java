@@ -7,8 +7,8 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.mapping.StatementType;
-
 import com.major.model.RiskStateTrace;
 @Mapper
 public interface RiskStateTraceDAO {
@@ -27,4 +27,6 @@ public interface RiskStateTraceDAO {
 
 	@Select({ "select ", SELECT_FIELDS, " from ", TABLE_NAME })
 	List<RiskStateTrace> selectAll();
+	@Update({"update ", TABLE_NAME, " set risk_id=#{riskId},name=#{name},description=#{description} where id=#{id}"})
+	void updateRiskStateTrace(RiskStateTrace riskStateTrace);
 }

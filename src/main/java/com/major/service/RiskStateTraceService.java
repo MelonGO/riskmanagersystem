@@ -39,5 +39,11 @@ public class RiskStateTraceService {
 	public void deleteRiskStateTrace(int id){
 		riskStateTraceDao.deleteById(id);
 	}
-	
+	public Map<String, Object> updateRiskStateTrace(
+			RiskStateTrace riskStateTrace) {
+		Map<String, Object> msgMap = new HashMap<>();
+		riskStateTraceDao.updateRiskStateTrace(riskStateTrace);
+		msgMap.put("msg", "修改成功!");
+		return msgMap;
+	}
 }
