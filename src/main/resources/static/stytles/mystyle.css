@@ -89,3 +89,10 @@ input.login {
 	 margin-top: 80px;
 }
 
+th{
+	text-align: center;
+}
+
+td{
+	text-align: center;
+}

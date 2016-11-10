@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12 risk-manager">
-            <h2>风险条目管理</h2>
+            <h2>风险条目管理（$!{project.name}项目）</h2>
             <table class="table waiter-list">
                 <thead>
                 <tr>
@@ -141,7 +141,6 @@
 <script>
 var operation;
 var riskId;
-console.log($!{projectId});
 function clear_all() {
     $("#type").value = "";
     $("content").value = "";
@@ -211,7 +210,7 @@ function edit() {
     	if(operation == 'update') {
     		param.riskId = riskId;
     	}
-    	param.projectId = $!{projectId};
+    	param.projectId = $!{project.id};
     	param.type = $("#type").val();
     	param.content = $("#content").val();
     	param.triggerOrThreshold = $("#triggerOrThreshold").val();

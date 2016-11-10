@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.major.model.Project;
 import com.major.model.Risk;
 import com.major.model.User;
+import com.major.service.ProjectService;
 import com.major.service.RiskService;
 
 import tools.RequestUtil;
@@ -24,12 +26,16 @@ public class RiskController {
 	@Autowired
 	RiskService riskService;
 	
+	@Autowired
+	ProjectService projectService;
+	
 	@RequestMapping(value = { "/riskList" })
 	public String riskList(Model model, @RequestParam("projectId") Integer projectId, HttpSession session){
 		model.addAttribute("user", (User) session.getAttribute("user"));
 		List<Risk> riskList = riskService.getByProjectId(projectId);
+		Project project = projectService.getProject(projectId);
 		model.addAttribute("riskList", riskList);
-		model.addAttribute("projectId", projectId);
+		model.addAttribute("project", project);
 		return "riskList";
 	}
 	
