@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.major.model.Risk;
 import com.major.model.RiskStateTrace;
 import com.major.model.User;
+import com.major.service.RiskService;
 import com.major.service.RiskStateTraceService;
 
 import tools.RequestUtil;
@@ -24,15 +26,20 @@ public class RiskStateTraceController {
 	@Autowired
 	RiskStateTraceService riskStateTraceService;
 	
+	@Autowired
+	RiskService riskService;
+	
 	@RequestMapping(path = {"/riskStateTraceList" })
 	public String projectList(Model model, 
 			@RequestParam("riskId") Integer riskId, 
 			HttpSession session) {
 		
 		List<RiskStateTrace> riskStateTraceList = riskStateTraceService.getByRiskId(riskId);
+		
+		Risk risk = riskService.getRisk(riskId);
 		model.addAttribute("riskStateTraceList", riskStateTraceList);
 		model.addAttribute("user", (User) session.getAttribute("user"));
-		model.addAttribute("riskId", riskId);
+		model.addAttribute("risk", risk);
 		
 		return "riskStateTraceList";
 	}

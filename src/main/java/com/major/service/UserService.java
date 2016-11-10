@@ -7,6 +7,7 @@ import com.major.dao.UserDAO;
 import com.major.model.User;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -21,7 +22,9 @@ public class UserService {
 	public int addUser(User user) {
 		return userDao.addUser(user);
 	}
-
+    public  List<User> getAll(){
+    	return userDao.getAll();
+    }
 	public Map<String, Object> register(String username, String password, String role) {
 		Map<String, Object> msgMap = new HashMap<>();
 

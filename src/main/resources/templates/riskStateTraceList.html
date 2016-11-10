@@ -5,10 +5,10 @@
     <div class="row">
         <div class="col-md-12 risk-manager">
             <h2>风险状态跟踪</h2>
+            <p>风险内容：$!{risk.content}</p>
             <table class="table waiter-list">
                 <thead>
                 <tr>
-                    
                     <th>状态名</th>
                     <th>描述</th>
                     <th>创建时间</th>
@@ -122,7 +122,7 @@
 	   if(operation == 'update') {
 		   param.riskStateTraceId = riskStateTraceId;
 	   }
-	   param.riskId = $!{riskId};
+	   param.riskId = $!{risk.id};
 	   param.name = $('#name').val();
 	   param.description = $('#description').val();
 	   
