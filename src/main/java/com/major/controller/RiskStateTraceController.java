@@ -53,10 +53,10 @@ public class RiskStateTraceController {
 	@RequestMapping(path = {"/editRiskStateTrace" })
 	@ResponseBody
 	public String editProject(HttpServletRequest request) {
-		Integer riskStateTraceId = RequestUtil.GetPositiveInteger(request, "riskStateTraceId", null);
-		Integer riskId = RequestUtil.GetPositiveInteger(request, "riskId", null);
-		String name = RequestUtil.GetString(request, "name", null);
-		String description = RequestUtil.GetString(request, "description", null);
+		Integer riskStateTraceId = RequestUtil.getPositiveInteger(request, "riskStateTraceId", null);
+		Integer riskId = RequestUtil.getPositiveInteger(request, "riskId", null);
+		String name = RequestUtil.getString(request, "name", null);
+		String description = RequestUtil.getString(request, "description", null);
 		
 		if(riskStateTraceId == null) {
 			Map<String, Object> msgMap = riskStateTraceService.addRiskStateTrace(riskId, name, description);
