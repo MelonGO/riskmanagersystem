@@ -19,24 +19,24 @@
                     <th>操作</th>
                 </tr>
                 </thead>
-                #foreach($risk in $riskList)
+                #foreach($riskVO in $riskListVOs)
                 <tr>
                 	
-                	<td>$!{risk.content}</td>
-                	<td>$!{risk.type}</td>
-                	<td>$!{risk.probability}</td>
-                	<td>$!{risk.influence}</td>
-                	<td>$!{risk.triggerOrThreshold}</td>
-                    <td>$!{risk.submitter}</td>
-                    <td>$!{risk.tracer}</td>
+                	<td>$!{riskVO.risk.content}</td>
+                	<td>$!{riskVO.risk.type}</td>
+                	<td>$!{riskVO.risk.probability}</td>
+                	<td>$!{riskVO.risk.influence}</td>
+                	<td>$!{riskVO.risk.triggerOrThreshold}</td>
+                    <td>$!{riskVO.submitter.name}</td>
+                    <td>$!{riskVO.tracer.name}</td>
                     
                     <td>
                     	<button type="button" onclick="location.href='riskStateTraceList?riskId=$!{risk.id}'"
                     		class="btn btn-warning pull-right fa fa-reorder"
                     		></button>
-                    	<button type="button" onclick='deleteRisk($!{risk.id})'
+                    	<button type="button" onclick='deleteRisk($!{riskVO.risk.id})'
                     		class="btn btn-warning pull-right fa fa-trash"></button>
-                    	<button type="button" onclick='updateRisk($!{risk.id})'
+                    	<button type="button" onclick='updateRisk($!{riskVO.risk.id})'
                     		class="btn btn-warning pull-right fa fa-wrench"
                     		data-toggle="modal" data-target="#edit"></button>
                     </td>
@@ -92,15 +92,13 @@
                     <div class="form-group">
                         <label for="submitter" class="col-sm-2 control-label">提交者:</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="submitter"
-                                   placeholder="请输入提交者" name="submitter">
+                        	<select id="submitter" name="submitter" class="form-control"></select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="tracer" class="col-sm-2 control-label">跟踪者:</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="tracer"
-                                   placeholder="请输入跟踪者" name="tracer">
+                            <select id="tracer" name="tracer" class="form-control"></select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -141,12 +139,14 @@
 <script>
 var operation;
 var riskId;
+$(document).ready(function () {
+	loadUser();
+});
 function clear_all() {
     $("#type").value = "";
     $("content").value = "";
     $("triggerOrThreshold").value = "";
-    $("submitter").value = "";
-    $("#tracer").value = "";
+    
 }
 
 function deleteRisk(id){
@@ -173,7 +173,21 @@ function updateRisk(id) {
 
 
 function addRisk(){
-	operation = "add";
+	operation = "add";	
+}
+
+function loadUser() {
+	$('#submitter').empty();
+	$('#tracer').empty();
+	$.get('searchUserData',function(r){
+		if(r) {
+			$.each(r, function(index, item) {
+				$('#submitter').append($('<option>', {value : item.id}).text(item.name));
+				$('#tracer').append($('<option>', {value : item.id}).text(item.name));
+				
+			});
+		}
+	});
 }
 
 function edit() {

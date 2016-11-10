@@ -1,5 +1,6 @@
 package com.major.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,8 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.major.model.Project;
 import com.major.model.Risk;
 import com.major.model.User;
+import com.major.model.ViewObject;
 import com.major.service.ProjectService;
 import com.major.service.RiskService;
+import com.major.service.UserService;
 
 import tools.RequestUtil;
 
@@ -29,12 +32,31 @@ public class RiskController {
 	@Autowired
 	ProjectService projectService;
 	
+	@Autowired
+	UserService userService;
+	
 	@RequestMapping(value = { "/riskList" })
 	public String riskList(Model model, @RequestParam("projectId") Integer projectId, HttpSession session){
 		model.addAttribute("user", (User) session.getAttribute("user"));
 		List<Risk> riskList = riskService.getByProjectId(projectId);
 		Project project = projectService.getProject(projectId);
-		model.addAttribute("riskList", riskList);
+		List<User> userList = userService.getAll();
+		
+		List<ViewObject> vos = new ArrayList<>();
+		for(Risk r : riskList) {
+			ViewObject vo = new ViewObject();
+			vo.set("risk", r);
+			for(User u : userList) {
+				if(u.getId() == r.getSubmitter()) {
+					vo.set("submitter", u);
+				}
+				if(u.getId() == r.getTracer()) {
+					vo.set("tracer", u);
+				}
+			}
+			vos.add(vo);
+		}
+		model.addAttribute("riskListVOs", vos);
 		model.addAttribute("project", project);
 		return "riskList";
 	}
