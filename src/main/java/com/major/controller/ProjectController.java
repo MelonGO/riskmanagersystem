@@ -43,7 +43,7 @@ public class ProjectController {
 	@RequestMapping(path = {"/editProject" })
 	@ResponseBody
 	public String editProject(@RequestParam("name") String name, HttpServletRequest request) {
-		Integer projectId = RequestUtil.GetPositiveInteger(request, "projectId", null);
+		Integer projectId = RequestUtil.getPositiveInteger(request, "projectId", null);
 		if(projectId == null) {
 			Map<String, Object> msgMap = projectService.addProject(name);
 			return (String) msgMap.get("msg");

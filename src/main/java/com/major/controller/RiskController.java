@@ -87,7 +87,7 @@ public class RiskController {
 			@RequestParam("tracer") Integer tracer,
 			HttpServletRequest request
 			){
-		Integer riskId = RequestUtil.GetPositiveInteger(request, "riskId", null);
+		Integer riskId = RequestUtil.getPositiveInteger(request, "riskId", null);
 		if(riskId == null) {
 			Map<String, Object> msg = riskService.addRisk(projectId, type, content, probability, influence,
 				triggerOrThreshold, submitter, tracer);
