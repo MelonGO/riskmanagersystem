@@ -35,7 +35,7 @@ public class LoginController {
             HttpSession session) {
 		Map<String, Object> map = userService.login(username, password);
 		String msg = (String)map.get("msg");
-		if(msg.equals("该用户不存在!") || msg.equals("密码错误!")){
+		if(map.get("user") == null) {
 			model.addAttribute("error", msg);
 			return "Error";
 		}

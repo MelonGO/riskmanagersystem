@@ -20,11 +20,6 @@ import com.major.model.Demo;
  */
 @Controller
 public class HomeController {
-
-//    @RequestMapping(path = {"/", "/index"})
-//    public String index() {
-//        return "";
-//    }
     
     //举个例子 http://localhost:8080/profile/12/45?type=111  这个会匹配这样的url
     @RequestMapping(value = {"/profile/{groupId}/{userId}"})

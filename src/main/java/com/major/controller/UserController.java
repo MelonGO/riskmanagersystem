@@ -18,7 +18,6 @@ public class UserController {
 	@RequestMapping(path = {"/searchUserData"})
 	@ResponseBody
 	public List<User> getUserList() {
-		List<User> userList = userService.getAll();
-		return userList;
+		return userService.getAll();
 	}
 }
