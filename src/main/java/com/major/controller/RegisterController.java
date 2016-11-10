@@ -1,11 +1,6 @@
 package com.major.controller;
 
-import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.major.model.Risk;
-import com.major.model.User;
 import com.major.service.RiskService;
 import com.major.service.UserService;
 
@@ -28,8 +21,6 @@ public class RegisterController {
 	@Autowired
 	RiskService riskService;
 	
-	private HttpSession session = null;
-	
 	@RequestMapping(path = { "/register" })
 	public String registerShow(){
 		return "register";
@@ -39,13 +30,11 @@ public class RegisterController {
 	public String register(Model model, 
 			@RequestParam("username") String username,
 			@RequestParam("password") String password, 
-			@RequestParam("role") String role,
-			HttpServletRequest request,
-            HttpServletResponse response) {
+			@RequestParam("role") String role) {
 		
 		Map<String, Object> map = userService.register(username, password, role);
 		String msg = (String)map.get("msg");
-		if(msg.equals("该用户已经被注册!")){
+		if(map.get("user") == null){
 			model.addAttribute("error", msg);
 			return "error";
 		}

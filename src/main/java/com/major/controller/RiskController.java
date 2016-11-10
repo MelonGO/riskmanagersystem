@@ -69,7 +69,7 @@ public class RiskController {
 	
 	@RequestMapping(value = { "/deleteRiskById" })
 	@ResponseBody
-	public String deleteRisk(Model model, @RequestParam("riskId") String riskId){
+	public String deleteRisk(@RequestParam("riskId") String riskId){
 		riskService.deleteRisk(Integer.parseInt(riskId));
 		
 		return "删除成功！";
@@ -77,8 +77,7 @@ public class RiskController {
 	
 	@RequestMapping(value = { "/editRisk" })
 	@ResponseBody
-	public String addRisk(Model model,
-			@RequestParam("projectId") Integer projectId,
+	public String addRisk(@RequestParam("projectId") Integer projectId,
 			@RequestParam("type") String type,
 			@RequestParam("content") String content,
 			@RequestParam("probability") String probability,
