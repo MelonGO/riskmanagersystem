@@ -12,25 +12,25 @@ import org.apache.ibatis.mapping.StatementType;
 import com.major.model.RiskStateTrace;
 @Mapper
 public interface RiskStateTraceDAO {
-	String TABLE_NAME = "risk_state_trace";
-	String INSET_FIELDS = " risk_id,name,description";
-	String SELECT_FIELDS = " id,risk_id as riskId,name, description,create_time as createTime, update_time as updateTime";
-	@Insert({ "insert into ", TABLE_NAME, "(", INSET_FIELDS, ") values (#{riskId},#{name},#{description})" })
+	String table_name = "risk_state_trace";
+	String insert_fields = " risk_id,name,description";
+	String select_fields = " id,risk_id as riskId,name, description,create_time as createTime, update_time as updateTime";
+	@Insert({ "insert into ", table_name, "(", insert_fields, ") values (#{riskId},#{name},#{description})" })
 	@SelectKey(statement = "select last_insert_id() as id", keyProperty = "id", before = false, resultType = Integer.class, statementType = StatementType.PREPARED)
 	int addRiskStateTrace(RiskStateTrace riskStateTrace);
 
-	@Select({ "select ", SELECT_FIELDS, " from ", TABLE_NAME, " where id=#{id}" })
+	@Select({ "select ", select_fields, " from ", table_name, " where id=#{id}" })
 	RiskStateTrace selectById(int id);
 
-	@Delete({ "delete from ", TABLE_NAME, " where id=#{id}" })
+	@Delete({ "delete from ", table_name, " where id=#{id}" })
 	void deleteById(int id);
 
-	@Select({ "select ", SELECT_FIELDS, " from ", TABLE_NAME })
+	@Select({ "select ", select_fields, " from ", table_name })
 	List<RiskStateTrace> selectAll();
-	@Update({"update ", TABLE_NAME, " set risk_id=#{riskId},name=#{name},description=#{description} where id=#{id}"})
+	@Update({"update ", table_name, " set risk_id=#{riskId},name=#{name},description=#{description} where id=#{id}"})
 	void updateRiskStateTrace(RiskStateTrace riskStateTrace);
 	
-	@Select({ "select ", SELECT_FIELDS, " from ", TABLE_NAME, " where risk_id=#{riskId}" })
+	@Select({ "select ", select_fields, " from ", table_name, " where risk_id=#{riskId}" })
 	List<RiskStateTrace> getByRiskId(int riskId);
 
 	

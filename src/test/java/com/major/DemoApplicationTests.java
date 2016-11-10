@@ -17,24 +17,12 @@ import com.major.service.RiskStateTraceService;
 @SpringBootTest
 public class DemoApplicationTests {
 	@Autowired
-	//ProjectService ps;
-//	RiskStateTraceService rs;
 	RiskService rs1;
 	@Test
 	public void contextLoads() {
-	//ps.addProject("121");
-//		Project project =ps.getProject(1);
-//		project.setName("2b");
-//		ps.updateProject(project);
-//		rs.addRiskStateTrace(12, "sd", "dd");
-//		RiskStateTrace rst=rs.getRiskStateTrace(1);
-//		rst.setName("sdsd");
-//		rs.updateRiskStateTrace(rst);
-	//	rs1.addRisk(122,"类型", "nei", "ke", "ying", "chufa", 1, 2);
-//		Risk risk=rs1.getRisk(1);
-//		risk.setProjectId(12);
-//		risk.setContent("binan");
-//		rs1.updateRisk(risk);
+
+		Risk risk=rs1.getRisk(1);
+
 	}
 
 }
