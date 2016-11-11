@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.major.model.Project;
 import com.major.model.User;
 import com.major.service.ProjectService;
+import com.major.service.UserService;
 
 import tools.RequestUtil;
 
@@ -25,11 +26,22 @@ public class ProjectController {
 	@Autowired
 	ProjectService projectService;
 	
+	@Autowired
+	UserService userService;
+	
 	@RequestMapping(path = {"/projectList" })
-	public String projectList(Model model, HttpSession session) {
-		List<Project> projectList = projectService.getAllProjects();
+	public String projectList(Model model, HttpSession session, HttpServletRequest request) {
+		
+		User user = (User) session.getAttribute("user");
+		List<Project> projectList = null;
+		if(user.getRole().equals("user")) {
+			projectList = projectService.getByUserId(user.getId());
+		} else {
+			projectList = projectService.getAllProjects();
+		}
+		
 		model.addAttribute("projectList", projectList);
-		model.addAttribute("user", (User) session.getAttribute("user"));
+		model.addAttribute("user", user);
 		
 		return "projectList";
 	}
@@ -62,4 +74,6 @@ public class ProjectController {
 		projectService.deleteProject(projectId);
 		return "删除成功！";
 	}
+	
+	
 }
