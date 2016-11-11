@@ -6,12 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.major.model.Project;
+
 import com.major.model.Risk;
-import com.major.model.RiskStateTrace;
-import com.major.service.ProjectService;
 import com.major.service.RiskService;
-import com.major.service.RiskStateTraceService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -22,7 +19,7 @@ public class DemoApplicationTests {
 	public void contextLoads() {
 
 		Risk risk=rs1.getRisk(1);
-
+System.out.println(risk.getId());
 	}
 
 }
