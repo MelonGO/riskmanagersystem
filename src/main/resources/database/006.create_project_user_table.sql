@@ -5,8 +5,8 @@ DROP TABLE IF EXISTS `project_user`;
 
 CREATE TABLE `rms`.`project_user` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `project_id` VARCHAR(64) NOT NULL,
-  `user_id` VARCHAR(64) NOT NULL,
+  `project_id` INT NOT NULL,
+  `user_id` INT NOT NULL,
   `create_time` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`));

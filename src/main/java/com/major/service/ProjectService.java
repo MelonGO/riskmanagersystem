@@ -8,12 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.major.dao.ProjectDAO;
+import com.major.dao.ProjectUserDAO;
 import com.major.model.Project;
+import com.major.model.ProjectUser;
 
 @Service
 public class ProjectService {
 	@Autowired
 	private ProjectDAO projectDao;
+	@Autowired
+	private ProjectUserDAO projectUserDAO;
 	public Project getProject(int id) {
 		return projectDao.selectById(id);
 	}
@@ -32,7 +36,22 @@ public class ProjectService {
 	public List<Project> getAllProjects() {
 		return projectDao.selectAll();
 	}
-	
+	public List<Project> getByUserId(int userId) {
+		return projectUserDAO.getByUserId(userId);
+	}
+	public Map<String, Object> addProjectUser(
+			int  projectId,int userId) {
+		Map<String, Object> msgMap = new HashMap<>();
+		ProjectUser projectUserNew = new ProjectUser();
+		projectUserNew.setUserId(userId);
+		projectUserNew.setProjectId(projectId);
+		projectUserDAO.addProjectUser(projectUserNew);
+		msgMap.put("msg", "添加成功!");
+		return msgMap;
+	}
+	public void deleteProjectUser(int id){
+		projectUserDAO.deleteById(id);
+	}
 	public void deleteProject(int id){
 		projectDao.deleteById(id);
 	}
