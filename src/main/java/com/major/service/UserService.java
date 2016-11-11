@@ -3,6 +3,7 @@ package com.major.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.major.dao.ProjectUserDAO;
 import com.major.dao.UserDAO;
 import com.major.model.User;
 
@@ -14,8 +15,9 @@ import java.util.Map;
 public class UserService {
 	@Autowired
 	private UserDAO userDao;
-
-	public User getUser(int id) {
+	@Autowired
+	private ProjectUserDAO projectUserDAO;
+	public User getUser(int id)  {
 		return userDao.selectById(id);
 	}
 
@@ -24,6 +26,9 @@ public class UserService {
 	}
     public  List<User> getAll(){
     	return userDao.getAll();
+    }
+    public  List<User> getByProjectId(int projectId){
+    	return projectUserDAO.getByProjectId(projectId);
     }
 	public Map<String, Object> register(String username, String password, String role) {
 		Map<String, Object> msgMap = new HashMap<>();
