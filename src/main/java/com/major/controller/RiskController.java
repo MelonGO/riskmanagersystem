@@ -89,10 +89,7 @@ public class RiskController {
 		String triggerOrThreshold = RequestUtil.getString(request, "triggerOrThreshold", null);
 		Integer submitter = RequestUtil.getPositiveInteger(request, "submitter", null);
 		Integer tracer = RequestUtil.getPositiveInteger(request, "tracer", null);
-		if(projectId == null || type == null || content == null || probability== null 
-				|| influence == null || triggerOrThreshold == null || submitter == null) {
-			
-		}
+		
 		Risk risk = new Risk();
 		
 		risk.setContent(content);
