@@ -77,32 +77,38 @@ public class RiskController {
 	
 	@RequestMapping(value = { "/editRisk" })
 	@ResponseBody
-	public String addRisk(@RequestParam("projectId") Integer projectId,
-			@RequestParam("type") String type,
-			@RequestParam("content") String content,
-			@RequestParam("probability") String probability,
-			@RequestParam("influence") String influence,
-			@RequestParam("triggerOrThreshold") String triggerOrThreshold,
-			@RequestParam("submitter") Integer submitter,
-			@RequestParam("tracer") Integer tracer,
+	public String addRisk(
 			HttpServletRequest request
 			){
 		Integer riskId = RequestUtil.getPositiveInteger(request, "riskId", null);
+		Integer projectId = RequestUtil.getPositiveInteger(request, "projectId", null);
+		String type = RequestUtil.getString(request, "type", null);
+		String content = RequestUtil.getString(request, "content", null);
+		String probability = RequestUtil.getString(request, "probability", null);
+		String influence = RequestUtil.getString(request, "influence", null);
+		String triggerOrThreshold = RequestUtil.getString(request, "triggerOrThreshold", null);
+		Integer submitter = RequestUtil.getPositiveInteger(request, "submitter", null);
+		Integer tracer = RequestUtil.getPositiveInteger(request, "tracer", null);
+		if(projectId == null || type == null || content == null || probability== null 
+				|| influence == null || triggerOrThreshold == null || submitter == null) {
+			
+		}
+		Risk risk = new Risk();
+		
+		risk.setContent(content);
+		risk.setInfluence(influence);
+		risk.setProbability(probability);
+		risk.setProjectId(projectId);
+		risk.setSubmitter(submitter);
+		risk.setTracer(tracer);
+		risk.setTriggerOrThreshold(triggerOrThreshold);
+		risk.setType(type);
 		if(riskId == null) {
-			Map<String, Object> msg = riskService.addRisk(projectId, type, content, probability, influence,
-				triggerOrThreshold, submitter, tracer);
+			
+			Map<String, Object> msg = riskService.addRisk(risk);
 			return (String) msg.get("msg");
 		} else {
-			Risk risk = new Risk();
 			risk.setId(riskId);
-			risk.setContent(content);
-			risk.setInfluence(influence);
-			risk.setProbability(probability);
-			risk.setProjectId(projectId);
-			risk.setSubmitter(submitter);
-			risk.setTracer(tracer);
-			risk.setTriggerOrThreshold(triggerOrThreshold);
-			risk.setType(type);
 			Map<String, Object> msg = riskService.updateRisk(risk);
 			return (String) msg.get("msg");
 		}

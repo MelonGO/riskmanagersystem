@@ -23,19 +23,9 @@ public class RiskService {
 		return riskDao.getByProjectId(projectId);
 	}
 
-	public Map<String, Object> addRisk(int projectId,String type, String content, String probability,
-			String influence, String triggerOrThreshold, int submitter,
-			Integer tracer) {
+	public Map<String, Object> addRisk(Risk riskNew) {
 		Map<String, Object> msgMap = new HashMap<>();
-		Risk riskNew = new Risk();
-		riskNew.setProjectId(projectId);
-		riskNew.setType(type);
-		riskNew.setContent(content);
-		riskNew.setProbability(probability);
-		riskNew.setInfluence(influence);
-		riskNew.setTriggerOrThreshold(triggerOrThreshold);
-		riskNew.setSubmitter(submitter);
-		riskNew.setTracer(tracer);
+		
 		riskDao.addRisk(riskNew);
 		msgMap.put("msg", "添加成功!");
 		return msgMap;

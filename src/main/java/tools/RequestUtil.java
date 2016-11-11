@@ -1,7 +1,6 @@
 package tools;
 
 import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
 
 public class RequestUtil {
 	
@@ -22,11 +21,7 @@ public class RequestUtil {
 		String paramValue = request.getParameter(paramName);
 		
 		if (!Utility.isEmptyString(paramValue)) {
-			try {
-				return Integer.parseInt(paramValue);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			return Integer.parseInt(paramValue);
 		}
 		return alternativeValue;
 	}
@@ -35,11 +30,8 @@ public class RequestUtil {
 		String paramValue = request.getParameter(paramName);
 		
 		if (!Utility.isEmptyString(paramValue)) {
-			try {
-				return Float.parseFloat(paramValue);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			return Float.parseFloat(paramValue);
+			
 		}
 		return alternativeValue;
 	}
@@ -48,14 +40,11 @@ public class RequestUtil {
 		String paramValue = request.getParameter(paramName);
 		
 		if (!Utility.isEmptyString(paramValue)) {
-			try {
-				int tempValue = Integer.parseInt(paramValue);
-				if (tempValue >= 0) {
-					return tempValue;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			int tempValue = Integer.parseInt(paramValue);
+			if (tempValue >= 0) {
+				return tempValue;
 			}
+			
 		}
 		return alternativeValue;
 	}
@@ -64,11 +53,7 @@ public class RequestUtil {
 		String paramValue = request.getParameter(paramName);
 		
 		if (!Utility.isEmptyString(paramValue)) {
-			try {
 				return Boolean.parseBoolean(paramValue);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 		}
 		
 		return alternativeValue;
