@@ -27,8 +27,8 @@ public interface ProjectUserDAO {
 	@Select({ "select ", ProjectUserDaoConstants.SELECT_FIELDS, " from ", ProjectUserDaoConstants.TABLE_NAME, " where id=#{id}" })
 	ProjectUser selectById(int id);
 
-	@Delete({ "delete from ", ProjectUserDaoConstants.TABLE_NAME, " where id=#{id}" })
-	void deleteById(int id);
+	@Delete({ "delete from ", ProjectUserDaoConstants.TABLE_NAME, " where project_id=#{projectId} and user_id=#{userId}" })
+	void deleteById(int projectId,int userId);
 
 	@Select({ "select ", ProjectUserDaoConstants.SELECT_FIELDS, " from ", ProjectUserDaoConstants.TABLE_NAME })
 	List<ProjectUser> selectAll();
@@ -40,4 +40,9 @@ public interface ProjectUserDAO {
 	
 	@Select({ "select ", ProjectDaoConstants.SELECT_FIELDS_JOIN, " from ", ProjectUserDaoConstants.TABLE_NAME+" join "+ProjectDaoConstants.TABLE_NAME, "on project.id=project_user.project_id where user_id=#{userId}" })
 	List<Project> getByUserId(int userId);
+	
+	@Select({ "select ",UserDaoConstants.SELECT_FIELDS_JOIN, " from ", UserDaoConstants.TABLE_NAME +" left join "+ProjectUserDaoConstants.TABLE_NAME, " on user.id=project_user.user_id where project_id!=#{projectId} or project_id is null " })
+	List<User> getUserNotIn(int projectId);
+		
+	
 }

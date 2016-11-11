@@ -11,6 +11,7 @@ import com.major.dao.ProjectDAO;
 import com.major.dao.ProjectUserDAO;
 import com.major.model.Project;
 import com.major.model.ProjectUser;
+import com.major.model.User;
 
 @Service
 public class ProjectService {
@@ -49,8 +50,8 @@ public class ProjectService {
 		msgMap.put("msg", "添加成功!");
 		return msgMap;
 	}
-	public void deleteProjectUser(int id){
-		projectUserDAO.deleteById(id);
+	public void deleteProjectUser(int projectId,int userId){
+		projectUserDAO.deleteById(projectId,userId);
 	}
 	public void deleteProject(int id){
 		projectDao.deleteById(id);
@@ -61,5 +62,8 @@ public class ProjectService {
 		projectDao.updateProject(project);
 		msgMap.put("msg", "修改成功!");
 		return msgMap;
+	}
+	public 	List<User> getUserNotIn(int projectId){
+		return projectUserDAO.getUserNotIn(projectId);
 	}
 }
