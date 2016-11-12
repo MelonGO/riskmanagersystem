@@ -38,8 +38,10 @@
             </table>
         </div>
         <div>
-        <button class="btn btn-default btn-block fa fa-plus fa-3x" 
+        #if($user.role == 'manager')
+        	<button class="btn btn-default btn-block fa fa-plus fa-3x" 
         		data-toggle="modal" data-target="#edit" onclick="addProject()"></button>
+        #end
     	</div>
     	<br>
     </div>
