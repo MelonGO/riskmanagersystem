@@ -1,6 +1,6 @@
 node {
     stage('SCM') {
-        git 'https://github.com/MelonGO/riskmanagersystem.git'
+        git 'https://github.com/softwaremanage/riskmanagersystem.git'
     }
     stage('QA') {
         sh 'sonar-scanner'
