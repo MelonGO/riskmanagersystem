@@ -37,18 +37,25 @@ public class LoginController {
 		String msg = (String)map.get("msg");
 		if(map.get("user") == null) {
 			model.addAttribute("error", msg);
-			return "Error";
+			return "login";
 		}
-		
 		model.addAttribute("user", (User)map.get("user"));
 		session.setAttribute("user", (User)map.get("user"));
 		
-		return "redirect:projectList";
+//		return "redirect:projectList";
+		return "index";
 	}
-
 	@RequestMapping(value = {"/logout"})
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "login";
 	}
+	
+	@RequestMapping(value = {"/indexHome"})
+	public String logout(Model model, HttpSession session) {
+		model.addAttribute("user", (User) session.getAttribute("user"));
+		return "index";
+	}
+	
+
 }

@@ -20,6 +20,7 @@ import com.major.model.User;
 import com.major.model.ViewObject;
 import com.major.service.ProjectService;
 import com.major.service.RiskService;
+import com.major.service.RiskStateTraceService;
 import com.major.service.UserService;
 
 import tools.RequestUtil;
@@ -35,16 +36,19 @@ public class RiskController {
 	@Autowired
 	UserService userService;
 	
+	@Autowired
+	RiskStateTraceService riskStateTraceService;
+	
 	@RequestMapping(value = { "/riskList" })
 	public String riskList(Model model, @RequestParam("projectId") Integer projectId, HttpSession session){
 		model.addAttribute("user", (User) session.getAttribute("user"));
 		List<Risk> riskList = riskService.getByProjectId(projectId);
 		Project project = projectService.getProject(projectId);
 		List<User> userList = userService.getAll();
-		
 		List<ViewObject> vos = new ArrayList<>();
 		for(Risk r : riskList) {
 			ViewObject vo = new ViewObject();
+			vo.set("project", project);
 			vo.set("risk", r);
 			for(User u : userList) {
 				if(u.getId() == r.getSubmitter()) {
@@ -61,6 +65,32 @@ public class RiskController {
 		return "riskList";
 	}
 	
+	@RequestMapping(value = { "/allRiskList" })
+	public String riskList(Model model,  HttpSession session){
+		model.addAttribute("user", (User) session.getAttribute("user"));
+		List<Risk> riskList = riskService.getAllRisks();
+		List<User> userList = userService.getAll();
+		
+		List<ViewObject> vos = new ArrayList<>();
+		for(Risk r : riskList) {
+			ViewObject vo = new ViewObject();
+			Project project = projectService.getProject(r.getProjectId());
+			vo.set("project", project);
+			vo.set("risk", r);
+			for(User u : userList) {
+				if(u.getId() == r.getSubmitter()) {
+					vo.set("submitter", u);
+				}
+				if(u.getId() == r.getTracer()) {
+					vo.set("tracer", u);
+				}
+			}
+			vos.add(vo);
+		}
+		model.addAttribute("riskListVOs", vos);
+		return "riskList";
+	}
+	
 	@RequestMapping(value = { "/getByRiskId" })
 	@ResponseBody
 	public Risk getByRiskId(@RequestParam("riskId") Integer riskId){
@@ -71,6 +101,7 @@ public class RiskController {
 	@ResponseBody
 	public String deleteRisk(@RequestParam("riskId") String riskId){
 		riskService.deleteRisk(Integer.parseInt(riskId));
+		riskStateTraceService.deleteRiskStateTraceByRiskId(Integer.parseInt(riskId));
 		
 		return "删除成功！";
 	}
@@ -82,7 +113,8 @@ public class RiskController {
 			){
 		Integer riskId = RequestUtil.getPositiveInteger(request, "riskId", null);
 		Integer projectId = RequestUtil.getPositiveInteger(request, "projectId", null);
-		String type = RequestUtil.getString(request, "type", null);
+//		String type = RequestUtil.getString(request, "type", null);
+		String type = "一般风险";
 		String content = RequestUtil.getString(request, "content", null);
 		String probability = RequestUtil.getString(request, "probability", null);
 		String influence = RequestUtil.getString(request, "influence", null);

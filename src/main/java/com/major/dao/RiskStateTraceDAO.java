@@ -24,6 +24,9 @@ public interface RiskStateTraceDAO {
 
 	@Delete({ "delete from ", table_name, " where id=#{id}" })
 	void deleteById(int id);
+	
+	@Delete({ "delete from ", table_name, " where risk_id=#{risk_id}" })
+	void deleteByRiskId(int risk_id);
 
 	@Select({ "select ", select_fields, " from ", table_name })
 	List<RiskStateTrace> selectAll();

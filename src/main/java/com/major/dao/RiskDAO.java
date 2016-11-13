@@ -24,6 +24,9 @@ public interface RiskDAO {
     @Delete({"delete from ", table_name, " where id=#{id}"})
     void deleteById(int id);
     
+    @Delete({"delete from ", table_name, " where project_id=#{project_id}"})
+    void deleteByProjectId(int project_id);
+    
     @Select({"select ", select_fields, " from ", table_name})
     List<Risk> selectAll();
     @Update({"update ", table_name, " set project_id=#{projectId},type=#{type},content=#{content},probability=#{probability},influence=#{influence},triggerOrThreshold=#{triggerOrThreshold},submitter=#{submitter},tracer=#{tracer}   where id=#{id}"})

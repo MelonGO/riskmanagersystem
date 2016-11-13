@@ -30,14 +30,18 @@ public class RiskService {
 		msgMap.put("msg", "添加成功!");
 		return msgMap;
 		
-	}
-	
+	}	
 	public List<Risk> getAllRisks() {
 		return riskDao.selectAll();
 	}
 	
 	public void deleteRisk(int id){
 		riskDao.deleteById(id);
+	}
+	
+	public void deleteRiskByProjectId(int project_id)
+	{
+		riskDao.deleteByProjectId(project_id);
 	}
 	public Map<String, Object> updateRisk(
 			Risk risk) {

@@ -1,0 +1,153 @@
+.table_title{
+	 width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    color: #3c3c3c;
+    font-size:14px;
+    table-layout: fixed
+}
+
+.table_title a{
+	color: #3c3c3c;
+    text-decoration: none;
+    word-break: break-all
+}
+.table_title a:hover{
+	color: red;
+}
+.table_title p{
+	 margin-top: 8px;
+    margin-bottom: 8px;
+    line-height: 1
+}
+.table_title td .table_title th {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border:1px solid #ff0000;
+}
+.list_class .table_title td {
+	padding-top:10px;
+	padding-bottom:10px;
+    border-bottom:1px solid white;
+}
+.table_title th {
+    font-weight: 400
+}
+
+.table_titlet td {
+    vertical-align: top
+}
+.bought-table_col1{
+	width:10%;
+}
+.bought-table_col2{
+	width:15%；
+}
+.bought-table_col3{
+	width:10%；
+}
+.bought-table_col4{
+	width:10%；
+}
+.bought-table_col5{
+	width:10%；
+}
+.bought-table_col6{
+	width:10%；
+}
+.bought-table_col7{
+	width:10%；
+}
+.bought-table_col8{
+	width:10%；
+}
+.bought-table_col9{
+	width:15%；
+}
+.table_title .link_title{
+	background-color:#F1F1F1;
+	height:35px;
+}
+.table_title .noshow_row{
+	height:20px;
+	}
+.table_title  .th-title{
+	background-color:#F1F1F1;
+	font-size:13px;
+	height:25px;
+	}
+.table_title  .th-title .gap{
+	
+    margin-left:10px;
+	}
+.table_title  .th-title .dealtime{
+	margin-left:10px;
+	width:200px;
+	}
+.table_title  .th-title .number{
+	margin-left:50px;
+	}
+.good{
+	display: inline-block;
+    display: block;
+    float: left;
+    width: 255px;
+    margin-right: 10px
+}
+.good .good-item{
+	float: left;
+    width: 60px;
+    height: 60px;
+    border: 1px solid #efefef;
+    margin: 0 14px;
+    _display: inline	
+}
+.good .good-mes{
+	float: left;
+      
+    margin: 10px 14px;	
+}
+.th-notitle{
+	font-size:12px;
+}
+
+.th-notitle .good-price{
+	text-align:center;	
+}
+.th-notitle .good-number{
+	text-align:center;
+}
+.th-notitle .good-pay{
+	text-align:center;
+	
+}
+.th-notitle .good-state{
+	text-align:center;	
+}
+.th-notitle .good-state .w{
+	margin:0 auto;
+	width:60px;
+	
+	color:#bfc0c1;
+	border-bottom :1px solid #efefef;
+}
+.th-notitle .good-operate{
+	text-align:center;	
+}
+.th-notitle td{
+	border:1px solid #efefef;
+}
+.th-notitle  .goog-buy{
+	
+	background-color:#F1F1F1;
+	border:2px solid #efefef;
+	width:80%;
+	height:18px;
+	margin:2px auto;
+}
+.no_background{
+	background-color:white;
+	width:100%;
+	height:100%;
+	
+}

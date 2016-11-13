@@ -1,56 +1,64 @@
-
-#parse("common/header.html")
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>项保天下 - 登录</title>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/login.css" rel="stylesheet">
+	 <script src="scripts/jquery.min.js"></script>
+</head>
 <body>
-
-
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-12">
-            <div class="middle-login img-responsive">
-                <div class="mid-panel">
-                    <i id="loading" class="hidden fa fa-spinner fa-spin bigicon"></i>
-                    <h1 class="login">
-                        <span class="fa fa-quote-left"></span> 登录 <span class="fa fa-quote-right"></span>
-                    </h1>
-
-                    <div>
-                        <form action="loginUserHome" method="post" onsubmit="return(loginbtn_click())">
-                            <input class="login" id="username" type="text"  placeholder="登录账号" name="username">
-                            <input class="login" id="password" type="password" placeholder="输入密码" name="password">
-
-                            <div class="buttonwrapper">
-                                <button id="loginbtn" class="btn btn-success loginbutton">
-                                    <span class="fa fa-check"></span>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div>
+	<div class = "header-main">
+	    <a class = "header-logo" href ="index.jsp"><img class = "logoStyle" src="image/logo.gif" alt="" /></a>
+	</div>
+</div>
+<div class="wrapper" style="background:url(image/bc.jpg)  no-repeat;height:600px">
+    <div class="login-form-div box">
+		<div class="login-form-header">账户登录</div>
+			<div class="seperator"></div>
+			<section id="content">
+		  	<form action="loginUserHome" method="post" onsubmit="return(loginbtn_click())">			
+				<div class="login-info-input">
+					<input type="text" placeholder="请输入用户名" required="" id="username"  name="username" />
+				</div>
+				<div class="login-info-input">
+					<input type="password" placeholder="请输入密码" required="" id="password" name="password" />
+				</div>
+				 <div class="login-info-input">
+			    	<a href="register.html" class="alink" style="float:right">免费注册</a>
+			    </div>
+				<div class="login-info-input">
+	    			<input type="submit" value="登录" class="input-submit"></input>
+		    	</div>
+					<p style="color: red;text-align:center"> $!{error}</p>
+			</form>		
+	    	</section>
+		</div>
+</div>
+<div class="footer" style = "margin-top:0px">
+    <div class="seperator"></div>
+    <div class="footer-info">
+        <p>项保天下 版权所有</p>
+        <p>地址：江苏省南京市鼓楼区汉口路22号</p>
     </div>
 </div>
+</body>
 
 <script>
     function loginbtn_click() {
         var msg = "";
         if ($("#username").val().length == 0) {
-            msg = "请输入你的用户名!";
+            msg = "请输入用户名.";
             alert(msg);
             return false;
         }
         if ($("#password").val().length == 0) {
-            msg = "请输入您的密码!";
+            msg = "请输入密码.";
             alert(msg);
             return false;
         }
-        if ($("#username").val().length !== 0 && $("#password").val().length !== 0) {
-            $('#loading').removeClass('hidden');
-        }
     }
 </script>
-#parse("common/footer.html")
-
-
-</body>
 </html>

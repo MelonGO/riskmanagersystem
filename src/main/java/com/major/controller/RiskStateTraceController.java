@@ -1,5 +1,6 @@
 package com.major.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,9 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.major.model.Project;
 import com.major.model.Risk;
 import com.major.model.RiskStateTrace;
 import com.major.model.User;
+import com.major.model.ViewObject;
+import com.major.service.ProjectService;
 import com.major.service.RiskService;
 import com.major.service.RiskStateTraceService;
 
@@ -29,17 +33,58 @@ public class RiskStateTraceController {
 	@Autowired
 	RiskService riskService;
 	
+	@Autowired
+	ProjectService projectService;
+	
 	@RequestMapping(path = {"/riskStateTraceList" })
 	public String projectList(Model model, 
 			@RequestParam("riskId") Integer riskId, 
 			HttpSession session) {
 		
+//		List<RiskStateTrace> riskStateTraceList = riskStateTraceService.getByRiskId(riskId);
+//		
+//		Risk risk = riskService.getRisk(riskId);
+//		model.addAttribute("riskStateTraceList", riskStateTraceList);
+//		model.addAttribute("user", (User) session.getAttribute("user"));
+//		model.addAttribute("risk", risk);
+//		
+//		return "riskStateTraceList";
 		List<RiskStateTrace> riskStateTraceList = riskStateTraceService.getByRiskId(riskId);
-		
 		Risk risk = riskService.getRisk(riskId);
-		model.addAttribute("riskStateTraceList", riskStateTraceList);
+		List<ViewObject> vos = new ArrayList<>();
+		for(RiskStateTrace r : riskStateTraceList) {
+			ViewObject vo = new ViewObject();
+			Risk risk1 = riskService.getRisk(riskId);
+			Project project = projectService.getProject(risk1.getProjectId());
+			vo.set("riskState", r);
+			vo.set("risk", risk1);
+			vo.set("project", project);
+			vos.add(vo);
+		}
+		model.addAttribute("riskStateTraceList", vos);
 		model.addAttribute("user", (User) session.getAttribute("user"));
 		model.addAttribute("risk", risk);
+		return "riskStateTraceList";
+	}
+	
+	@RequestMapping(path = {"/allRiskStateTraceList" })
+	public String projectList(Model model, 
+			
+			HttpSession session) {
+		
+		List<RiskStateTrace> riskStateTraceList = riskStateTraceService.getAllRiskStateTraces();
+		List<ViewObject> vos = new ArrayList<>();
+		for(RiskStateTrace r : riskStateTraceList) {
+			ViewObject vo = new ViewObject();
+			Risk risk = riskService.getRisk(r.getriskId());
+			Project project = projectService.getProject(risk.getProjectId());
+			vo.set("riskState", r);
+			vo.set("risk", risk);
+			vo.set("project", project);
+			vos.add(vo);
+		}
+		model.addAttribute("riskStateTraceList", vos);
+		model.addAttribute("user", (User) session.getAttribute("user"));
 		
 		return "riskStateTraceList";
 	}

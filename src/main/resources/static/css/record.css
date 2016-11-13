@@ -1,0 +1,30 @@
+@CHARSET "UTF-8";
+.in-content{
+	width:400px;
+	height:130px;
+}
+
+.in-content .in-area
+{
+	width:270px;
+	height:100px;
+	border:0 none;
+	padding:15px 10px 5px 10px;
+}
+.radio-type{
+	margin: 13px 1px 0px 7px;
+    float: left;
+}
+.radio-label{
+	float: left;
+	width:10px;
+	height:100%;
+}
+.num-label{
+	float:left;
+	width:20px;
+	height:100%;
+}
+.form2{
+	margin-left:25%;
+}

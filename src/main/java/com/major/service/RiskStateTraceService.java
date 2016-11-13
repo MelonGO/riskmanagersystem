@@ -41,6 +41,10 @@ public class RiskStateTraceService {
 	public void deleteRiskStateTrace(int id){
 		riskStateTraceDao.deleteById(id);
 	}
+	
+	public void deleteRiskStateTraceByRiskId(int riskId){
+		riskStateTraceDao.deleteByRiskId(riskId);
+	}
 	public Map<String, Object> updateRiskStateTrace(
 			RiskStateTrace riskStateTrace) {
 		Map<String, Object> msgMap = new HashMap<>();
