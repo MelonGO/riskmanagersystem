@@ -187,7 +187,9 @@ function addRisk(){
 function loadUser() {
 	$('#submitter').empty();
 	$('#tracer').empty();
-	$.get('searchUserData',function(r){
+	var projectId = $!{project.id};
+	
+	$.get('getUsersIncludedProject',{projectId : projectId}, function(r){
 		if(r) {
 			$.each(r, function(index, item) {
 				$('#submitter').append($('<option>', {value : item.id}).text(item.name));

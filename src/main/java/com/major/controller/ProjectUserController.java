@@ -50,7 +50,14 @@ public class ProjectUserController {
 	@ResponseBody
 	public List<User> getUsersExcludedProject(HttpServletRequest request) {
 		Integer projectId = RequestUtil.getPositiveInteger(request, "projectId", null);
-		return projectService.getUserNotIn(projectId);
+		return userService.getUsersExcludedProject(projectId);
+	}
+	
+	@RequestMapping(path = {"/getUsersIncludedProject" })
+	@ResponseBody
+	public List<User> getUsersIncludedProject(HttpServletRequest request) {
+		Integer projectId = RequestUtil.getPositiveInteger(request, "projectId", null);
+		return userService.getByProjectId(projectId);
 	}
 	
 	@RequestMapping(path = {"/deleteUserByProjectUserId" })
