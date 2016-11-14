@@ -11,7 +11,7 @@ DROP TABLE IF EXISTS `plan_risk`;
   `content` VARCHAR(255) NOT NULL COMMENT '',
   `probability` VARCHAR(64) NOT NULL COMMENT '',
   `influence` VARCHAR(64) NOT NULL COMMENT '',
-  `triggerOrThreshold` VARCHAR(64) NOT NULL COMMENT '',
+  `triggerOrThreshold` VARCHAR(64)  COMMENT '',
   `submitter` INT NOT NULL COMMENT '',
   `tracer` INT COMMENT '',
   `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP ,
