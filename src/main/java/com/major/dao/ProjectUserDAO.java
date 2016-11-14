@@ -42,7 +42,7 @@ public interface ProjectUserDAO {
 	List<Project> getByUserId(int userId);
 	
 	@Select({ "select ",UserDaoConstants.SELECT_FIELDS_JOIN, " from ", UserDaoConstants.TABLE_NAME +" left join "+ProjectUserDaoConstants.TABLE_NAME, " on user.id=project_user.user_id where project_id!=#{projectId} or project_id is null " })
-	List<User> getUserNotIn(int projectId);
+	List<User> getUsersExcludedProject(int projectId);
 		
 	
 }

@@ -65,4 +65,7 @@ public class UserService {
 
 		return msgMap;
 	}
+	public 	List<User> getUsersExcludedProject(int projectId){
+		return projectUserDAO.getUsersExcludedProject(projectId);
+	}
 }
