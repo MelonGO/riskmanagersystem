@@ -1,0 +1,132 @@
+
+#parse("common/header.html")
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 risk-manager">
+            <h2>项目风险计划管理</h2>
+            <table class="table waiter-list">
+                <thead>
+                <tr>
+                    
+                    <th>计划名称</th>
+                    <th>创建时间</th>
+                    <th>更新时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                #foreach($plan in $planList)
+                <tr>
+                	<td>$!{plan.name}</td>
+                	<td>$!{plan.createTime}</td>
+                	<td>$!{plan.updateTime}</td>
+                	<td>
+                		<button type="button" onclick="location.href='planRiskList?planId=$!{plan.id}'"
+                    		class="btn btn-warning pull-right fa fa-reorder"
+                    		></button>
+                    	<button type="button" onclick='deletePlan($!{plan.id})'
+                    		class="btn btn-warning pull-right fa fa-trash"></button>
+                    	<button type="button" onclick='updatePlan($!{plan.id})'
+                    		class="btn btn-warning pull-right fa fa-wrench"
+                    		data-toggle="modal" data-target="#edit"></button>
+                    	
+                    </td>
+                </tr>
+				#end
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div>
+        #if($user.role == 'manager')
+        	<button class="btn btn-default btn-block fa fa-plus fa-3x" 
+        		data-toggle="modal" data-target="#edit" onclick="addPlan()"></button>
+        #end
+    	</div>
+    	<br>
+    </div>
+</div>
+
+<div class="modal fade" id="edit" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true" onclick="clearAll()">×
+                </button>
+                <h4 class="modal-title" id="myModalLabel_1">
+                  	  编辑计划
+                </h4>
+            </div>
+            <form class="form-horizontal" role="form" >
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="name" class="col-sm-2 control-label">计划名称:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="name"
+                                   placeholder="请输入名称" name="name">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal" onclick="clearAll()">
+                        	取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="edit()">
+                        	确认
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+	var operation;
+	var planId;
+   function deletePlan(id) {
+	   $.post('deletePlanById',{planId : id}, function (r) {
+		   alert(r);
+		   location.replace(location.href);
+	});
+   }
+   
+   function updatePlan(id) {
+	   operation = "update";
+	   planId = id;
+	   $.get('getPlanById', {planId:id}, function (r) {
+			$('#name').val(r.name);
+	});
+   }
+
+   function addPlan() {
+	   operation = "add";
+   }
+   function clearAll() {
+	   $("#name").val('');
+   }
+   
+   function edit() {
+	   var valid = true;
+	   var param = {};
+	   if(operation == 'update') {
+		   param.planId = planId;
+	   }
+	   param.name = $('#name').val();
+	   param.projectId = $!{project.id};
+	   if($.trim(param.name) == '') {
+		   valid = false;
+	   }
+	   if(valid) {
+		   $.post('editPlan', param, function (r) {
+				alert(r);
+				location.replace(location.href);
+			});
+   		}	
+   }
+</script>
+#parse("common/footer.html")
+</body>
+</html>

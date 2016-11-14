@@ -35,8 +35,8 @@ public class RiskController {
 	@Autowired
 	UserService userService;
 	
-	@RequestMapping(value = { "/riskList" })
-	public String riskList(Model model, @RequestParam("projectId") Integer projectId, HttpSession session){
+	@RequestMapping(value = { "/planRiskList" })
+	public String planRiskList(Model model, @RequestParam("planId") Integer planId, HttpSession session){
 		model.addAttribute("user", (User) session.getAttribute("user"));
 		List<Risk> riskList = riskService.getByProjectId(projectId);
 		Project project = projectService.getProject(projectId);
