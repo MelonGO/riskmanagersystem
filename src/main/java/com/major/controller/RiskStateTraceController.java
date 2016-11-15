@@ -31,12 +31,12 @@ public class RiskStateTraceController {
 	
 	@RequestMapping(path = {"/riskStateTraceList" })
 	public String projectList(Model model, 
-			@RequestParam("riskId") Integer riskId, 
+			@RequestParam("planRiskId") Integer planRiskId, 
 			HttpSession session) {
 		
-		List<RiskStateTrace> riskStateTraceList = riskStateTraceService.getByRiskId(riskId);
+		List<RiskStateTrace> riskStateTraceList = riskStateTraceService.getByPlanRiskId(planRiskId);
 		
-		Risk risk = riskService.getRisk(riskId);
+		Risk risk = riskService.getRisk(planRiskId);
 		model.addAttribute("riskStateTraceList", riskStateTraceList);
 		model.addAttribute("user", (User) session.getAttribute("user"));
 		model.addAttribute("risk", risk);
@@ -54,18 +54,18 @@ public class RiskStateTraceController {
 	@ResponseBody
 	public String editProject(HttpServletRequest request) {
 		Integer riskStateTraceId = RequestUtil.getPositiveInteger(request, "riskStateTraceId", null);
-		Integer riskId = RequestUtil.getPositiveInteger(request, "riskId", null);
-		String name = RequestUtil.getString(request, "name", null);
+		Integer planRiskId = RequestUtil.getPositiveInteger(request, "planRiskId", null);
+		Integer state = RequestUtil.getPositiveInteger(request, "state", null);
 		String description = RequestUtil.getString(request, "description", null);
 		
 		if(riskStateTraceId == null) {
-			Map<String, Object> msgMap = riskStateTraceService.addRiskStateTrace(riskId, name, description);
+			Map<String, Object> msgMap = riskStateTraceService.addRiskStateTrace(planRiskId, state, description);
 			return (String) msgMap.get("msg");
 		} else {
 			RiskStateTrace riskStateTrace = new RiskStateTrace();
 			riskStateTrace.setId(riskStateTraceId);
-			riskStateTrace.setriskId(riskId);
-			riskStateTrace.setName(name);
+			riskStateTrace.setPlanRiskId(planRiskId);
+			riskStateTrace.setState(state);
 			riskStateTrace.setDescription(description);
 			Map<String, Object> msgMap = riskStateTraceService.updateRiskStateTrace(riskStateTrace);
 			return (String) msgMap.get("msg");

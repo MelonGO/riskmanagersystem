@@ -22,7 +22,6 @@ import com.major.model.User;
 import com.major.model.ViewObject;
 import com.major.service.PlanRiskService;
 import com.major.service.PlanService;
-import com.major.service.ProjectService;
 import com.major.service.RiskService;
 import com.major.service.UserService;
 
@@ -48,6 +47,7 @@ public class PlanRiskController {
 		List<PlanRisk> planRiskList = planRiskService.getByPlanId(planId);
 		Plan plan = planService.getPlan(planId);
 		List<User> userList = userService.getAll();
+		List<Risk> riskList = riskService.getAllRisks();
 		
 		List<ViewObject> vos = new ArrayList<>();
 		for(PlanRisk r : planRiskList) {
@@ -65,6 +65,8 @@ public class PlanRiskController {
 		}
 		model.addAttribute("riskListVOs", vos);
 		model.addAttribute("plan", plan);
+		model.addAttribute("riskList", riskList);
+		model.addAttribute("project", (Project) session.getAttribute("project"));
 		return "planRiskList";
 	}
 	
@@ -89,28 +91,38 @@ public class PlanRiskController {
 		Integer planRiskId = RequestUtil.getPositiveInteger(request, "planRiskId", null);
 		Integer planId = RequestUtil.getPositiveInteger(request, "planId", null);
 		Integer riskId = RequestUtil.getPositiveInteger(request, "riskId", null);
-		String type = RequestUtil.getString(request, "type", null);
-		String content = RequestUtil.getString(request, "content", null);
 		String probability = RequestUtil.getString(request, "probability", null);
 		String influence = RequestUtil.getString(request, "influence", null);
 		String triggerOrThreshold = RequestUtil.getString(request, "triggerOrThreshold", null);
 		Integer submitter = RequestUtil.getPositiveInteger(request, "submitter", null);
 		Integer tracer = RequestUtil.getPositiveInteger(request, "tracer", null);
 		
+		String type = RequestUtil.getString(request, "type", null);
+		String content = RequestUtil.getString(request, "content", null);
+		
 		PlanRisk planRisk = new PlanRisk();
-				
 		planRisk.setPlanId(planId);
-		planRisk.setRiskId(riskId);
-		planRisk.setContent(content);
 		planRisk.setInfluence(influence);
 		planRisk.setProbability(probability);
 		planRisk.setSubmitter(submitter);
 		planRisk.setTracer(tracer);
 		planRisk.setTriggerOrThreshold(triggerOrThreshold);
-		planRisk.setType(type);
+		
+		Risk risk = null;
+		
+		if(riskId != null){
+			risk = riskService.getRisk(riskId);
+			planRisk.setRiskId(riskId);
+			planRisk.setType(risk.getType());
+			planRisk.setContent(risk.getContent());
+		}else{
+			planRisk.setType(type);
+			planRisk.setContent(content);
+		}
+		
 		if(planRiskId == null) { 
 			if(riskId == null) { //add a new risk when adding a planRisk
-				Risk risk = new Risk();
+				risk = new Risk();
 				risk.setType(type);
 				risk.setContent(content);
 				riskService.addRisk(risk);
