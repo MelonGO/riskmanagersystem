@@ -65,7 +65,7 @@ public class PlanRiskController {
 		}
 		model.addAttribute("riskListVOs", vos);
 		model.addAttribute("plan", plan);
-		return "riskList";
+		return "planRiskList";
 	}
 	
 	@RequestMapping(value = { "/getPlanRiskById" })
