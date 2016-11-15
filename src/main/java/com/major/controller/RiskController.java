@@ -14,10 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.major.model.Plan;
+import com.major.model.PlanRisk;
 import com.major.model.Project;
 import com.major.model.Risk;
 import com.major.model.User;
 import com.major.model.ViewObject;
+import com.major.service.PlanRiskService;
+import com.major.service.PlanService;
 import com.major.service.ProjectService;
 import com.major.service.RiskService;
 import com.major.service.UserService;
@@ -30,7 +34,10 @@ public class RiskController {
 	RiskService riskService;
 	
 	@Autowired
-	ProjectService projectService;
+	PlanRiskService planRiskService;
+	
+	@Autowired
+	PlanService planService;
 	
 	@Autowired
 	UserService userService;
@@ -38,12 +45,12 @@ public class RiskController {
 	@RequestMapping(value = { "/planRiskList" })
 	public String planRiskList(Model model, @RequestParam("planId") Integer planId, HttpSession session){
 		model.addAttribute("user", (User) session.getAttribute("user"));
-		List<Risk> riskList = riskService.getByProjectId(projectId);
-		Project project = projectService.getProject(projectId);
+		List<PlanRisk> planRiskList = planRiskService.getByPlanId(planId);
+		Plan plan = planService.getPlan(planId);
 		List<User> userList = userService.getAll();
 		
 		List<ViewObject> vos = new ArrayList<>();
-		for(Risk r : riskList) {
+		for(PlanRisk r : planRiskList) {
 			ViewObject vo = new ViewObject();
 			vo.set("risk", r);
 			for(User u : userList) {
@@ -57,7 +64,7 @@ public class RiskController {
 			vos.add(vo);
 		}
 		model.addAttribute("riskListVOs", vos);
-		model.addAttribute("project", project);
+		model.addAttribute("plan", plan);
 		return "riskList";
 	}
 	
