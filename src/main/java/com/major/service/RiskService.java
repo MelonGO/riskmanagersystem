@@ -20,11 +20,8 @@ public class RiskService {
 		return riskDao.selectById(id);
 	}
 
-	public Map<String, Object> addRisk(String type,String content) {
+	public Map<String, Object> addRisk(Risk riskNew ) {
 		Map<String, Object> msgMap = new HashMap<>();
-		Risk riskNew =new Risk();
-		riskNew.setContent(content);
-		riskNew.setType(type);
 		riskDao.addRisk(riskNew);
 		msgMap.put("msg", "添加成功!");
 		return msgMap;
