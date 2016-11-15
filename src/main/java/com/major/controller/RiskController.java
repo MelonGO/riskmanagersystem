@@ -68,27 +68,27 @@ public class RiskController {
 		return "riskList";
 	}
 	
-	@RequestMapping(value = { "/getByRiskId" })
+	@RequestMapping(value = { "/getPlanRiskById" })
 	@ResponseBody
-	public Risk getByRiskId(@RequestParam("riskId") Integer riskId){
-		return riskService.getRisk(riskId);
+	public PlanRisk getPlanRiskById(@RequestParam("planRiskId") Integer planRiskId){
+		return planRiskService.getPlanRisk(planRiskId);
 	}
 	
-	@RequestMapping(value = { "/deleteRiskById" })
+	@RequestMapping(value = { "/deletePlanRiskById" })
 	@ResponseBody
-	public String deleteRisk(@RequestParam("riskId") String riskId){
-		riskService.deleteRisk(Integer.parseInt(riskId));
-		
+	public String deletePlanRiskById(@RequestParam("planRiskId") Integer planRiskId){
+		planRiskService.deletePlanRisk(planRiskId);
 		return "删除成功！";
 	}
 	
-	@RequestMapping(value = { "/editRisk" })
+	@RequestMapping(value = { "/editPlanRisk" })
 	@ResponseBody
-	public String addRisk(
+	public String editPlanRisk(
 			HttpServletRequest request
 			){
+		Integer planRiskId = RequestUtil.getPositiveInteger(request, "planRiskId", null);
+		Integer planId = RequestUtil.getPositiveInteger(request, "planId", null);
 		Integer riskId = RequestUtil.getPositiveInteger(request, "riskId", null);
-		Integer projectId = RequestUtil.getPositiveInteger(request, "projectId", null);
 		String type = RequestUtil.getString(request, "type", null);
 		String content = RequestUtil.getString(request, "content", null);
 		String probability = RequestUtil.getString(request, "probability", null);
@@ -97,23 +97,31 @@ public class RiskController {
 		Integer submitter = RequestUtil.getPositiveInteger(request, "submitter", null);
 		Integer tracer = RequestUtil.getPositiveInteger(request, "tracer", null);
 		
-		Risk risk = new Risk();
-		
-		risk.setContent(content);
-		risk.setInfluence(influence);
-		risk.setProbability(probability);
-		risk.setProjectId(projectId);
-		risk.setSubmitter(submitter);
-		risk.setTracer(tracer);
-		risk.setTriggerOrThreshold(triggerOrThreshold);
-		risk.setType(type);
-		if(riskId == null) {
+		PlanRisk planRisk = new PlanRisk();
+				
+		planRisk.setPlanId(planId);
+		planRisk.setRiskId(riskId);
+		planRisk.setContent(content);
+		planRisk.setInfluence(influence);
+		planRisk.setProbability(probability);
+		planRisk.setSubmitter(submitter);
+		planRisk.setTracer(tracer);
+		planRisk.setTriggerOrThreshold(triggerOrThreshold);
+		planRisk.setType(type);
+		if(planRiskId == null) { 
+			if(riskId == null) { //add a new risk when adding a planRisk
+				Risk risk = new Risk();
+				risk.setType(type);
+				risk.setContent(content);
+				riskService.addRisk(risk);
+				planRisk.setRiskId(risk.getId());
+			}
 			
-			Map<String, Object> msg = riskService.addRisk(risk);
+			Map<String, Object> msg = planRiskService.addPlanRisk(planRisk);
 			return (String) msg.get("msg");
 		} else {
-			risk.setId(riskId);
-			Map<String, Object> msg = riskService.updateRisk(risk);
+			planRisk.setId(planRiskId);
+			Map<String, Object> msg = planRiskService.updatePlanRisk(planRisk);
 			return (String) msg.get("msg");
 		}
 		
