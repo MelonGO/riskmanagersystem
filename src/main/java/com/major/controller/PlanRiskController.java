@@ -113,7 +113,7 @@ public class PlanRiskController {
 				Risk risk = new Risk();
 				risk.setType(type);
 				risk.setContent(content);
-				//riskService.addRisk(risk);
+				riskService.addRisk(risk);
 				planRisk.setRiskId(risk.getId());
 			}
 			
