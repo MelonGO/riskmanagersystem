@@ -1,11 +1,13 @@
 package com.major.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +20,7 @@ import com.major.service.PlanService;
 import com.major.service.ProjectService;
 
 import tools.RequestUtil;
-
+@Controller
 public class PlanController {
 	@Autowired
 	PlanService planService;
@@ -31,10 +33,11 @@ public class PlanController {
 		
 		User user = (User) session.getAttribute("user");
 		Project project = projectService.getProject(projectId);
-		
+		List<Plan> planList = planService.getByProjectId(projectId);
 		
 		model.addAttribute("user", user);
-		model.addAttribute("project", project);
+		session.setAttribute("project", project);
+		model.addAttribute("planList", planList);
 		return "planList";
 	}
 	
