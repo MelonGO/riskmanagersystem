@@ -29,7 +29,7 @@ import com.major.service.UserService;
 import tools.RequestUtil;
 
 @Controller
-public class RiskController {
+public class PlanRiskController {
 	@Autowired
 	RiskService riskService;
 	
@@ -113,7 +113,7 @@ public class RiskController {
 				Risk risk = new Risk();
 				risk.setType(type);
 				risk.setContent(content);
-				riskService.addRisk(risk);
+				//riskService.addRisk(risk);
 				planRisk.setRiskId(risk.getId());
 			}
 			
