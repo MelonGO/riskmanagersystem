@@ -13,6 +13,7 @@
                 <tr>
                     <th>风险类型</th>
                     <th>风险内容</th>
+                    
                 </tr>
                 </thead>
                 #foreach($risk in $riskList)
@@ -22,9 +23,9 @@
                 	<td>$!{risk.content}</td>
                     
                     <td>
-                    	<button type="button" onclick='deleteRisk($!{riskVO.risk.id})'
+                    	<button type="button" onclick='deleteRisk($!{risk.id})'
                     		class="btn btn-warning pull-right fa fa-trash"></button>
-                    	<button type="button" onclick='updateRisk($!{riskVO.risk.id})'
+                    	<button type="button" onclick='updateRisk($!{risk.id})'
                     		class="btn btn-warning pull-right fa fa-wrench"
                     		data-toggle="modal" data-target="#edit"></button>
                     </td>
@@ -35,8 +36,8 @@
             </table>
         </div>
         <div>
-        <button onclick="location.href='importRisk?planId=$!{plan.id}'" 
-        	class="btn btn-default btn-block fa fa-plus fa-3x"></button>
+        <button class="btn btn-default btn-block fa fa-plus fa-3x"
+        	data-toggle="modal" data-target="#edit"></button>
     	</div>
     	<br>
     </div>
@@ -56,54 +57,19 @@
             </div>
             <form class="form-horizontal" role="form" >
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="riskId" class="col-sm-2 control-label">风险类型&内容:</label>
-                       <div class="col-sm-10">
-                    		<select id="riskId" class="form-control" name="riskId">
-                    			#foreach($risk in $riskList)
-                    			<option value='$!{risk.id}'>类型:$!{risk.type} , 内容:$!{risk.content}</option>
-                    			#end
-                    		</select>
-                    	</div>
-                    </div>
-                    <div class="form-group">
-                        <label for="triggerOrThreshold" class="col-sm-2 control-label">触发器/阈值:</label>
-                        <div class="col-sm-9">
-                        	<input type="text" class="form-control" id="triggerOrThreshold"
-                        		placeholder="请输入触发器/阈值" name="triggerOrThreshold">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="submitter" class="col-sm-2 control-label">提交者:</label>
+                	<div class="form-group">
+                        <label for="type" class="col-sm-2 control-label">风险类型:</label>
                         <div class="col-sm-10">
-                        	<select id="submitter" name="submitter" class="form-control"></select>
+                            <input type="text" class="form-control" id="type"
+                                   placeholder="请输入名称" name="type">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="tracer" class="col-sm-2 control-label">跟踪者:</label>
+                        <label for="content" class="col-sm-2 control-label">风险内容:</label>
                         <div class="col-sm-10">
-                            <select id="tracer" name="tracer" class="form-control"></select>
+                            <textarea class="form-control" id="content"
+                            	style="height:80px" placeholder="请输入内容" name="content"></textarea>
                         </div>
-                    </div>
-                    <div class="form-group">
-                    	<label for="probability" class="col-sm-2 control-label">可能性:</label>
-                    	<div class="col-sm-10">
-                    		<select id="probability" class="form-control" name="probability">
-                    			<option value="high">高</option>
-                    			<option value="mid">中</option>
-                    			<option value="low">低</option>
-                    		</select>
-                    	</div>
-                    </div>
-                    <div class="form-group">
-                    	<label for="influence" class="col-sm-2 control-label">影响程度:</label>
-                    		<div class="col-sm-10">
-                    			<select id="influence" class="form-control" name="influence">
-                    				<option value="high">高</option>
-                    				<option value="mid">中</option>
-                    				<option value="low">低</option>
-                    			</select>
-                    		</div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -122,19 +88,16 @@
 
 <script>
 var operation;
-var planRiskId;
-$(document).ready(function () {
-	loadUser();
-});
+var riskId;
+
 function clear_all() {
 	$("#type").val('');
     $("#content").val('');
-    $("#triggerOrThreshold").val('');
     
 }
 
 function deleteRisk(id){
-	$.post('deletePlanRiskById',{planRiskId : id}, function (r) {
+	$.post('deleteRiskById',{riskId : id}, function (r) {
 		   alert(r);
 		   location.replace(location.href);
 	});
@@ -142,32 +105,11 @@ function deleteRisk(id){
 }
 
 function updateRisk(id) {
-	planRiskId = id;
+	riskId = id;
 	   operation = "update";
-	   $.get('getPlanRiskById', {planRiskId:id}, function (r) {
+	   $.get('getRiskById', {riskId : id}, function (r) {
 			$('#type').val(r.type);
 	    	$("#content").val(r.content);
-	    	$("#triggerOrThreshold").val(r.triggerOrThreshold);
-	    	$("#submitter").val(r.submitter);
-	    	$("#tracer").val(r.tracer);
-	    	$("#probability").val(r.probability);
-	    	$("#influence").val(r.influence);
-	});
-}
-
-function loadUser() {
-	$('#submitter').empty();
-	$('#tracer').empty();
-	var projectId = $!{project.id};
-	
-	$.get('getUsersIncludedProject',{projectId : projectId}, function(r){
-		if(r) {
-			$.each(r, function(index, item) {
-				$('#submitter').append($('<option>', {value : item.id}).text(item.name));
-				$('#tracer').append($('<option>', {value : item.id}).text(item.name));
-				
-			});
-		}
 	});
 }
 
@@ -175,37 +117,25 @@ function edit() {
     var msg = "";
     var param = {};
     var valid = true;
-    if ($("#triggerOrThreshold").val().length == 0) {
-        msg = "请输入触发器/阈值!";
+    if ($("#type").val().length == 0) {
+        msg = "请输入风险类型!";
         alert(msg);
         valid = false;
     }
-    if ($("#submitter").val().length == 0) {
-        msg = "请输入提交者!";
-        alert(msg);
-        valid = false;
-    }
-    if ($("#tracer").val().length == 0) {
-        msg = "请输入跟踪者!";
+    if ($("#content").val().length == 0) {
+        msg = "请输入风险内容!";
         alert(msg);
         valid = false;
     }
     
     if(valid) {
     	if(operation == 'update') {
-    		param.planRiskId = planRiskId;
+    		param.riskId = riskId;
     	}
-    	param.planId = $!{plan.id};
-    	param.riskId = $("#riskId").val();
     	param.type = $("#type").val();
     	param.content = $("#content").val();
-    	param.triggerOrThreshold = $("#triggerOrThreshold").val();
-    	param.probability = $("#probability").val();
-    	param.influence = $("#influence").val();
-    	param.submitter = $("#submitter").val();
-    	param.tracer = $("#tracer").val();
     	
-	   $.post('editPlanRisk', param, function (r) {
+	   $.post('editRisk', param, function (r) {
 			alert(r);
 			location.replace(location.href);
 		});

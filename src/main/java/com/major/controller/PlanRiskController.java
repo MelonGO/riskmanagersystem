@@ -85,9 +85,7 @@ public class PlanRiskController {
 	
 	@RequestMapping(value = { "/editPlanRisk" })
 	@ResponseBody
-	public String editPlanRisk(
-			HttpServletRequest request
-			){
+	public String editPlanRisk(HttpServletRequest request){
 		Integer planRiskId = RequestUtil.getPositiveInteger(request, "planRiskId", null);
 		Integer planId = RequestUtil.getPositiveInteger(request, "planId", null);
 		Integer riskId = RequestUtil.getPositiveInteger(request, "riskId", null);

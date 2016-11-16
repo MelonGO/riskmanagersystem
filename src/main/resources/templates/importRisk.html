@@ -1,5 +1,5 @@
 #parse("common/header.html")
-
+  
 <body>
 
 <div class="container">
@@ -7,7 +7,57 @@
         <div class="col-md-12 risk-manager">
         	<h2 >风险条目导入（$!{project.name}项目）</h2>
         </div>
+        <div class="col-md-8">
+        	<form class="form-inline" role="form">
+       			<label>From</label>
+    			<div class="form-group">
+    				<input size="16" type="text" readonly class="form_datetime"
+    					placeholder="请输入开始时间" id="startTime">
+    			</div>
+    			<label>To</label>
+    				<div class="form-group">
+    				<input size="16" type="text" readonly class="form_datetime"
+    					placeholder="请输入结束时间" id="endTime">
+    			</div>
+    			<script type="text/javascript">
+    				$(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
+				</script>   
+    			<button type="button" class="btn btn-default"
+    				onclick="checkRisk()">查询</button>
+    		</form>
+        </div>
+        <div class="col-md-4">
+        	<button type="submit" class="btn btn-default"
+    				onclick="">被识别最多</button>
+    		<button type="submit" class="btn btn-default"
+    				onclick="">演变成问题最多</button>
+        </div>
+        
+        <div class="col-md-12">
+    		<table class="table waiter-list">
+                <thead>
+                <tr>
+                    <th>风险类型</th>
+                    <th>风险内容</th>
+                </tr>
+                </thead>
+                <tbody>
+                #foreach($risk in $riskList)
+                <tr>
+                	
+                	<td>$!{risk.type}</td>
+                	<td>$!{risk.content}</td>
+                    <td>
+                    	<button type="button" onclick=''
+                    		class="btn btn-warning pull-right">导入</button>
+                    </td>
+                </tr>
+                #end
+				</tbody>
+            </table>
+    	</div>
     </div>
+    
     <div class="row">
         <div class="col-md-12">
         	<button class="btn btn-default btn-block fa fa-plus fa-3x" 
@@ -170,6 +220,36 @@ function edit() {
 			location.replace(location.href);
 		});
 	}	
+}
+
+function checkRisk() {
+	var msg = "";
+    var param = {};
+    var valid = true;
+    if ($("#startTime").val().length == 0) {
+        msg = "请输入开始时间!";
+        alert(msg);
+        valid = false;
+    }
+    else if ($("#endTime").val().length == 0) {
+        msg = "请输入结束时间!";
+        alert(msg);
+        valid = false;
+    }
+    
+    if(valid) {
+    	param.start = $("#startTime").val();
+    	param.end = $("#endTime").val();
+    	
+    	 $.post('checkRisk', param, function (r) {
+ 			location.replace(location.href);
+ 		});
+    }
+    
+}
+
+function importRisk(riskId){
+	
 }
 
 </script>

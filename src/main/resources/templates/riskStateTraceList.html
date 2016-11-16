@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-12 risk-manager">
             <h2>风险状态跟踪</h2>
-            <p>风险内容：$!{risk.content}</p>
+            <p>风险内容：$!{planRisk.content}</p>
             <table class="table waiter-list">
                 <thead>
                 <tr>
@@ -18,7 +18,7 @@
                 </thead>
                 #foreach($riskStateTrace in $riskStateTraceList)
                 <tr>
-                	<td>$!{riskStateTrace.name}</td>
+                	<td>$!{riskStateTrace.state}</td>
                 	<td>$!{riskStateTrace.description}</td>
                 	<td>$!{riskStateTrace.createTime}</td>
                 	<td>$!{riskStateTrace.updateTime}</td>
@@ -60,11 +60,13 @@
             <form class="form-horizontal" role="form" >
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="name" class="col-sm-2 control-label">状态名:</label>
+                        <label for="state" class="col-sm-2 control-label">状态:</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="name"
-                                   placeholder="请输入名称" name="name">
-                        </div>
+                    		<select id="state" class="form-control" name="state">
+                    			<option value="0">风险</option>
+                    			<option value="1">问题</option>
+                    		</select>
+                    	</div>
                     </div>
                     <div class="form-group">
                         <label for="description" class="col-sm-2 control-label">描述:</label>
@@ -103,7 +105,7 @@
 	   operation = "update";
 	   riskStateTraceId = id;
 	   $.get('getRiskStateTraceById', {riskStateTraceId:id}, function (r) {
-			$('#name').val(r.name);
+			$('#state').val(r.state);
 			$('#description').val(r.description);
 	});
    }
@@ -112,7 +114,7 @@
 	   operation = "add";
    }
    function clearAll() {
-	   $("#name").val('');
+	   $("#state").val('');
 	   $('#description').val('');
    }
    
@@ -122,11 +124,11 @@
 	   if(operation == 'update') {
 		   param.riskStateTraceId = riskStateTraceId;
 	   }
-	   param.riskId = $!{risk.id};
-	   param.name = $('#name').val();
+	   param.planRiskId = $!{planRisk.id};
+	   param.state = $('#state').val();
 	   param.description = $('#description').val();
 	   
-	   if($.trim(param.name) == '') {
+	   if($.trim(param.state) == '') {
 		   valid = false;
 	   }
 	   if(valid) {
