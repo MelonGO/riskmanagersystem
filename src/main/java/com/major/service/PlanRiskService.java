@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.major.dao.PlanRiskDAO;
 import com.major.model.PlanRisk;
+import com.major.model.RiskNum;
 @Service
 public class PlanRiskService {
 		@Autowired
@@ -40,6 +41,12 @@ public class PlanRiskService {
 			planRiskDAO.updatePlanRisk(planRisk);
 			msgMap.put("msg", "修改成功!");
 			return msgMap;
+		}
+		public List<RiskNum> getMostRecognized(String startTime,String endTime){
+			return planRiskDAO.getMostRecognized( startTime, endTime);
+		}
+		public List<RiskNum> getMostProblems(String startTime,String endTime){
+			return planRiskDAO.getMostProblems( startTime, endTime);
 		}
 		
 }

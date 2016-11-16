@@ -11,6 +11,7 @@ public class PlanRisk {
 	private String triggerOrThreshold;
 	private Integer submitter;
 	private Integer tracer;
+	private int  state;
 	private String createTime;
 	private String updateTime;
 	public int getId() {
@@ -72,6 +73,12 @@ public class PlanRisk {
 	}
 	public void setTracer(Integer tracer) {
 		this.tracer = tracer;
+	}
+	public int getState() {
+		return state;
+	}
+	public void setState(int state) {
+		this.state = state;
 	}
 	public String getCreateTime() {
 		return createTime;

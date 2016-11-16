@@ -12,6 +12,7 @@ import org.apache.ibatis.mapping.StatementType;
 
 import com.major.dao.constants.PlanRiskDaoConstants;
 import com.major.model.PlanRisk;
+import com.major.model.RiskNum;
 
 @Mapper
 public interface PlanRiskDAO {
@@ -36,4 +37,10 @@ public interface PlanRiskDAO {
 	@Select({ "select ", PlanRiskDaoConstants.SELECT_FIELDS, " from ", PlanRiskDaoConstants.TABLE_NAME,
 			" where plan_id=#{planId}" })
 	List<PlanRisk> getByPlanId(int planId);
+	
+	@Select("SELECT riskId,num,type,content FROM (SELECT risk_id as riskId,count(*) as num from plan_risk where create_time>=#{0} and create_time<=#{1} group by risk_id) as a  ,risk WHERE a.riskId=risk.id ORDER BY num desc;")
+	List<RiskNum> getMostRecognized(String startTime,String endTime);
+	
+	@Select("SELECT riskId,num,type,content FROM (SELECT risk_id as riskId,count(*) as num from plan_risk where state=1 and create_time>=#{0} and create_time<=#{1} group by risk_id) as a  ,risk WHERE a.riskId=risk.id ORDER BY num desc;")
+	List<RiskNum> getMostProblems(String startTime,String endTime);
 }

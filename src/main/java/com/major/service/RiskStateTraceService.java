@@ -7,14 +7,17 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.major.dao.PlanRiskDAO;
 import com.major.dao.RiskStateTraceDAO;
+import com.major.model.PlanRisk;
 import com.major.model.RiskStateTrace;
 
 @Service
 public class RiskStateTraceService {
 	@Autowired
 	private RiskStateTraceDAO riskStateTraceDao;
-
+	@Autowired
+	private PlanRiskDAO  planRiskDao;
 	public RiskStateTrace getRiskStateTrace(int id) {
 		return riskStateTraceDao.selectById(id);
 	}
@@ -27,7 +30,9 @@ public class RiskStateTraceService {
 		riskStateTraceNew.setPlanRiskId(planRiskId);
 		riskStateTraceNew.setState(state);
 		riskStateTraceNew.setDescription(description);
-	
+		PlanRisk pr=planRiskDao.selectById(planRiskId);
+		pr.setState(state);
+		planRiskDao.updatePlanRisk(pr);
 	
 		riskStateTraceDao.addRiskStateTrace(riskStateTraceNew);
 		msgMap.put("msg", "添加成功!");
