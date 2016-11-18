@@ -24,8 +24,6 @@
                 	<td>$!{riskStateTrace.updateTime}</td>
                 	<td>
                 		
-                    	<button type="button" onclick='deleteStateTrace($!{riskStateTrace.id})'
-                    		class="btn btn-warning pull-right fa fa-trash"></button>
                     	<button type="button" onclick='updateStateTrace($!{riskStateTrace.id})'
                     		class="btn btn-warning pull-right fa fa-wrench"
                     		data-toggle="modal" data-target="#edit"></button>
@@ -38,8 +36,8 @@
             </table>
         </div>
         <div>
-        <button class="btn btn-default btn-block fa fa-plus fa-3x" 
-        		data-toggle="modal" data-target="#edit" onclick="addStateTrace()"></button>
+        <button class="btn btn-default btn-block fa fa-plus fa-3x" onclick="addStateTrace()"
+        		data-toggle="modal" data-target="#edit"></button>
     	</div>
     	<br>
     </div>
@@ -62,7 +60,7 @@
                     <div class="form-group">
                         <label for="state" class="col-sm-2 control-label">状态:</label>
                         <div class="col-sm-10">
-                    		<select id="state" class="form-control" name="state">
+                    		<select id="state" class="form-control" disabled="disabled" name="state">
                     			<option value="0">风险</option>
                     			<option value="1">问题</option>
                     		</select>
@@ -104,6 +102,7 @@
    function updateStateTrace(id) {
 	   operation = "update";
 	   riskStateTraceId = id;
+	   $("#state").attr("disabled", true);
 	   $.get('getRiskStateTraceById', {riskStateTraceId:id}, function (r) {
 			$('#state').val(r.state);
 			$('#description').val(r.description);
@@ -112,6 +111,7 @@
 
    function addStateTrace() {
 	   operation = "add";
+	   $("#state").attr("disabled", false);
    }
    function clearAll() {
 	   $("#state").val('');

@@ -15,22 +15,18 @@
     					placeholder="请输入开始时间" id="startTime">
     			</div>
     			<label>To</label>
-    				<div class="form-group">
+    			<div class="form-group">
     				<input size="16" type="text" readonly class="form_datetime"
     					placeholder="请输入结束时间" id="endTime">
     			</div>
     			<script type="text/javascript">
     				$(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
-				</script>   
-    			<button type="button" class="btn btn-default"
-    				onclick="checkRisk()">查询</button>
+				</script>
+				<button type="button" onclick="searchRisk('rec')" 
+    				class="btn btn-default">被识别最多</button>
+    			<button type="button" onclick="searchRisk('pro')" 
+    				class="btn btn-default">演变成问题最多</button>
     		</form>
-        </div>
-        <div class="col-md-4">
-        	<button type="submit" class="btn btn-default"
-    				onclick="">被识别最多</button>
-    		<button type="submit" class="btn btn-default"
-    				onclick="">演变成问题最多</button>
         </div>
         
         <div class="col-md-12">
@@ -39,21 +35,12 @@
                 <tr>
                     <th>风险类型</th>
                     <th>风险内容</th>
+                    <th>出现次数</th>
+                    <th>操作</th>
                 </tr>
                 </thead>
-                <tbody>
-                #foreach($risk in $riskList)
-                <tr>
-                	
-                	<td>$!{risk.type}</td>
-                	<td>$!{risk.content}</td>
-                    <td>
-                    	<button type="button" onclick=''
-                    		class="btn btn-warning pull-right">导入</button>
-                    </td>
-                </tr>
-                #end
-				</tbody>
+                <tbody id="riskTable">
+                </tbody>
             </table>
     	</div>
     </div>
@@ -175,6 +162,100 @@ function loadUser() {
 	});
 }
 
+function searchRisk(filter){
+    var param = {};
+    var msg = "";
+    var valid = true;
+    var riskId = null;
+    if ($("#startTime").val().length == 0) {
+        msg = "请输入开始时间!";
+        alert(msg);
+        valid = false;
+    }
+    else if ($("#endTime").val().length == 0) {
+        msg = "请输入结束时间!";
+        alert(msg);
+        valid = false;
+    }
+    
+    if(valid){
+    	$("#riskTable tr").remove();
+    	$("#riskTable td").remove();
+    	
+    	param.startTime = $("#startTime").val();
+    	param.endTime = $("#endTime").val();
+    	
+    	if(filter == 'rec'){
+    		$.post('/searchRisk/rec', param, function(r){
+        		if(r) {
+        			$.each(r, function(index, item) {
+						$('#riskTable').append($('<tr">'));
+        				
+        				$('#riskTable').append($('<td>').text(item.type));
+        				$('#riskTable').append($('</td>'));
+        				
+        				$('#riskTable').append($('<td>').text(item.content));
+        				$('#riskTable').append($('</td>'));
+        				
+        				$('#riskTable').append($('<td>').text(item.num));
+        				$('#riskTable').append($('</td>'));
+        				
+        				$('#riskTable').append($('<td id="import">'));
+        				
+        				$('#import').append('<button id="btn" type="button" class="btn btn-warning pull-right">导入</button>');
+        				riskId = item.riskId;
+        				importExistRisk("btn", riskId)
+        				$('#riskTable').append($('</td>'));
+        				
+        				$('#riskTable').append($('</tr>'));
+        			});
+        		}
+        	});
+    		
+    	}else{
+    		$.post('/searchRisk/pro', param, function(r){
+        		if(r) {
+        			$.each(r, function(index, item) {
+						$('#riskTable').append($('<tr">'));
+        				
+        				$('#riskTable').append($('<td>').text(item.type));
+        				$('#riskTable').append($('</td>'));
+        				
+        				$('#riskTable').append($('<td>').text(item.content));
+        				$('#riskTable').append($('</td>'));
+        				
+        				$('#riskTable').append($('<td>').text(item.num));
+        				$('#riskTable').append($('</td>'));
+        				
+        				$('#riskTable').append($('<td id="import">'));
+        				
+        				$('#import').append('<button id="btn" type="button" class="btn btn-warning pull-right">导入</button>');
+        				riskId = item.riskId;
+        				importExistRisk("btn", riskId)
+        				$('#riskTable').append($('</td>'));
+        				
+        				$('#riskTable').append($('</tr>'));
+        			});
+        		}
+        	});
+    		
+    	}
+    }
+}
+
+function importExistRisk(id, riskId){
+	var param = {};
+	param.planId = $!{plan.id};
+	param.riskId = riskId;
+	
+	$("#"+id).bind("click",function(){
+		$.post('importExistRisk', param, function (r) {
+			alert(r);
+			location.replace(location.href);
+		});
+    });
+}
+
 function edit() {
     var msg = "";
     var param = {};
@@ -222,41 +303,9 @@ function edit() {
 	}	
 }
 
-function checkRisk() {
-	var msg = "";
-    var param = {};
-    var valid = true;
-    if ($("#startTime").val().length == 0) {
-        msg = "请输入开始时间!";
-        alert(msg);
-        valid = false;
-    }
-    else if ($("#endTime").val().length == 0) {
-        msg = "请输入结束时间!";
-        alert(msg);
-        valid = false;
-    }
-    
-    if(valid) {
-    	param.start = $("#startTime").val();
-    	param.end = $("#endTime").val();
-    	
-    	 $.post('checkRisk', param, function (r) {
- 			location.replace(location.href);
- 		});
-    }
-    
-}
-
-function importRisk(riskId){
-	
-}
-
 </script>
 
 #parse("common/footer.html")
 
 </body>
 </html>
-
-
