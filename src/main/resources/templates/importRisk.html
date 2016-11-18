@@ -43,6 +43,12 @@
                 </tbody>
             </table>
     	</div>
+    	<div class="col-md-4">
+    		<canvas id="myChartPie" width="300" height="300"></canvas>
+    	</div>
+    	<div class="col-md-4">
+    		<canvas id="myChartBar" width="300" height="300"></canvas>
+    	</div>
     </div>
     
     <div class="row">
@@ -51,6 +57,7 @@
 				data-toggle="modal" data-target="#edit"></button>
         </div>
     </div>
+    <br>
 </div>
 
 <div class="modal fade" id="edit" tabindex="-1" role="dialog"
@@ -167,6 +174,8 @@ function searchRisk(filter){
     var msg = "";
     var valid = true;
     var riskId = null;
+    var foundRisks = new Array();
+    
     if ($("#startTime").val().length == 0) {
         msg = "请输入开始时间!";
         alert(msg);
@@ -189,7 +198,7 @@ function searchRisk(filter){
     		$.post('/searchRisk/rec', param, function(r){
         		if(r) {
         			$.each(r, function(index, item) {
-						$('#riskTable').append($('<tr">'));
+						$('#riskTable').append($('<tr>'));
         				
         				$('#riskTable').append($('<td>').text(item.type));
         				$('#riskTable').append($('</td>'));
@@ -200,15 +209,22 @@ function searchRisk(filter){
         				$('#riskTable').append($('<td>').text(item.num));
         				$('#riskTable').append($('</td>'));
         				
-        				$('#riskTable').append($('<td id="import">'));
-        				
-        				$('#import').append('<button id="btn" type="button" class="btn btn-warning pull-right">导入</button>');
         				riskId = item.riskId;
-        				importExistRisk("btn", riskId)
+        				var tmp = '<td><button id="btn' + riskId + 
+    					'" type="button" class="btn btn-warning pull-right">导入</button>';
+        				$('#riskTable').append($(tmp));
+        				importExistRisk("btn" + riskId, riskId);
         				$('#riskTable').append($('</td>'));
         				
         				$('#riskTable').append($('</tr>'));
+        				
+        				risk = new Object();
+        				risk.type = item.type;
+        				risk.content = item.content;
+        				risk.num = item.num;
+        				foundRisks.push(risk);
         			});
+        			printChart(foundRisks);
         		}
         	});
     		
@@ -216,7 +232,7 @@ function searchRisk(filter){
     		$.post('/searchRisk/pro', param, function(r){
         		if(r) {
         			$.each(r, function(index, item) {
-						$('#riskTable').append($('<tr">'));
+						$('#riskTable').append($('<tr>'));
         				
         				$('#riskTable').append($('<td>').text(item.type));
         				$('#riskTable').append($('</td>'));
@@ -227,21 +243,101 @@ function searchRisk(filter){
         				$('#riskTable').append($('<td>').text(item.num));
         				$('#riskTable').append($('</td>'));
         				
-        				$('#riskTable').append($('<td id="import">'));
-        				
-        				$('#import').append('<button id="btn" type="button" class="btn btn-warning pull-right">导入</button>');
         				riskId = item.riskId;
-        				importExistRisk("btn", riskId)
+        				var tmp = '<td><button id="btn' + riskId + 
+        					'" type="button" class="btn btn-warning pull-right">导入</button>'; 
+        				$('#riskTable').append($(tmp));
+        				importExistRisk("btn" + riskId, riskId);
         				$('#riskTable').append($('</td>'));
         				
         				$('#riskTable').append($('</tr>'));
+        				
+        				risk = new Object();
+        				risk.type = item.type;
+        				risk.content = item.content;
+        				risk.num = item.num;
+        				foundRisks.push(risk);
         			});
+        			printChart(foundRisks);
         		}
         	});
     		
     	}
     }
 }
+
+function printChart(foundRisks){
+	var ctx_1 = document.getElementById("myChartPie").getContext("2d");
+	var ctx_2 = document.getElementById("myChartBar").getContext("2d");
+	
+	var data_1 = {
+		    labels: [
+		    ],
+		    datasets: [
+		        {
+		            data: [],
+		            backgroundColor: [
+		            ],
+		            hoverBackgroundColor: [
+		            ]
+		        }]
+		};
+	for (var i = 0;i < foundRisks.length; i++){
+		var type = foundRisks[i].type;
+		var content = foundRisks[i].content;
+		var num = foundRisks[i].num;
+		data_1.labels.push(type+"/"+content);
+		data_1.datasets[0].data.push(num);
+		data_1.datasets[0].backgroundColor.push(getRandomColor());
+		data_1.datasets[0].hoverBackgroundColor.push("#12FDC4");
+	}
+	
+	
+	var data_2 = {
+		    labels: [],
+		    datasets: [
+		        {
+		        	label: "Bar Chart",
+		        	backgroundColor: [
+		            ],
+		            borderColor: [
+		            ],
+		            borderWidth: 1,
+		            data: []
+		        }
+		    ]
+		};
+	for (var i = 0;i < foundRisks.length; i++){
+		var type = foundRisks[i].type;
+		var content = foundRisks[i].content;
+		var num = foundRisks[i].num;
+		data_2.labels.push(type+"/"+content);
+		data_2.datasets[0].data.push(num);
+		data_2.datasets[0].backgroundColor.push(getRandomColor());
+		data_2.datasets[0].borderColor.push(getRandomColor());
+		
+	}
+	
+	var myPieChart = new Chart(ctx_1,{
+	    type: 'pie',
+	    data: data_1,
+	    animation:{
+	        animateScale:true
+	    }
+	});
+	
+	var myBarChart = new Chart(ctx_2,{
+	    type: 'bar',
+	    data: data_2,
+	    animation:{
+	        animateScale:true
+	    }
+	});
+}
+
+function getRandomColor(){ 
+	return "#"+("00000"+((Math.random()*16777215+0.5)>>0).toString(16)).slice(-6); 
+	} 
 
 function importExistRisk(id, riskId){
 	var param = {};
