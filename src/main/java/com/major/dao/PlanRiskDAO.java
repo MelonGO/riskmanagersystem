@@ -17,7 +17,7 @@ import com.major.model.RiskNum;
 @Mapper
 public interface PlanRiskDAO {
 	@Insert({ "insert into ", PlanRiskDaoConstants.TABLE_NAME, "(", PlanRiskDaoConstants.INSERT_FIELDS,
-			") values (#{planId},#{riskId}, #{type},#{content},#{probability},#{influence},#{triggerOrThreshold},#{submitter},#{tracer})" })
+			") values (#{planId},#{riskId}, #{type},#{content},#{probability},#{influence},#{triggerOrThreshold},#{submitter},#{tracer},#{state})" })
 	@SelectKey(statement = "select last_insert_id() as id", keyProperty = "id", before = false, resultType = Integer.class, statementType = StatementType.PREPARED)
 	int addPlanRisk(PlanRisk planRisk);
 
@@ -31,7 +31,7 @@ public interface PlanRiskDAO {
 	List<PlanRisk> selectAll();
 
 	@Update({ "update ", PlanRiskDaoConstants.TABLE_NAME,
-			" set plan_id=#{planId},risk_id=#{riskId},type=#{type},content=#{content},probability=#{probability},influence=#{influence},triggerOrThreshold=#{triggerOrThreshold},submitter=#{submitter},tracer=#{tracer}   where id=#{id}" })
+			" set plan_id=#{planId},risk_id=#{riskId},type=#{type},content=#{content},probability=#{probability},influence=#{influence},triggerOrThreshold=#{triggerOrThreshold},submitter=#{submitter},tracer=#{tracer},state=#{state} where id=#{id}" })
 	void updatePlanRisk(PlanRisk planRisk);
 
 	@Select({ "select ", PlanRiskDaoConstants.SELECT_FIELDS, " from ", PlanRiskDaoConstants.TABLE_NAME,
