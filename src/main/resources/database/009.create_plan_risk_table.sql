@@ -1,0 +1,19 @@
+ CREATE DATABASE  IF NOT EXISTS `rms`;
+USE `rms`;
+
+DROP TABLE IF EXISTS `plan_risk`;
+
+  CREATE TABLE `rms`.`plan_risk` (
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '',
+  `plan_id` INT NOT NULL,
+  `risk_id` INT NOT NULL,
+  `type` VARCHAR(64) NOT NULL COMMENT '',
+  `content` VARCHAR(255) NOT NULL COMMENT '',
+  `probability` VARCHAR(64) NOT NULL COMMENT '',
+  `influence` VARCHAR(64) NOT NULL COMMENT '',
+  `triggerOrThreshold` VARCHAR(64)  COMMENT '',
+  `submitter` INT NOT NULL COMMENT '',
+  `tracer` INT COMMENT '',
+  `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP ,
+  `update_time` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)  COMMENT '');

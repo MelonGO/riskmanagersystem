@@ -4,27 +4,35 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12 risk-manager">
-            <h2>风险状态跟踪</h2>
-            <p>风险内容：$!{planRisk.content}</p>
+            <h2>项目风险计划管理</h2>
+            #if($user.role == 'manager')
+          		<button type="button" onclick="location.href='projectUserList?projectId=$!{project.id}'"
+                  		class="btn btn-warning pull-right fa fa-male"
+                  		></button>
+        	 #end
+            
             <table class="table waiter-list">
                 <thead>
                 <tr>
-                    <th>状态名</th>
-                    <th>描述</th>
+                    
+                    <th>计划名称</th>
                     <th>创建时间</th>
                     <th>更新时间</th>
                     <th>操作</th>
                 </tr>
                 </thead>
-                #foreach($riskStateTrace in $riskStateTraceList)
+                #foreach($plan in $planList)
                 <tr>
-                	<td>$!{riskStateTrace.state}</td>
-                	<td>$!{riskStateTrace.description}</td>
-                	<td>$!{riskStateTrace.createTime}</td>
-                	<td>$!{riskStateTrace.updateTime}</td>
+                	<td>$!{plan.name}</td>
+                	<td>$!{plan.createTime}</td>
+                	<td>$!{plan.updateTime}</td>
                 	<td>
-                		
-                    	<button type="button" onclick='updateStateTrace($!{riskStateTrace.id})'
+                		<button type="button" onclick="location.href='planRiskList?planId=$!{plan.id}'"
+                    		class="btn btn-warning pull-right fa fa-reorder"
+                    		></button>
+                    	<button type="button" onclick='deletePlan($!{plan.id})'
+                    		class="btn btn-warning pull-right fa fa-trash"></button>
+                    	<button type="button" onclick='updatePlan($!{plan.id})'
                     		class="btn btn-warning pull-right fa fa-wrench"
                     		data-toggle="modal" data-target="#edit"></button>
                     	
@@ -36,8 +44,10 @@
             </table>
         </div>
         <div>
-        <button class="btn btn-default btn-block fa fa-plus fa-3x" onclick="addStateTrace()"
-        		data-toggle="modal" data-target="#edit"></button>
+        #if($user.role == 'manager')
+        	<button class="btn btn-default btn-block fa fa-plus fa-3x" 
+        		data-toggle="modal" data-target="#edit" onclick="addPlan()"></button>
+        #end
     	</div>
     	<br>
     </div>
@@ -49,31 +59,21 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"
-                        aria-hidden="true" onclick="clear_all()">×
+                        aria-hidden="true" onclick="clearAll()">×
                 </button>
                 <h4 class="modal-title" id="myModalLabel_1">
-                  	  编辑状态
+                  	  编辑计划
                 </h4>
             </div>
             <form class="form-horizontal" role="form" >
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="state" class="col-sm-2 control-label">状态:</label>
+                        <label for="name" class="col-sm-2 control-label">计划名称:</label>
                         <div class="col-sm-10">
-                    		<select id="state" class="form-control" disabled="disabled" name="state">
-                    			<option value="0">风险</option>
-                    			<option value="1">问题</option>
-                    		</select>
-                    	</div>
-                    </div>
-                    <div class="form-group">
-                        <label for="description" class="col-sm-2 control-label">描述:</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="description"
-                                   placeholder="请输入描述" name="description">
+                            <input type="text" class="form-control" id="name"
+                                   placeholder="请输入名称" name="name">
                         </div>
                     </div>
-                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default"
@@ -91,48 +91,42 @@
 
 <script>
 	var operation;
-	var riskStateTraceId;
-   function deleteStateTrace(id) {
-	   $.post('deleteRiskStateTraceById',{riskStateTraceId : id}, function (r) {
+	var planId;
+   function deletePlan(id) {
+	   $.post('deletePlanById',{planId : id}, function (r) {
 		   alert(r);
 		   location.replace(location.href);
 	});
    }
    
-   function updateStateTrace(id) {
+   function updatePlan(id) {
 	   operation = "update";
-	   riskStateTraceId = id;
-	   $("#state").attr("disabled", true);
-	   $.get('getRiskStateTraceById', {riskStateTraceId:id}, function (r) {
-			$('#state').val(r.state);
-			$('#description').val(r.description);
+	   planId = id;
+	   $.get('getPlanById', {planId:id}, function (r) {
+			$('#name').val(r.name);
 	});
    }
 
-   function addStateTrace() {
+   function addPlan() {
 	   operation = "add";
-	   $("#state").attr("disabled", false);
    }
    function clearAll() {
-	   $("#state").val('');
-	   $('#description').val('');
+	   $("#name").val('');
    }
    
    function edit() {
 	   var valid = true;
 	   var param = {};
 	   if(operation == 'update') {
-		   param.riskStateTraceId = riskStateTraceId;
+		   param.planId = planId;
 	   }
-	   param.planRiskId = $!{planRisk.id};
-	   param.state = $('#state').val();
-	   param.description = $('#description').val();
-	   
-	   if($.trim(param.state) == '') {
+	   param.name = $('#name').val();
+	   param.projectId = $!{project.id};
+	   if($.trim(param.name) == '') {
 		   valid = false;
 	   }
 	   if(valid) {
-		   $.post('editRiskStateTrace', param, function (r) {
+		   $.post('editPlan', param, function (r) {
 				alert(r);
 				location.replace(location.href);
 			});

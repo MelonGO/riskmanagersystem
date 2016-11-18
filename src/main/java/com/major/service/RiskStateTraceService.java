@@ -7,27 +7,32 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.major.dao.PlanRiskDAO;
 import com.major.dao.RiskStateTraceDAO;
+import com.major.model.PlanRisk;
 import com.major.model.RiskStateTrace;
 
 @Service
 public class RiskStateTraceService {
 	@Autowired
 	private RiskStateTraceDAO riskStateTraceDao;
-
+	@Autowired
+	private PlanRiskDAO  planRiskDao;
 	public RiskStateTrace getRiskStateTrace(int id) {
 		return riskStateTraceDao.selectById(id);
 	}
-	public List<RiskStateTrace> getByRiskId(int riskId) {
-		return riskStateTraceDao.getByRiskId(riskId);
+	public List<RiskStateTrace> getByPlanRiskId(int planRiskId) {
+		return riskStateTraceDao.getByPlanRiskId(planRiskId);
 	}
-	public Map<String, Object> addRiskStateTrace(int riskId, String name, String description) {
+	public Map<String, Object> addRiskStateTrace(int planRiskId, int state, String description) {
 		Map<String, Object> msgMap = new HashMap<>();
 		RiskStateTrace riskStateTraceNew = new RiskStateTrace();
-		riskStateTraceNew.setriskId(riskId);
-		riskStateTraceNew.setName(name);
+		riskStateTraceNew.setPlanRiskId(planRiskId);
+		riskStateTraceNew.setState(state);
 		riskStateTraceNew.setDescription(description);
-	
+		PlanRisk pr=planRiskDao.selectById(planRiskId);
+		pr.setState(state);
+		planRiskDao.updatePlanRisk(pr);
 	
 		riskStateTraceDao.addRiskStateTrace(riskStateTraceNew);
 		msgMap.put("msg", "添加成功!");

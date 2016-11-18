@@ -1,10 +1,9 @@
 package com.major.model;
 
-public class RiskStateTrace {
+public class Plan {
 	private int id;
-	private int planRiskId;
-	private int state;
-	private String description;
+	private int projectId;
+	private String name;
 	private String createTime;
 	private String updateTime;
 	public int getId() {
@@ -13,23 +12,17 @@ public class RiskStateTrace {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getPlanRiskId() {
-		return planRiskId;
+	public int getProjectId() {
+		return projectId;
 	}
-	public void setPlanRiskId(int planRiskId) {
-		this.planRiskId = planRiskId;
+	public void setProjectId(int projectId) {
+		this.projectId = projectId;
 	}
-	public int getState() {
-		return state;
+	public String getName() {
+		return name;
 	}
-	public void setState(int state) {
-		this.state = state;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getCreateTime() {
 		return createTime;

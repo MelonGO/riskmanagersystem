@@ -6,45 +6,26 @@
     <div class="row">
         <div class="col-md-12 risk-manager">
         	
-      		<h2 >风险条目管理（$!{project.name}项目）</h2>
-      		#if($user.role == 'manager')
-          		<button type="button" onclick="location.href='projectUserList?projectId=$!{project.id}'"
-                  		class="btn btn-warning pull-right fa fa-male"
-                  		></button>
-        	 #end
+      		<h2 >风险条目管理ALL</h2>
             
             <table class="table waiter-list">
                 <thead>
                 <tr>
-                    <th>风险内容</th>
                     <th>风险类型</th>
-                    <th>可能性</th>
-                    <th>影响程度</th>
-                    <th>触发器/阈值</th>
-                    <th>提交者</th>
-                    <th>跟踪者</th>
+                    <th>风险内容</th>
                     
-                    <th>操作</th>
                 </tr>
                 </thead>
-                #foreach($riskVO in $riskListVOs)
+                #foreach($risk in $riskList)
                 <tr>
                 	
-                	<td>$!{riskVO.risk.content}</td>
-                	<td>$!{riskVO.risk.type}</td>
-                	<td>$!{riskVO.risk.probability}</td>
-                	<td>$!{riskVO.risk.influence}</td>
-                	<td>$!{riskVO.risk.triggerOrThreshold}</td>
-                    <td>$!{riskVO.submitter.name}</td>
-                    <td>$!{riskVO.tracer.name}</td>
+                	<td>$!{risk.type}</td>
+                	<td>$!{risk.content}</td>
                     
                     <td>
-                    	<button type="button" onclick="location.href='riskStateTraceList?riskId=$!{riskVO.risk.id}'"
-                    		class="btn btn-warning pull-right fa fa-reorder"
-                    		></button>
-                    	<button type="button" onclick='deleteRisk($!{riskVO.risk.id})'
+                    	<button type="button" onclick='deleteRisk($!{risk.id})'
                     		class="btn btn-warning pull-right fa fa-trash"></button>
-                    	<button type="button" onclick='updateRisk($!{riskVO.risk.id})'
+                    	<button type="button" onclick='updateRisk($!{risk.id})'
                     		class="btn btn-warning pull-right fa fa-wrench"
                     		data-toggle="modal" data-target="#edit"></button>
                     </td>
@@ -55,8 +36,8 @@
             </table>
         </div>
         <div>
-        <button class="btn btn-default btn-block fa fa-plus fa-3x" 
-        		data-toggle="modal" data-target="#edit"></button>
+        <button class="btn btn-default btn-block fa fa-plus fa-3x"
+        	data-toggle="modal" data-target="#edit"></button>
     	</div>
     	<br>
     </div>
@@ -76,7 +57,7 @@
             </div>
             <form class="form-horizontal" role="form" >
                 <div class="modal-body">
-                    <div class="form-group">
+                	<div class="form-group">
                         <label for="type" class="col-sm-2 control-label">风险类型:</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="type"
@@ -90,49 +71,10 @@
                             	style="height:80px" placeholder="请输入内容" name="content"></textarea>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="triggerOrThreshold" class="col-sm-2 control-label">触发器/阈值:</label>
-                        <div class="col-sm-9">
-                        	<input type="text" class="form-control" id="triggerOrThreshold"
-                        		placeholder="请输入触发器/阈值" name="triggerOrThreshold">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="submitter" class="col-sm-2 control-label">提交者:</label>
-                        <div class="col-sm-10">
-                        	<select id="submitter" name="submitter" class="form-control"></select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="tracer" class="col-sm-2 control-label">跟踪者:</label>
-                        <div class="col-sm-10">
-                            <select id="tracer" name="tracer" class="form-control"></select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                    	<label for="probability" class="col-sm-2 control-label">可能性:</label>
-                    	<div class="col-sm-10">
-                    		<select id="probability" class="form-control" name="probability">
-                    			<option value="high">高</option>
-                    			<option value="mid">中</option>
-                    			<option value="low">低</option>
-                    		</select>
-                    	</div>
-                    </div>
-                    <div class="form-group">
-                    	<label for="influence" class="col-sm-2 control-label">影响程度:</label>
-                    		<div class="col-sm-10">
-                    			<select id="influence" class="form-control" name="influence">
-                    				<option value="high">高</option>
-                    				<option value="mid">中</option>
-                    				<option value="low">低</option>
-                    			</select>
-                    		</div>
-                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default"
-                            data-dismiss="modal" onclick="clear_all()">
+                    <button type="button" onclick="clear_all()" class="btn btn-default"
+                            data-dismiss="modal">
                         	取消
                     </button>
                     <button type="button" class="btn btn-primary" onclick="edit()">
@@ -147,13 +89,10 @@
 <script>
 var operation;
 var riskId;
-$(document).ready(function () {
-	loadUser();
-});
+
 function clear_all() {
-    $("#type").value = "";
-    $("content").value = "";
-    $("triggerOrThreshold").value = "";
+	$("#type").val('');
+    $("#content").val('');
     
 }
 
@@ -168,33 +107,9 @@ function deleteRisk(id){
 function updateRisk(id) {
 	riskId = id;
 	   operation = "update";
-	   $.get('getByRiskId', {riskId:id}, function (r) {
+	   $.get('getRiskById', {riskId : id}, function (r) {
 			$('#type').val(r.type);
 	    	$("#content").val(r.content);
-	    	$("#triggerOrThreshold").val(r.triggerOrThreshold);
-	    	$("#submitter").val(r.submitter);
-	    	$("#tracer").val(r.tracer);
-	    	$("#probability").val(r.probability);
-	    	$("#influence").val(r.influence);
-	});
-}
-
-
-function addRisk(){
-	operation = "add";	
-}
-
-function loadUser() {
-	$('#submitter').empty();
-	$('#tracer').empty();
-	$.get('searchUserData',function(r){
-		if(r) {
-			$.each(r, function(index, item) {
-				$('#submitter').append($('<option>', {value : item.id}).text(item.name));
-				$('#tracer').append($('<option>', {value : item.id}).text(item.name));
-				
-			});
-		}
 	});
 }
 
@@ -202,7 +117,7 @@ function edit() {
     var msg = "";
     var param = {};
     var valid = true;
-    if ($.trim($("#type").val()) == '') {
+    if ($("#type").val().length == 0) {
         msg = "请输入风险类型!";
         alert(msg);
         valid = false;
@@ -212,34 +127,13 @@ function edit() {
         alert(msg);
         valid = false;
     }
-    if ($("#triggerOrThreshold").val().length == 0) {
-        msg = "请输入触发器/阈值!";
-        alert(msg);
-        valid = false;
-    }
-    if ($("#submitter").val().length == 0) {
-        msg = "请输入提交者!";
-        alert(msg);
-        valid = false;
-    }
-    if ($("#tracer").val().length == 0) {
-        msg = "请输入跟踪者!";
-        alert(msg);
-        valid = false;
-    }
     
     if(valid) {
     	if(operation == 'update') {
     		param.riskId = riskId;
     	}
-    	param.projectId = $!{project.id};
     	param.type = $("#type").val();
     	param.content = $("#content").val();
-    	param.triggerOrThreshold = $("#triggerOrThreshold").val();
-    	param.probability = $("#probability").val();
-    	param.influence = $("#influence").val();
-    	param.submitter = $("#submitter").val();
-    	param.tracer = $("#tracer").val();
     	
 	   $.post('editRisk', param, function (r) {
 			alert(r);

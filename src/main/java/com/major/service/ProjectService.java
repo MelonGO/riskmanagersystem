@@ -63,7 +63,5 @@ public class ProjectService {
 		msgMap.put("msg", "修改成功!");
 		return msgMap;
 	}
-	public 	List<User> getUserNotIn(int projectId){
-		return projectUserDAO.getUserNotIn(projectId);
-	}
+	
 }
