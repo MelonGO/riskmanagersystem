@@ -95,9 +95,6 @@ public class PlanRiskController {
 		Integer submitter = RequestUtil.getPositiveInteger(request, "submitter", null);
 		Integer tracer = RequestUtil.getPositiveInteger(request, "tracer", null);
 		
-		String type = RequestUtil.getString(request, "type", null);
-		String content = RequestUtil.getString(request, "content", null);
-		
 		PlanRisk planRisk = new PlanRisk();
 		planRisk.setPlanId(planId);
 		planRisk.setInfluence(influence);
@@ -113,26 +110,17 @@ public class PlanRiskController {
 			planRisk.setRiskId(riskId);
 			planRisk.setType(risk.getType());
 			planRisk.setContent(risk.getContent());
-		}else{
-			planRisk.setType(type);
-			planRisk.setContent(content);
 		}
 		
 		if(planRiskId == null) { 
-			if(riskId == null) { //add a new risk when adding a planRisk
-				risk = new Risk();
-				risk.setType(type);
-				risk.setContent(content);
-				riskService.addRisk(risk);
-				planRisk.setRiskId(risk.getId());
-			}
-			
 			Map<String, Object> msg = planRiskService.addPlanRisk(planRisk);
 			return (String) msg.get("msg");
+			
 		} else {
 			planRisk.setId(planRiskId);
 			Map<String, Object> msg = planRiskService.updatePlanRisk(planRisk);
 			return (String) msg.get("msg");
+			
 		}
 		
 	}

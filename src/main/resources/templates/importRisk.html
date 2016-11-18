@@ -43,18 +43,18 @@
                 </tbody>
             </table>
     	</div>
-    	<div class="col-md-4">
+    	<div class="col-md-4" id="pie">
     		<canvas id="myChartPie" width="300" height="300"></canvas>
     	</div>
-    	<div class="col-md-4">
+    	<div class="col-md-4" id="bar">
     		<canvas id="myChartBar" width="300" height="300"></canvas>
     	</div>
     </div>
     
     <div class="row">
         <div class="col-md-12">
-        	<button class="btn btn-default btn-block fa fa-plus fa-3x" 
-				data-toggle="modal" data-target="#edit"></button>
+        	<button class="btn btn-default btn-block fa fa-3x" 
+				data-toggle="modal" data-target="#edit">新建风险</button>
         </div>
     </div>
     <br>
@@ -77,16 +77,12 @@
                     <div class="form-group">
                         <label for="type" class="col-sm-2 control-label">风险类型:</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="type"
-                                   placeholder="请输入名称" name="type">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="content" class="col-sm-2 control-label">风险内容:</label>
-                        <div class="col-sm-10">
-                            <textarea class="form-control" id="content"
-                            	style="height:80px" placeholder="请输入内容" name="content"></textarea>
-                        </div>
+                    		<select id="riskId" class="form-control" name="riskId">
+                    			#foreach($risk in $riskList)
+                    			<option value='$!{risk.id}'>类型:$!{risk.type} , 内容:$!{risk.content}</option>
+                    			#end
+                    		</select>
+                    	</div>
                     </div>
                     <div class="form-group">
                         <label for="triggerOrThreshold" class="col-sm-2 control-label">触发器/阈值:</label>
@@ -190,6 +186,8 @@ function searchRisk(filter){
     if(valid){
     	$("#riskTable tr").remove();
     	$("#riskTable td").remove();
+    	$("#pie canvas").remove();
+    	$("#bar canvas").remove();
     	
     	param.startTime = $("#startTime").val();
     	param.endTime = $("#endTime").val();
@@ -267,6 +265,11 @@ function searchRisk(filter){
 }
 
 function printChart(foundRisks){
+	var tmp_1 = '<canvas id="myChartPie" width="300" height="300"></canvas>';
+	$('#pie').append($(tmp_1));
+	var tmp_2 = '<canvas id="myChartBar" width="300" height="300"></canvas>';
+	$('#bar').append($(tmp_2));
+	
 	var ctx_1 = document.getElementById("myChartPie").getContext("2d");
 	var ctx_2 = document.getElementById("myChartBar").getContext("2d");
 	
@@ -356,16 +359,6 @@ function edit() {
     var msg = "";
     var param = {};
     var valid = true;
-    if ($.trim($("#type").val()) == '') {
-        msg = "请输入风险类型!";
-        alert(msg);
-        valid = false;
-    }
-    if ($("#content").val().length == 0) {
-        msg = "请输入风险内容!";
-        alert(msg);
-        valid = false;
-    }
     if ($("#triggerOrThreshold").val().length == 0) {
         msg = "请输入触发器/阈值!";
         alert(msg);
@@ -384,8 +377,7 @@ function edit() {
     
     if(valid) {
     	param.planId = $!{plan.id};
-    	param.type = $("#type").val();
-    	param.content = $("#content").val();
+    	param.riskId = $("#riskId").val();
     	param.triggerOrThreshold = $("#triggerOrThreshold").val();
     	param.probability = $("#probability").val();
     	param.influence = $("#influence").val();
