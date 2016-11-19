@@ -73,7 +73,7 @@ function mostRecRiskList(){
 	 var riskId = null;
 	 var foundRisks = new Array();
 	 var date = new Date();
-	 var time = date.getFullYear() + "-" +(date.getMonth()+1) + "-" + date.getDate()
+	 var time = date.getFullYear() + "-" +(date.getMonth()+1) + "-" + (date.getDate()+1)
 	 	+ " " + date.getHours() + ":" + date.getMinutes();
 	 $("#endTime").val(time);
 	 
@@ -82,7 +82,7 @@ function mostRecRiskList(){
 	 $.post('searchRisk/rec', param, function(r){
 		 if(r) {
  			$.each(r, function(index, item) {
-					$('#riskTable').append($('<tr>'));
+				$('#riskTable').append($('<tr>'));
  				
  				$('#riskTable').append($('<td>').text(item.type));
  				$('#riskTable').append($('</td>'));

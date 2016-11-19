@@ -1,7 +1,6 @@
 package com.major.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -61,7 +60,8 @@ public class ImportRiskController {
 		String endTime = RequestUtil.getString(request, "endTime", null);
 		
 		if ("rec".equals(filter)) {
-			return planRiskService.getMostRecognized(startTime, endTime);
+			 List<RiskNum> results = planRiskService.getMostRecognized(startTime, endTime);
+			return results;
 			
 		} else {
 			return planRiskService.getMostProblems(startTime, endTime);
