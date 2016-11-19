@@ -5,6 +5,11 @@
     <div class="row">
         <div class="col-md-12 risk-manager">
             <h2>项目人员管理（$!{project.name}项目）</h2>
+            <ol class="breadcrumb">
+        		<li><a href="projectList">项目</a></li>
+        		<li><a href="planList?projectId=$!{project.id}">计划</a></li>
+        		<li class="active"><a href="projectUserList?projectId=$!{project.id}">人员管理</a></li>
+        	</ol>
             <table class="table waiter-list">
                 <thead>
                 <tr>

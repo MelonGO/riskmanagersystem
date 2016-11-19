@@ -12,8 +12,11 @@
         	</ol>
       		<h2 >风险条目管理（$!{project.name}项目）</h2>
             <div>
+            <button class="btn btn-default pull-right" 
+				data-toggle="modal" data-target="#edit">新建风险</button>
         	<button onclick="location.href='importRisk?planId=$!{plan.id}'" 
         		class="btn btn-default pull-right">导入风险</button>
+        	
     		</div>
             <table class="table waiter-list">
                 <thead>
@@ -210,13 +213,8 @@ function edit() {
     }
     
     if(valid) {
-    	if(operation == 'update') {
-    		param.planRiskId = planRiskId;
-    	}
     	param.planId = $!{plan.id};
     	param.riskId = $("#riskId").val();
-    	param.type = $("#type").val();
-    	param.content = $("#content").val();
     	param.triggerOrThreshold = $("#triggerOrThreshold").val();
     	param.probability = $("#probability").val();
     	param.influence = $("#influence").val();
@@ -229,6 +227,8 @@ function edit() {
 		});
 	}	
 }
+
+
 </script>
 
 #parse("common/footer.html")

@@ -43,6 +43,7 @@ public class PlanRiskController {
 	
 	@RequestMapping(value = { "/planRiskList" })
 	public String planRiskList(Model model, @RequestParam("planId") Integer planId, HttpSession session){
+		session.setAttribute("planId", planId);
 		model.addAttribute("user", (User) session.getAttribute("user"));
 		List<PlanRisk> planRiskList = planRiskService.getByPlanId(planId);
 		Plan plan = planService.getPlan(planId);
