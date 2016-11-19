@@ -103,10 +103,8 @@ public class PlanRiskController {
 		planRisk.setTracer(tracer);
 		planRisk.setTriggerOrThreshold(triggerOrThreshold);
 		
-		Risk risk = null;
-		
 		if(riskId != null){
-			risk = riskService.getRisk(riskId);
+			Risk risk = riskService.getRisk(riskId);
 			planRisk.setRiskId(riskId);
 			planRisk.setType(risk.getType());
 			planRisk.setContent(risk.getContent());

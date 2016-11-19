@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.major.model.PlanRisk;
-import com.major.model.Risk;
 import com.major.model.RiskStateTrace;
 import com.major.model.User;
 import com.major.service.PlanRiskService;
