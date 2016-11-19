@@ -3,15 +3,12 @@ package com.major.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.major.dao.ProjectDAO;
 import com.major.dao.ProjectUserDAO;
 import com.major.model.Project;
 import com.major.model.ProjectUser;
-import com.major.model.User;
 
 @Service
 public class ProjectService {
