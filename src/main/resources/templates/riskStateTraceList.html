@@ -5,8 +5,8 @@
     <div class="row">
         <div class="col-md-12 risk-manager">
         	<ol class="breadcrumb">
-        		<li><a href="projectList">项目</a></li>
-        		<li><a href="planList?projectId=$!{project.id}">计划</a></li>
+        		<li><a href="projectList">项目($!{project.name})</a></li>
+        		<li><a href="planList?projectId=$!{project.id}">计划($!{plan.name})</a></li>
         		<li><a href="planRiskList?planId=$!{planId}">风险条目</a></li>
         		<li class="active"><a href="riskStateTraceList?planRiskId=$!{planRisk.id}">状态</a></li>
         	</ol>
