@@ -44,6 +44,9 @@ public class ImportRiskController {
 		Plan plan = planService.getPlan(planId);
 		model.addAttribute("plan", plan);
 		
+		List<Risk> riskList = riskService.getAllRisks();
+		model.addAttribute("riskList", riskList);
+		
 		return "importRisk";
 		
 	}
