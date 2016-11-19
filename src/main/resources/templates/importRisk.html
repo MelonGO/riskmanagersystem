@@ -6,12 +6,12 @@
 	<div class="row">
         <div class="col-md-12 risk-manager">
         	<ol class="breadcrumb">
-        		<li><a href="projectList">项目</a></li>
-        		<li ><a href="planList?projectId=$!{project.id}">计划</a></li>
+        		<li><a href="projectList">项目($!{project.name})</a></li>
+        		<li ><a href="planList?projectId=$!{project.id}">计划($!{plan.name})</a></li>
         		<li><a href="planRiskList?planId=$!{plan.id}">风险条目</a></li>
         		<li class="active"><a href="importRisk?planId=$!{plan.id}">导入</a></li>
         	</ol>
-        	<h2 >风险条目导入（$!{project.name}项目）</h2>
+        	<h2 >风险条目导入</h2>
         </div>
         <div class="col-md-8">
         	<form class="form-inline" role="form">

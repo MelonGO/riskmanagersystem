@@ -18,6 +18,7 @@ import com.major.model.Project;
 import com.major.model.RiskStateTrace;
 import com.major.model.User;
 import com.major.service.PlanRiskService;
+import com.major.service.PlanService;
 import com.major.service.RiskStateTraceService;
 
 import tools.RequestUtil;
@@ -29,6 +30,10 @@ public class RiskStateTraceController {
 	
 	@Autowired
 	PlanRiskService planRiskService;
+	
+	@Autowired
+	PlanService planService;
+	
 	
 	@RequestMapping(path = {"/riskStateTraceList" })
 	public String projectList(Model model, 
@@ -42,7 +47,9 @@ public class RiskStateTraceController {
 		model.addAttribute("user", (User) session.getAttribute("user"));
 		model.addAttribute("planRisk", planRisk);
 		model.addAttribute("project", (Project) session.getAttribute("Project"));
+		
 		model.addAttribute("planId", session.getAttribute("planId"));
+		model.addAttribute("plan", planService.getPlan((Integer)session.getAttribute("planId")));
 		return "riskStateTraceList";
 	}
 	
