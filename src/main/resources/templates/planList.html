@@ -4,11 +4,20 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12 risk-manager">
+        	<ol class="breadcrumb">
+        		<li><a href="projectList">项目</a></li>
+        		<li class="active"><a href="planList?projectId=$!{project.id}">计划</a></li>
+        	</ol>
             <h2>项目风险计划管理</h2>
+            <div>
+        	#if($user.role == 'manager')
+        	<button class="btn btn-default pull-right" 
+        		data-toggle="modal" data-target="#edit" onclick="addPlan()">新建计划</button>
+        	#end
+    		</div>
             #if($user.role == 'manager')
           		<button type="button" onclick="location.href='projectUserList?projectId=$!{project.id}'"
-                  		class="btn btn-warning pull-right fa fa-male"
-                  		></button>
+                  		class="btn btn-default pull-right">项目人员管理</button>
         	 #end
             
             <table class="table waiter-list">
@@ -43,12 +52,6 @@
                 </tbody>
             </table>
         </div>
-        <div>
-        #if($user.role == 'manager')
-        	<button class="btn btn-default btn-block fa fa-3x" 
-        		data-toggle="modal" data-target="#edit" onclick="addPlan()">新建计划</button>
-        #end
-    	</div>
     	<br>
     </div>
 </div>

@@ -27,12 +27,17 @@ public class RiskController {
 	
 	@RequestMapping(value = { "/riskList" })
 	public String addRisk(Model model, HttpSession session){
-		model.addAttribute("user", (User) session.getAttribute("user"));
-		List<Risk> riskList = riskService.getAllRisks();
+		if(session.getAttribute("user") == null){
+			return "login";
+		}else{
+			model.addAttribute("user", (User) session.getAttribute("user"));
+			List<Risk> riskList = riskService.getAllRisks();
+			
+			model.addAttribute("riskList", riskList);
+			
+			return "riskList";	
+		}
 		
-		model.addAttribute("riskList", riskList);
-		
-		return "riskList";	
 	}
 	
 	@RequestMapping(value = { "/getRiskById" })

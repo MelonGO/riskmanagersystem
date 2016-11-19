@@ -5,6 +5,12 @@
 <div class="container">
 	<div class="row">
         <div class="col-md-12 risk-manager">
+        	<ol class="breadcrumb">
+        		<li><a href="projectList">项目</a></li>
+        		<li ><a href="planList?projectId=$!{project.id}">计划</a></li>
+        		<li><a href="planRiskList?planId=$!{plan.id}">风险条目</a></li>
+        		<li class="active"><a href="importRisk?planId=$!{plan.id}">导入</a></li>
+        	</ol>
         	<h2 >风险条目导入（$!{project.name}项目）</h2>
         </div>
         <div class="col-md-8">
@@ -28,6 +34,12 @@
     				class="btn btn-default">演变成问题最多</button>
     		</form>
         </div>
+        <div class="col-md-4">
+        	<button class="btn btn-default pull-right" 
+				data-toggle="modal" data-target="#edit">新建风险</button>
+        	<button type="button" onclick="importExistRisk()" 
+        		class="btn btn-default pull-right">导入</button>
+        </div>
         
         <div class="col-md-12">
     		<table class="table waiter-list">
@@ -36,7 +48,7 @@
                     <th>风险类型</th>
                     <th>风险内容</th>
                     <th>出现次数</th>
-                    <th>操作</th>
+                    <th>选择</th>
                 </tr>
                 </thead>
                 <tbody id="riskTable">
@@ -49,13 +61,6 @@
     	<div class="col-md-4" id="bar">
     		<canvas id="myChartBar" width="300" height="300"></canvas>
     	</div>
-    </div>
-    
-    <div class="row">
-        <div class="col-md-12">
-        	<button class="btn btn-default btn-block fa fa-3x" 
-				data-toggle="modal" data-target="#edit">新建风险</button>
-        </div>
     </div>
     <br>
 </div>
@@ -208,10 +213,8 @@ function searchRisk(filter){
         				$('#riskTable').append($('</td>'));
         				
         				riskId = item.riskId;
-        				var tmp = '<td><button id="btn' + riskId + 
-    					'" type="button" class="btn btn-warning pull-right">导入</button>';
+        				var tmp = '<td><input class="check" id="'+ riskId +'" type="checkbox">';
         				$('#riskTable').append($(tmp));
-        				importExistRisk("btn" + riskId, riskId);
         				$('#riskTable').append($('</td>'));
         				
         				$('#riskTable').append($('</tr>'));
@@ -242,10 +245,8 @@ function searchRisk(filter){
         				$('#riskTable').append($('</td>'));
         				
         				riskId = item.riskId;
-        				var tmp = '<td><button id="btn' + riskId + 
-        					'" type="button" class="btn btn-warning pull-right">导入</button>'; 
+        				var tmp = '<td><input class="check" id="'+ riskId +'" type="checkbox">';
         				$('#riskTable').append($(tmp));
-        				importExistRisk("btn" + riskId, riskId);
         				$('#riskTable').append($('</td>'));
         				
         				$('#riskTable').append($('</tr>'));
@@ -342,17 +343,25 @@ function getRandomColor(){
 	return "#"+("00000"+((Math.random()*16777215+0.5)>>0).toString(16)).slice(-6); 
 	} 
 
-function importExistRisk(id, riskId){
+function importExistRisk(){
 	var param = {};
 	param.planId = $!{plan.id};
-	param.riskId = riskId;
 	
-	$("#"+id).bind("click",function(){
-		$.post('importExistRisk', param, function (r) {
-			alert(r);
-			location.replace(location.href);
-		});
-    });
+	var riskIdList = "";
+	
+	$("input.check").each(function(){
+		if($(this).prop('checked')){
+	    	var riskId = $(this).attr('id');
+			riskIdList = riskIdList + riskId + ":";
+	    }
+	});
+	
+	param.riskIdList = riskIdList;
+	
+	$.post('importExistRisk', param, function (r) {
+		alert(r);
+		location.replace(location.href);
+	});
 }
 
 function edit() {

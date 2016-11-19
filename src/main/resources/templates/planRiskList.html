@@ -5,9 +5,16 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12 risk-manager">
-        	
+        	<ol class="breadcrumb">
+        		<li><a href="projectList">项目</a></li>
+        		<li ><a href="planList?projectId=$!{project.id}">计划</a></li>
+        		<li class="active"><a href="planRiskList?planId=$!{plan.id}">风险条目</a></li>
+        	</ol>
       		<h2 >风险条目管理（$!{project.name}项目）</h2>
-            
+            <div>
+        	<button onclick="location.href='importRisk?planId=$!{plan.id}'" 
+        		class="btn btn-default pull-right">导入风险</button>
+    		</div>
             <table class="table waiter-list">
                 <thead>
                 <tr>
@@ -49,10 +56,6 @@
                 </tbody>
             </table>
         </div>
-        <div>
-        <button onclick="location.href='importRisk?planId=$!{plan.id}'" 
-        	class="btn btn-default btn-block fa fa-3x">导入风险</button>
-    	</div>
     	<br>
     </div>
 </div>
