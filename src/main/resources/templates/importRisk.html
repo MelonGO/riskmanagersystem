@@ -193,7 +193,7 @@ function searchRisk(filter){
     	param.endTime = $("#endTime").val();
     	
     	if(filter == 'rec'){
-    		$.post('/searchRisk/rec', param, function(r){
+    		$.post('searchRisk/rec', param, function(r){
         		if(r) {
         			$.each(r, function(index, item) {
 						$('#riskTable').append($('<tr>'));
@@ -227,7 +227,7 @@ function searchRisk(filter){
         	});
     		
     	}else{
-    		$.post('/searchRisk/pro', param, function(r){
+    		$.post('searchRisk/pro', param, function(r){
         		if(r) {
         			$.each(r, function(index, item) {
 						$('#riskTable').append($('<tr>'));
