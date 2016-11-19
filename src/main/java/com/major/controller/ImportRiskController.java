@@ -53,19 +53,17 @@ public class ImportRiskController {
 	
 	@RequestMapping(value = { "/searchRisk/{filter}" })
 	@ResponseBody
-	public List<RiskNum> searchRisk(Model model, 
+	public List<RiskNum> searchRisk(
 				@PathVariable("filter") String filter, 
 				HttpServletRequest request){
 		String startTime = RequestUtil.getString(request, "startTime", null);
 		String endTime = RequestUtil.getString(request, "endTime", null);
 		
-		if (filter.equals("rec")) {
-			List<RiskNum> mostRecRiskList = planRiskService.getMostRecognized(startTime, endTime);
-			return mostRecRiskList;
+		if ("rec".equals(filter)) {
+			return planRiskService.getMostRecognized(startTime, endTime);
 			
 		} else {
-			List<RiskNum> mostProRiskList = planRiskService.getMostProblems(startTime, endTime);
-			return mostProRiskList;
+			return planRiskService.getMostProblems(startTime, endTime);
 		}
 		
 	}
