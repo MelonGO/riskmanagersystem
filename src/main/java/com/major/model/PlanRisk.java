@@ -1,7 +1,6 @@
 package com.major.model;
 
-public class PlanRisk {
-	private int id;
+public class PlanRisk extends Base{
 	private int planId;
 	private int riskId;
 	private String type;
@@ -12,14 +11,6 @@ public class PlanRisk {
 	private Integer submitter;
 	private Integer tracer;
 	private int  state;
-	private String createTime;
-	private String updateTime;
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public int getPlanId() {
 		return planId;
 	}
@@ -80,17 +71,6 @@ public class PlanRisk {
 	public void setState(int state) {
 		this.state = state;
 	}
-	public String getCreateTime() {
-		return createTime;
-	}
-	public void setCreateTime(String createTime) {
-		this.createTime = createTime;
-	}
-	public String getUpdateTime() {
-		return updateTime;
-	}
-	public void setUpdateTime(String updateTime) {
-		this.updateTime = updateTime;
-	}
+	
 	
 }
