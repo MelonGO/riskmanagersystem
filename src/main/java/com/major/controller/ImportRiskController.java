@@ -60,8 +60,7 @@ public class ImportRiskController {
 		String endTime = RequestUtil.getString(request, "endTime", null);
 		
 		if ("rec".equals(filter)) {
-			 List<RiskNum> results = planRiskService.getMostRecognized(startTime, endTime);
-			return results;
+			return planRiskService.getMostRecognized(startTime, endTime);
 			
 		} else {
 			return planRiskService.getMostProblems(startTime, endTime);
