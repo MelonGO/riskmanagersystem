@@ -47,6 +47,7 @@ public class ImportRiskController {
 		List<Risk> riskList = riskService.getAllRisks();
 		model.addAttribute("riskList", riskList);
 		
+		
 		return "importRisk";
 		
 	}
@@ -72,29 +73,35 @@ public class ImportRiskController {
 	@ResponseBody
 	public String importExistRisk(Model model,HttpServletRequest request, HttpSession session){
 		Integer planId = RequestUtil.getPositiveInteger(request, "planId", null);
-		Integer riskId = RequestUtil.getPositiveInteger(request, "riskId", null);
+		String riskIdList = RequestUtil.getString(request, "riskIdList", null);
 		
 		model.addAttribute("user", (User) session.getAttribute("user"));
 		model.addAttribute("project", (Project) session.getAttribute("project"));
 		User user = (User) session.getAttribute("user");
 		
-		Risk risk = riskService.getRisk(riskId);
+		if(riskIdList != null){
+			String[] riskIdArray = riskIdList.split(":");
+			for (int i = 0; i < riskIdArray.length; i++) {
+				
+				Risk risk = riskService.getRisk(Integer.parseInt(riskIdArray[i]));
+				
+				PlanRisk planRisk = new PlanRisk();
+				planRisk.setPlanId(planId);
+				planRisk.setRiskId(risk.getId());
+				planRisk.setType(risk.getType());
+				planRisk.setContent(risk.getContent());
+				planRisk.setInfluence("high");
+				planRisk.setProbability("high");
+				planRisk.setTriggerOrThreshold("");
+				planRisk.setSubmitter(user.getId());
+				planRisk.setTracer(user.getId());
+				
+				planRiskService.addPlanRisk(planRisk);
+			}
+			return "导入成功!";
+		}
 		
-		PlanRisk planRisk = new PlanRisk();
-		
-		planRisk.setPlanId(planId);
-		planRisk.setRiskId(riskId);
-		planRisk.setType(risk.getType());
-		planRisk.setContent(risk.getContent());
-		planRisk.setInfluence("high");
-		planRisk.setProbability("high");
-		planRisk.setTriggerOrThreshold("");
-		planRisk.setSubmitter(user.getId());
-		planRisk.setTracer(user.getId());
-		
-		Map<String, Object> msg = planRiskService.addPlanRisk(planRisk);
-		
-		return (String) msg.get("msg");
+		return "请选择风险条目!";
 		
 	}
 	

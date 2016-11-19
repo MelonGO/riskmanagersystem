@@ -31,19 +31,22 @@ public class ProjectController {
 	
 	@RequestMapping(path = {"/projectList" })
 	public String projectList(Model model, HttpSession session) {
-		
-		User user = (User) session.getAttribute("user");
-		
-		if("user".equals(user.getRole())) {
-			List<Project> projectList = projectService.getByUserId(user.getId());
-			model.addAttribute("projectList", projectList);
-		} else {
-			List<Project> projectList = projectService.getAllProjects();
-			model.addAttribute("projectList", projectList);
+		if(session.getAttribute("user") == null){
+			return "login";
+		}else{
+			User user = (User) session.getAttribute("user");
+			if("user".equals(user.getRole())) {
+				List<Project> projectList = projectService.getByUserId(user.getId());
+				model.addAttribute("projectList", projectList);
+			} else {
+				List<Project> projectList = projectService.getAllProjects();
+				model.addAttribute("projectList", projectList);
+			}
+			
+			model.addAttribute("user", user);
+			return "projectList";
 		}
 		
-		model.addAttribute("user", user);
-		return "projectList";
 	}
 	
 	@RequestMapping(path = {"/getProjectById" })

@@ -5,9 +5,19 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12 risk-manager">
-        	
+        	<ol class="breadcrumb">
+        		<li><a href="projectList">项目</a></li>
+        		<li ><a href="planList?projectId=$!{project.id}">计划</a></li>
+        		<li class="active"><a href="planRiskList?planId=$!{plan.id}">风险条目</a></li>
+        	</ol>
       		<h2 >风险条目管理（$!{project.name}项目）</h2>
-            
+            <div>
+            <button class="btn btn-default pull-right" 
+				data-toggle="modal" data-target="#edit">新建风险</button>
+        	<button onclick="location.href='importRisk?planId=$!{plan.id}'" 
+        		class="btn btn-default pull-right">导入风险</button>
+        	
+    		</div>
             <table class="table waiter-list">
                 <thead>
                 <tr>
@@ -49,10 +59,6 @@
                 </tbody>
             </table>
         </div>
-        <div>
-        <button onclick="location.href='importRisk?planId=$!{plan.id}'" 
-        	class="btn btn-default btn-block fa fa-3x">导入风险</button>
-    	</div>
     	<br>
     </div>
 </div>
@@ -207,13 +213,8 @@ function edit() {
     }
     
     if(valid) {
-    	if(operation == 'update') {
-    		param.planRiskId = planRiskId;
-    	}
     	param.planId = $!{plan.id};
     	param.riskId = $("#riskId").val();
-    	param.type = $("#type").val();
-    	param.content = $("#content").val();
     	param.triggerOrThreshold = $("#triggerOrThreshold").val();
     	param.probability = $("#probability").val();
     	param.influence = $("#influence").val();
@@ -226,6 +227,8 @@ function edit() {
 		});
 	}	
 }
+
+
 </script>
 
 #parse("common/footer.html")

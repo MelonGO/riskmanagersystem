@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.major.model.PlanRisk;
+import com.major.model.Project;
 import com.major.model.RiskStateTrace;
 import com.major.model.User;
 import com.major.service.PlanRiskService;
@@ -40,7 +41,8 @@ public class RiskStateTraceController {
 		model.addAttribute("riskStateTraceList", riskStateTraceList);
 		model.addAttribute("user", (User) session.getAttribute("user"));
 		model.addAttribute("planRisk", planRisk);
-		
+		model.addAttribute("project", (Project) session.getAttribute("Project"));
+		model.addAttribute("planId", session.getAttribute("planId"));
 		return "riskStateTraceList";
 	}
 	

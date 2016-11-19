@@ -5,13 +5,19 @@
 <div class="container">
 	<div class="row">
         <div class="col-md-12 risk-manager">
+        	<ol class="breadcrumb">
+        		<li><a href="projectList">项目</a></li>
+        		<li ><a href="planList?projectId=$!{project.id}">计划</a></li>
+        		<li><a href="planRiskList?planId=$!{plan.id}">风险条目</a></li>
+        		<li class="active"><a href="importRisk?planId=$!{plan.id}">导入</a></li>
+        	</ol>
         	<h2 >风险条目导入（$!{project.name}项目）</h2>
         </div>
         <div class="col-md-8">
         	<form class="form-inline" role="form">
        			<label>From</label>
     			<div class="form-group">
-    				<input size="16" type="text" readonly class="form_datetime"
+    				<input size="16" type="text" readonly class="form_datetime" value="2000-01-01 00:00"
     					placeholder="请输入开始时间" id="startTime">
     			</div>
     			<label>To</label>
@@ -28,6 +34,10 @@
     				class="btn btn-default">演变成问题最多</button>
     		</form>
         </div>
+        <div class="col-md-4">
+        	<button type="button" onclick="importExistRisk()" 
+        		class="btn btn-default pull-right">导入</button>
+        </div>
         
         <div class="col-md-12">
     		<table class="table waiter-list">
@@ -36,7 +46,7 @@
                     <th>风险类型</th>
                     <th>风险内容</th>
                     <th>出现次数</th>
-                    <th>操作</th>
+                    <th>选择</th>
                 </tr>
                 </thead>
                 <tbody id="riskTable">
@@ -50,119 +60,55 @@
     		<canvas id="myChartBar" width="300" height="300"></canvas>
     	</div>
     </div>
-    
-    <div class="row">
-        <div class="col-md-12">
-        	<button class="btn btn-default btn-block fa fa-3x" 
-				data-toggle="modal" data-target="#edit">新建风险</button>
-        </div>
-    </div>
     <br>
-</div>
-
-<div class="modal fade" id="edit" tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-hidden="true">×
-                </button>
-                <h4 class="modal-title" id="myModalLabel_1">
-                    	新增风险条目
-                </h4>
-            </div>
-            <form class="form-horizontal" role="form" >
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="type" class="col-sm-2 control-label">风险类型:</label>
-                        <div class="col-sm-10">
-                    		<select id="riskId" class="form-control" name="riskId">
-                    			#foreach($risk in $riskList)
-                    			<option value='$!{risk.id}'>类型:$!{risk.type} , 内容:$!{risk.content}</option>
-                    			#end
-                    		</select>
-                    	</div>
-                    </div>
-                    <div class="form-group">
-                        <label for="triggerOrThreshold" class="col-sm-2 control-label">触发器/阈值:</label>
-                        <div class="col-sm-9">
-                        	<input type="text" class="form-control" id="triggerOrThreshold"
-                        		placeholder="请输入触发器/阈值" name="triggerOrThreshold">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="submitter" class="col-sm-2 control-label">提交者:</label>
-                        <div class="col-sm-10">
-                        	<select id="submitter" name="submitter" class="form-control"></select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="tracer" class="col-sm-2 control-label">跟踪者:</label>
-                        <div class="col-sm-10">
-                            <select id="tracer" name="tracer" class="form-control"></select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                    	<label for="probability" class="col-sm-2 control-label">可能性:</label>
-                    	<div class="col-sm-10">
-                    		<select id="probability" class="form-control" name="probability">
-                    			<option value="high">高</option>
-                    			<option value="mid">中</option>
-                    			<option value="low">低</option>
-                    		</select>
-                    	</div>
-                    </div>
-                    <div class="form-group">
-                    	<label for="influence" class="col-sm-2 control-label">影响程度:</label>
-                    		<div class="col-sm-10">
-                    			<select id="influence" class="form-control" name="influence">
-                    				<option value="high">高</option>
-                    				<option value="mid">中</option>
-                    				<option value="low">低</option>
-                    			</select>
-                    		</div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" onclick="clear_all()" class="btn btn-default"
-                            data-dismiss="modal">
-                        	取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="edit()">
-                       	    确认
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
 </div>
 
 <script>
 $(document).ready(function () {
-	loadUser();
+	mostRecRiskList();
 });
 
-function clear_all() {
-    $("#type").val('');
-    $("#content").val('');
-    $("#triggerOrThreshold").val('');
-}
-
-function loadUser() {
-	$('#submitter').empty();
-	$('#tracer').empty();
-	var projectId = $!{project.id};
-	
-	$.get('getUsersIncludedProject',{projectId : projectId}, function(r){
-		if(r) {
-			$.each(r, function(index, item) {
-				$('#submitter').append($('<option>', {value : item.id}).text(item.name));
-				$('#tracer').append($('<option>', {value : item.id}).text(item.name));
-				
-			});
-		}
-	});
+function mostRecRiskList(){
+	 var param = {};
+	 var riskId = null;
+	 var foundRisks = new Array();
+	 var date = new Date();
+	 var time = date.getFullYear() + "-" +(date.getMonth()+1) + "-" + date.getDate()
+	 	+ " " + date.getHours() + ":" + date.getMinutes();
+	 $("#endTime").val(time);
+	 
+	 param.startTime = $("#startTime").val();
+	 param.endTime = $("#endTime").val();
+	 $.post('searchRisk/rec', param, function(r){
+		 if(r) {
+ 			$.each(r, function(index, item) {
+					$('#riskTable').append($('<tr>'));
+ 				
+ 				$('#riskTable').append($('<td>').text(item.type));
+ 				$('#riskTable').append($('</td>'));
+ 				
+ 				$('#riskTable').append($('<td>').text(item.content));
+ 				$('#riskTable').append($('</td>'));
+ 				
+ 				$('#riskTable').append($('<td>').text(item.num));
+ 				$('#riskTable').append($('</td>'));
+ 				
+ 				riskId = item.riskId;
+ 				var tmp = '<td><input class="check" id="'+ riskId +'" type="checkbox">';
+ 				$('#riskTable').append($(tmp));
+ 				$('#riskTable').append($('</td>'));
+ 				
+ 				$('#riskTable').append($('</tr>'));
+ 				
+ 				risk = new Object();
+ 				risk.type = item.type;
+ 				risk.content = item.content;
+ 				risk.num = item.num;
+ 				foundRisks.push(risk);
+ 			});
+ 			printChart(foundRisks);
+ 		}
+	 });
 }
 
 function searchRisk(filter){
@@ -208,10 +154,8 @@ function searchRisk(filter){
         				$('#riskTable').append($('</td>'));
         				
         				riskId = item.riskId;
-        				var tmp = '<td><button id="btn' + riskId + 
-    					'" type="button" class="btn btn-warning pull-right">导入</button>';
+        				var tmp = '<td><input class="check" id="'+ riskId +'" type="checkbox">';
         				$('#riskTable').append($(tmp));
-        				importExistRisk("btn" + riskId, riskId);
         				$('#riskTable').append($('</td>'));
         				
         				$('#riskTable').append($('</tr>'));
@@ -242,10 +186,8 @@ function searchRisk(filter){
         				$('#riskTable').append($('</td>'));
         				
         				riskId = item.riskId;
-        				var tmp = '<td><button id="btn' + riskId + 
-        					'" type="button" class="btn btn-warning pull-right">导入</button>'; 
+        				var tmp = '<td><input class="check" id="'+ riskId +'" type="checkbox">';
         				$('#riskTable').append($(tmp));
-        				importExistRisk("btn" + riskId, riskId);
         				$('#riskTable').append($('</td>'));
         				
         				$('#riskTable').append($('</tr>'));
@@ -342,53 +284,25 @@ function getRandomColor(){
 	return "#"+("00000"+((Math.random()*16777215+0.5)>>0).toString(16)).slice(-6); 
 	} 
 
-function importExistRisk(id, riskId){
+function importExistRisk(){
 	var param = {};
 	param.planId = $!{plan.id};
-	param.riskId = riskId;
 	
-	$("#"+id).bind("click",function(){
-		$.post('importExistRisk', param, function (r) {
-			alert(r);
-			location.replace(location.href);
-		});
-    });
-}
-
-function edit() {
-    var msg = "";
-    var param = {};
-    var valid = true;
-    if ($("#triggerOrThreshold").val().length == 0) {
-        msg = "请输入触发器/阈值!";
-        alert(msg);
-        valid = false;
-    }
-    if ($("#submitter").val().length == 0) {
-        msg = "请输入提交者!";
-        alert(msg);
-        valid = false;
-    }
-    if ($("#tracer").val().length == 0) {
-        msg = "请输入跟踪者!";
-        alert(msg);
-        valid = false;
-    }
-    
-    if(valid) {
-    	param.planId = $!{plan.id};
-    	param.riskId = $("#riskId").val();
-    	param.triggerOrThreshold = $("#triggerOrThreshold").val();
-    	param.probability = $("#probability").val();
-    	param.influence = $("#influence").val();
-    	param.submitter = $("#submitter").val();
-    	param.tracer = $("#tracer").val();
-    	
-	   $.post('editPlanRisk', param, function (r) {
-			alert(r);
-			location.replace(location.href);
-		});
-	}	
+	var riskIdList = "";
+	
+	$("input.check").each(function(){
+		if($(this).prop('checked')){
+	    	var riskId = $(this).attr('id');
+			riskIdList = riskIdList + riskId + ":";
+	    }
+	});
+	
+	param.riskIdList = riskIdList;
+	
+	$.post('importExistRisk', param, function (r) {
+		alert(r);
+		location.replace(location.href);
+	});
 }
 
 </script>

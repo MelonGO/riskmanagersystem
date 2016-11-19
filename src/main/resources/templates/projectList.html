@@ -4,7 +4,16 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12 risk-manager">
+        	<ol class="breadcrumb">
+        		<li class="active"><a href="projectList">项目</a></li>
+        	</ol>
             <h2>软件项目管理</h2>
+            <div>
+        	#if($user.role == 'manager')
+        	<button class="btn btn-default pull-right" 
+        		data-toggle="modal" data-target="#edit" onclick="addProject()">新建项目</button>
+        	#end
+    		</div>
             <table class="table waiter-list">
                 <thead>
                 <tr>
@@ -37,12 +46,6 @@
                 </tbody>
             </table>
         </div>
-        <div>
-        #if($user.role == 'manager')
-        	<button class="btn btn-default btn-block fa fa-3x" 
-        		data-toggle="modal" data-target="#edit" onclick="addProject()">新建项目</button>
-        #end
-    	</div>
     	<br>
     </div>
 </div>

@@ -4,8 +4,16 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12 risk-manager">
+        	<ol class="breadcrumb">
+        		<li><a href="projectList">项目</a></li>
+        		<li><a href="planList?projectId=$!{project.id}">计划</a></li>
+        		<li><a href="planRiskList?planId=$!{planId}">风险条目</a></li>
+        		<li class="active"><a href="riskStateTraceList?planRiskId=$!{planRisk.id}">状态</a></li>
+        	</ol>
             <h2>风险状态跟踪</h2>
             <p>风险内容：$!{planRisk.content}</p>
+            <button class="btn btn-default pull-right" onclick="addStateTrace()"
+        		data-toggle="modal" data-target="#edit">新建状态</button>
             <table class="table waiter-list">
                 <thead>
                 <tr>
@@ -35,10 +43,6 @@
                 </tbody>
             </table>
         </div>
-        <div>
-        <button class="btn btn-default btn-block fa fa-plus fa-3x" onclick="addStateTrace()"
-        		data-toggle="modal" data-target="#edit"></button>
-    	</div>
     	<br>
     </div>
 </div>
