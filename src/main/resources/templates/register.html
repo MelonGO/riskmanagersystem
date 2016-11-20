@@ -1,107 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>项保天下 - 注册</title>
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/register.css" rel="stylesheet">
-    <link href="css/formStyle.css" rel="stylesheet">
-	 <script src="scripts/jquery.min.js"></script>
-</head>
+
+#parse("common/header.html")
 <body>
-
-<div class="header1">
-	<div class="logo-con w clearfix">
-		<a href="index.jsp" class="logo"><img src="image/logo.gif" class = "logoStyle" style = "margin-top:6px;"alt="" /></a>
-		<div class="logo-title">欢迎注册</div>
-		<div class="have-account">
-			已有账号&nbsp<a href="login.html">请登录</a>
-		</div>
-	</div>
-</div>
-<div class="wrapper">
-	<div class="main_tape">
-		<div class="contain">
-			<div class="reg-form fl">
-            	<form action="register_user_home" method="post" onsubmit="return(registerbtn_click())">          		
-			    <p id = "errorInfo" style="color: red;text-align:center"> $!{error}</p>          
-                <input style="display:none" name="hack" />
-                <input type="password" style="display:none" name="hack1" />
-                <div class="form-item form-item-account" id="form-item-account">
-                    <label>用　户　名</label>
-                    <input type="text" id="form-account" name="username" class="field" autocomplete="off" maxlength="20"
-                           placeholder="请输入用户名"  />
-                  
-                </div>               
-                 <div class="input-tip">
-                    <span></span>
-                </div>
-               
-                <div class="form-item">
-                    <label>设 置 密 码</label>
-                    <input style="display:none" type="password" name="pwd" class="fakeinput"/>
-                    <input type="password" name="password" id="form-pwd" class="field" maxlength="20"
-                           placeholder="建议至少使用两种字符组合"  />
-                    
-                </div>
-                <div class="input-tip">
-                    <span></span>
-                </div>
-                <div class="form-item">
-                    <label>确 认 密 码</label>
-          
-                    <input type="password" name="confirm" id="form-equalTopwd" class="field" placeholder="请再次输入密码"
-                           maxlength="20"  />
-                           </div>
-                 <div class="input-tip">
-                    <span></span>
-                </div>
-                <div class="form-item">
-                    <label>角色</label>
-                   <select class="form-select form-control" name="role" id="role">
-                	<option value="manager">项目管理员</option>
+<div class="container-fluid middle-register">
+    <div class="row">
+        <h1 class="font-big">
+            注册
+        </h1>
+        <form role="form" action="register_user_home" method="post" onsubmit="return(registerbtn_click())">
+            <div class="form-group">
+                <label for="username">用户名：</label>
+                <input type="text" class="form-control input-lg" name="username" id="username" value="">
+            </div>
+            <div class="form-group">
+                <label for="userpassword">密码：</label>
+                <input type="password" class="form-control input-lg " name="password" id="password" value="">
+            </div>
+            <div class="form-group">
+                <label for="address">角色：</label>
+                 <select class="form-control input-lg" name="role" id="role">
                 	<option value="user">开发人员</option>
-                   </select>  
-                   <!-- <input type="text" id="form-account" name="role" class="field" autocomplete="off" maxlength="20"
-                           placeholder="请输入角色" /> -->                  
-                </div>                     
-                <div class="input-tip">
-                    <span></span>
-                </div>
-                <div>
-                    <button type="submit" class="btn-register">立即注册</button>
-                </div>             
-            </form>
-        </div>
-
-</div>
-</div>
-</div>
-<div class="footer">
-    <div class="seperator"></div>
-    <div class="footer-info">
-        <p>项保天下 版权所有</p>
-        <p>地址：江苏省南京市鼓楼区汉口路22号</p>
+                	<option value="manager">项目经理</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-info btn-block fa fa-check fa-2x"></button>
+        </form>
     </div>
+    <div><p></p></div>
 </div>
-</body>
+
 <script>
     function registerbtn_click() {
         var msg = "";
-        if ($("input[name='username']").val().length == 0) {
-            document.getElementById("errorInfo").innerHTML="用户名不可为空";
+        if ($("#username").val().length == 0) {
+            msg = "请输入你的用户名!";
+            alert(msg);
             return false;
         }
-        if ($("input[name='form-pwd']").val() == 0) {
-        	document.getElementById("errorInfo").innerHTML="密码不可为空";
+        if ($("#password").val().length == 0) {
+            msg = "请输入您的密码!";
+            alert(msg);
             return false;
         }
-        if($("input[name='form-pwd']").val() != $("input[name='form-equalTopwd']").val())
-        {
-        	document.getElementById("errorInfo").innerHTML="两次密码输入不一致";
-            return false;
-        }
+        alert("注册成功！");
     }
 </script>
+#parse("common/footer.html")
+
+</body>
 </html>

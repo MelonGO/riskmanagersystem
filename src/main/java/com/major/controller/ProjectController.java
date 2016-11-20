@@ -14,11 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.major.model.Project;
-import com.major.model.Risk;
 import com.major.model.User;
 import com.major.service.ProjectService;
-import com.major.service.RiskService;
-import com.major.service.RiskStateTraceService;
+import com.major.service.UserService;
 
 import tools.RequestUtil;
 
@@ -29,18 +27,26 @@ public class ProjectController {
 	ProjectService projectService;
 	
 	@Autowired
-	RiskService riskService;
-	
-	@Autowired
-	RiskStateTraceService riskStateTraceService;
+	UserService userService;
 	
 	@RequestMapping(path = {"/projectList" })
 	public String projectList(Model model, HttpSession session) {
-		List<Project> projectList = projectService.getAllProjects();
-		model.addAttribute("projectList", projectList);
-		model.addAttribute("user", (User) session.getAttribute("user"));
+		if(session.getAttribute("user") == null){
+			return "login";
+		}else{
+			User user = (User) session.getAttribute("user");
+			if("user".equals(user.getRole())) {
+				List<Project> projectList = projectService.getByUserId(user.getId());
+				model.addAttribute("projectList", projectList);
+			} else {
+				List<Project> projectList = projectService.getAllProjects();
+				model.addAttribute("projectList", projectList);
+			}
+			
+			model.addAttribute("user", user);
+			return "projectList";
+		}
 		
-		return "projectList";
 	}
 	
 	@RequestMapping(path = {"/getProjectById" })
@@ -69,14 +75,8 @@ public class ProjectController {
 	@ResponseBody
 	public String deleteProjectById(@RequestParam("projectId") Integer projectId) {
 		projectService.deleteProject(projectId);
-		List<Risk>riskList = riskService.getByProjectId(projectId);
-		for(int i=0;i<riskList.size();i++)
-		{
-			Risk risk = riskList.get(i);
-			 riskStateTraceService.deleteRiskStateTraceByRiskId(risk.getId());			
-		}
-		riskService.deleteRiskByProjectId(projectId);
-		
 		return "删除成功！";
 	}
+	
+	
 }

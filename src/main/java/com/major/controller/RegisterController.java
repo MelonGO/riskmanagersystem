@@ -36,10 +36,11 @@ public class RegisterController {
 		String msg = (String)map.get("msg");
 		if(map.get("user") == null){
 			model.addAttribute("error", msg);
-			return "register";
+			return "error";
 		}
 		
-		return "redirect:login";		
+		return "redirect:login";
+		
 	}
 
 }

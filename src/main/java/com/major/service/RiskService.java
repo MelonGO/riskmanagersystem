@@ -19,29 +19,21 @@ public class RiskService {
 	public Risk getRisk(int id) {
 		return riskDao.selectById(id);
 	}
-	public List<Risk> getByProjectId(int projectId) {
-		return riskDao.getByProjectId(projectId);
-	}
 
-	public Map<String, Object> addRisk(Risk riskNew) {
+	public Map<String, Object> addRisk(Risk riskNew ) {
 		Map<String, Object> msgMap = new HashMap<>();
-		
 		riskDao.addRisk(riskNew);
 		msgMap.put("msg", "添加成功!");
 		return msgMap;
 		
-	}	
+	}
+	
 	public List<Risk> getAllRisks() {
 		return riskDao.selectAll();
 	}
 	
 	public void deleteRisk(int id){
 		riskDao.deleteById(id);
-	}
-	
-	public void deleteRiskByProjectId(int project_id)
-	{
-		riskDao.deleteByProjectId(project_id);
 	}
 	public Map<String, Object> updateRisk(
 			Risk risk) {

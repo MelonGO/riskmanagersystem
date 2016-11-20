@@ -1,131 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>项保天下 - 项目管理</title>
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/login.css" rel="stylesheet">
-    <link href="css/record.css" rel="stylesheet">
-    <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
-    <link href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-    
-	<!-- <script src="scripts/jquery.min.js"></script> -->
-	<script src="js/jquery-2.2.3.min.js"></script> 
-     
-     
-<!-- bxSlider Javascript file -->
-	<script src="plugins/bxslider/jquery.bxslider.js"></script>
-<!-- bxSlider CSS file -->
-	<link href="plugins/bxslider/jquery.bxslider.css" rel="stylesheet" />
-	<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-</head>
+#parse("common/header.html")
+
 <body>
-<div class="header">
-	<div class = "header-main">
-	    <a class = "header-logo" href ="indexHome"><img src="image/icon.png" alt="" /></a>
-	    <div class = "header-nav">
-		    <ul>
-		    	<li>
-		    		<a  href = "indexHome">首页</a>
-		    	</li>
-		    	<li>
-		    	    <a href = "projectList" >项目管理</a>
-		    	</li>
-		    	<li>
-		    	    <a href = "allRiskList" class="active">风险管理</a>
-		    	</li>
-		    	<li>
-		    	    <a href = "allRiskStateTraceList">风险状态管理</a>
-		    	</li>			    			    
-		    </ul>
-	    </div>
-	     #if(!$user)
-	    <div class = "header-login"  style = "color:white">
-	    	<a class ="nav-login" href= "login.html">登录</a>
-	    	/
-	    	<a class = "nav-regi" href= "register.html">注册</a>
-	    </div>
-	    #else
-	    <div class = "header-login" style = "color:white">
-	    	<label class ="nav-login" > $!{user.name}</label>	    	
-	    	<a class = "nav-regi" href= "logout">注销</a>
-	    </div>        
-        #end	    
-	</div>
-</div>
-<div class="wapper" style =" width:90%">
+
 <div class="container">
     <div class="row">
         <div class="col-md-12 risk-manager">
+        	
+      		<h2>风险管理</h2>
+            <div>
+        	<button class="btn btn-default pull-right"
+        		data-toggle="modal" data-target="#edit">添加风险</button>
+    		</div>
             <table class="table waiter-list">
-                <thead style ="background-color:#e6e6e6">
+                <thead>
                 <tr>
-                    <th>项目名称</th>
+                    <th>风险类型</th>
                     <th>风险内容</th>
-                    <th>可能性</th>
-                    <th>影响程度</th>
-                    <th>触发器/阈值</th>
-                    <th>提交者</th>
-                    <th>跟踪者</th> 
-                    #if($project)                    
-                    <th>操作</th>
-                    #end
+                    
                 </tr>
                 </thead>
-                #foreach($riskVO in $riskListVOs)
+                #foreach($risk in $riskList)
                 <tr>
-                	<td>$!{riskVO.project.name}</td>
-                	<td>$!{riskVO.risk.content}</td>
-                	<td>$!{riskVO.risk.probability}</td>
-                	<td>$!{riskVO.risk.influence}</td>
-                	<td>$!{riskVO.risk.triggerOrThreshold}</td>
-                    <td>$!{riskVO.submitter.name}</td>
-                    <td>$!{riskVO.tracer.name}</td>
-                    #if($project)     
+                	
+                	<td>$!{risk.type}</td>
+                	<td>$!{risk.content}</td>
+                    
                     <td>
-                         #if($!{user.role} == "manager")
-                    	<button type="button" onclick="location.href='riskStateTraceList?riskId=$!{riskVO.risk.id}'"
-                    		class="btn btn-danger pull-right fa fa-reorder"
-                    		></button>
-                    	<button type="button" onclick='deleteRisk($!{riskVO.risk.id})'
-                    		class="btn btn-danger pull-right fa fa-trash"></button>
-                    	<button type="button" onclick='updateRisk($!{riskVO.risk.id})'
-                    		class="btn btn-danger pull-right fa fa-pencil"
+                    	<button type="button" onclick='deleteRisk($!{risk.id})'
+                    		class="btn btn-warning pull-right fa fa-trash"></button>
+                    	<button type="button" onclick='updateRisk($!{risk.id})'
+                    		class="btn btn-warning pull-right fa fa-wrench"
                     		data-toggle="modal" data-target="#edit"></button>
-                        #elseif($!{riskVO.submitter.name} == $!{user.name}) 
-                        <button type="button" onclick='deleteRisk($!{riskVO.risk.id})'
-                    		class="btn btn-danger pull-right fa fa-trash"></button>
-                    	<button type="button" onclick='updateRisk($!{riskVO.risk.id})'
-                    		class="btn btn-danger pull-right fa fa-pencil"
-                    		data-toggle="modal" data-target="#edit"></button>
-                    	#elseif($!{riskVO.tracer.name} == $!{user.name}) 
-                    		<button type="button" onclick="location.href='riskStateTraceList?riskId=$!{riskVO.risk.id}'"
-                    		class="btn btn-danger pull-right fa fa-reorder"
-                    		></button>
-                       #end
-                           
-                        	
                     </td>
-                    #end   
                 </tr>
 				#end
                 <tbody>
                 </tbody>
             </table>
         </div>
-        #if($project)       
-        <div style="margin-right:1%">
-        <button class="btn btn-danger pull-right fa" 
-        		data-toggle="modal" data-target="#edit" onclick="addRisk()">新增风险</button>
-    	</div>
-    	#end
     	<br>
     </div>
 </div>
 
 <div class="modal fade" id="edit" tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top:5%">
+     aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -133,18 +51,18 @@
                         aria-hidden="true">×
                 </button>
                 <h4 class="modal-title" id="myModalLabel_1">
-                    	修改风险
+                    	编辑风险条目
                 </h4>
             </div>
             <form class="form-horizontal" role="form" >
                 <div class="modal-body">
-                   <!--  <div class="form-group">
+                	<div class="form-group">
                         <label for="type" class="col-sm-2 control-label">风险类型:</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="type"
                                    placeholder="请输入名称" name="type">
                         </div>
-                    </div> -->
+                    </div>
                     <div class="form-group">
                         <label for="content" class="col-sm-2 control-label">风险内容:</label>
                         <div class="col-sm-10">
@@ -152,96 +70,34 @@
                             	style="height:80px" placeholder="请输入内容" name="content"></textarea>
                         </div>
                     </div>
-                    <div class="form-group">
-                    	<label for="probability" class="col-sm-2 control-label">可能性:</label>
-                    	<div class="col-sm-10">
-                    		<!-- <select id="probability" class="form-control" name="probability">
-                    			<option value="high">高</option>
-                    			<option value="mid">中</option>
-                    			<option value="low">低</option>
-                    		</select> -->
-                    <input type = "radio" name = "probability" value="高" checked="checked" /><label style="width:20px;margin-bottom:5px;margin-left:5px;">高</label>
-                    <input type = "radio" name = "probability" value="中"  /><label style="width:20px;margin-bottom:5px;margin-left:5px;">中</label>
-                    <input type = "radio" name = "probability" value="低"  /><label style="width:20px;margin-bottom:5px;margin-left:5px;">低</label>
-                    	</div>
-                    </div>
-                    <div class="form-group">
-                    	<label for="influence" class="col-sm-2 control-label">影响程度:</label>
-                    		<div class="col-sm-10">
-                    			<!-- <select id="influence" class="form-control" name="influence">
-                    				<option value="high">高</option>
-                    				<option value="mid">中</option>
-                    				<option value="low">低</option>
-                    			</select> -->
-                    			<input type = "radio" name = "influence" value="高" checked="checked" /><label style="width:20px;margin-left:5px;margin-buttom:2px;position:relative">高</label>
-                    			<input type = "radio" name = "influence" value="中" /> <label style="width:20px;margin-bottom:5px;">中</label>
-                    			<input type = "radio" name = "influence" value="低" /><label style="width:20px;margin-bottom:5px;margin-left:5px;">低</label>
-                    		</div>
-                    </div>
-                    <div class="form-group">
-                        <label for="triggerOrThreshold" class="col-sm-2 control-label">触发器</label>
-                        <div class="col-sm-9">
-                        	<input type="text" class="form-control" style="width:280px" id="triggerOrThreshold"
-                        		placeholder="请输入触发器" name="triggerOrThreshold">
-                        </div>
-                    </div>
-                    <!-- <div class="form-group" style = "display:none">
-                        <label for="submitter" class="col-sm-2 control-label">提交者:</label>
-                        <div class="col-sm-10">
-                        	  <select id="submitter" name="submitter" class="form-control" style="width:280px"></select>                       	
-                        </div> 
-                    </div> -->
-                    
-                                           
-                        
-                 
-          
-                    <div class="form-group">
-                        <label for="tracer" class="col-sm-2 control-label">跟踪者:</label>
-                        <div class="col-sm-10">
-                            <select id="tracer" name="tracer" class="form-control" style="width:280px"></select>
-                        </div>
-                    </div>
-                    
                 </div>
                 <div class="modal-footer">
-                     <button type="button" class="btn btn-danger" onclick="edit()">
-                        	确认
-                    </button>
-                    <button type="button" class="btn btn-danger"
-                            data-dismiss="modal" onclick="clearAll()">
+                    <button type="button" onclick="clear_all()" class="btn btn-default"
+                            data-dismiss="modal">
                         	取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="edit()">
+                       	    确认
                     </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-</div>
-	<input type="text"   id="test"		 value ="$!{user.id}" style = "display:none">
-<div class="footer" style="margin-top:80px">
-    <div class="seperator"></div>
-    <div class="footer-info">
-        <p>项保天下 版权所有</p>
-        <p>地址：江苏省南京市鼓楼区汉口路22号</p>
-    </div>
-</div>
-</body>
+
 <script>
 var operation;
 var riskId;
-$(document).ready(function () {
-	loadUser();
-});
+
 function clear_all() {
-    $("#type").value = "";
-    $("content").value = "";
-    $("triggerOrThreshold").value = "";
+	$("#type").val('');
+    $("#content").val('');
     
 }
 
 function deleteRisk(id){
 	$.post('deleteRiskById',{riskId : id}, function (r) {
+		   alert(r);
 		   location.replace(location.href);
 	});
    
@@ -250,38 +106,9 @@ function deleteRisk(id){
 function updateRisk(id) {
 	riskId = id;
 	   operation = "update";
-	   $.get('getByRiskId', {riskId:id}, function (r) {
+	   $.get('getRiskById', {riskId : id}, function (r) {
 			$('#type').val(r.type);
 	    	$("#content").val(r.content);
-	    	$("#triggerOrThreshold").val(r.triggerOrThreshold);
-	    	//var mm = ""+$!{user.name};
-	      	//$("#submitter").html(mm);
-	      //  $("#submitter").val($!{user.name});
-	    	$("#tracer").val(r.tracer);
-	    	$("input[name='probability']:checked").val(r.probability);
-	    	$("input[name='influence']:checked").val(r.influence);
-	    	//$("#probability").val(r.probability);
-	    	//$("#influence").val(r.influence);
-	});
-}
-
-
-function addRisk(){
-	$("#myModalLabel_1").html("新增风险");
-	operation = "add";	
-}
-
-function loadUser() {
-	$('#submitter').empty();
-	$('#tracer').empty();
-	$.get('searchUserData',function(r){
-		if(r) {
-			$.each(r, function(index, item) {
-			/* //	$('#submitter').append($('<option>', {value : item.id}).text(item.name)); */
-				$('#tracer').append($('<option>', {value : item.id}).text(item.name));
-				
-			});
-		}
 	});
 }
 
@@ -289,28 +116,13 @@ function edit() {
     var msg = "";
     var param = {};
     var valid = true;
-    /* if ($.trim($("#type").val()) == '') {
+    if ($("#type").val().length == 0) {
         msg = "请输入风险类型!";
         alert(msg);
         valid = false;
-    } */
+    }
     if ($("#content").val().length == 0) {
         msg = "请输入风险内容!";
-        alert(msg);
-        valid = false;
-    }
-    if ($("#triggerOrThreshold").val().length == 0) {
-        msg = "请输入触发器/阈值!";
-        alert(msg);
-        valid = false;
-    }
-   /*  if ($("#submitter").val().length == 0) {
-        msg = "请输入提交者!";
-        alert(msg);
-        valid = false;
-    } */
-    if ($("#tracer").val().length == 0) {
-        msg = "请输入跟踪者!";
         alert(msg);
         valid = false;
     }
@@ -319,24 +131,20 @@ function edit() {
     	if(operation == 'update') {
     		param.riskId = riskId;
     	}
-        param.projectId = $!{project.id};
     	param.type = $("#type").val();
     	param.content = $("#content").val();
-    	param.triggerOrThreshold = $("#triggerOrThreshold").val();
-    	param.probability = $("input[name='probability']:checked").val();
-    	param.influence = $("input[name='influence']:checked").val(); 
-    //	$("input[name='probability']:checked").val(r.probability);
-    //	$("input[name='influence']:checked").val(r.influence);
-    	//param.submitter = $("#submitter").val();
-        param.submitter = $("#test").val();
-    	param.tracer = $("#tracer").val();
     	
 	   $.post('editRisk', param, function (r) {
+			alert(r);
 			location.replace(location.href);
 		});
 	}	
 }
 </script>
+
+#parse("common/footer.html")
+
+</body>
 </html>
 
 

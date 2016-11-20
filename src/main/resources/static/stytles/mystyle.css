@@ -1,9 +1,9 @@
-
+html,body {height: 100%;margin: 0;padding: 0; background-color:#fdfdfd;}
 .navbar-right-padding {
     padding-right: 50px;
 }
 
-footer p { color: #fff; }
+footer p { color: #3c3c3c; }
 ul.legals { list-style: none; color: #fff; line-height: 25px; }
 ul.legals li { display: inline-block; }
 ul.legals li::after { content: " |"; }
@@ -11,24 +11,31 @@ ul.legals li:last-child::after { content: ""; }
 .legals { text-align: left; }
 .credit { text-align: right; }
 
+.container{
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+}
+.row {
+}
+
 footer {
-	position:absolute;
-	bottom:0;
-    background-color: #3c3c3c;
-    padding: 40px 0 30px;
-    width:100%;
-    height:100px;
+	position: relative;
+	padding: 10px 0 30px;
+	clear: both;
+	height: 10px;
+	border-top:1px solid #3c3c3c;
 }
 
 h1.font-big {
-    font-size: 4em;
+    font-size: 2.5em;
 }
 
 div.middle-login {
     margin: 80px auto;
-    width: 800px;
-    height: 500px;
-    background-image: url(../images/login.jpg);
+    width: 600px;
+    height: 400px;
+    border:1px solid #555;
     box-shadow: 10px 10px 20px #ffffff;
     border-radius:25px;
     -moz-border-radius:25px; /* 老的 Firefox */
@@ -36,8 +43,8 @@ div.middle-login {
 
 div.middle-register {
     margin: 80px auto;
-    width: 800px;
-    height: 500px;
+    width: 400px;
+    height: 400px;
     box-shadow: 10px 10px 20px #ffffff;
     border-radius:25px;
     -moz-border-radius:25px; /* 老的 Firefox */
@@ -59,7 +66,7 @@ div.middle-register {
 h1.login {
     margin-bottom: 10px;
     font-weight: normal;
-    color: #EFEFEF;
+    color: #3c3c3c;
 }
 
 .bigicon {
@@ -74,29 +81,76 @@ h1.login {
 }
 
 .loginbutton {
-    background-color: #888888;
+    background-color: #5bc0de;
     width: 100%;
     margin: auto;
     height: 50px;
+}
+.loginbutton:hover{
+	background-color:#46b8da;
 }
 
 input.login {
     width: 100%;
     margin-bottom: 17px;
     padding: 15px;
-    background-color: #fcf8e3;
+    background-color: #eee;
     border-radius: 2px;
     border: none;
+}
+
+ol.breadcrumb{
+	margin-top:20px;
+	margin-left:40px;
+	padding:10px;
+	border-bottom:1px solid #eee;
+	background-color:#fff;
+}
+
+.navbar{
+	background-color:#46b8da;
+	color:#fff;
+} 
+
+.nav li a,.navbar-brand{
+	color:#fff;
+}
+
+.nav a:hover,.navbar-brand:hover{
+	color:#eee;
 }
 
 .risk-manager {
 	 margin-top: 80px;
 }
 
+.btn-warning{
+	background-color:#5bc0de !important;
+	border-color: #5bc0de !important;
+}
+
+.btn-warning:hover{
+	background-color:#46b8da !important;
+	border-color: #46b8da !important;
+}
+.btn-default{
+	margin-bottom:20px;
+	margin-left:10px;
+	margin-top:20px;
+}
 th{
 	text-align: center;
+	vertical-align:center;
 }
 
 td{
 	text-align: center;
+	border-left:1px solid #eee;
+	border-right:1px solid #eee;
+	border-bottom:1px solid #eee;
+	height:45px;
+}
+thead {
+	background-color:#46b8da;
+	width:100%;
 }
