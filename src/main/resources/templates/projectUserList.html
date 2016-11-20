@@ -1,0 +1,131 @@
+
+#parse("common/header.html")
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 risk-manager">
+            <h2>项目人员管理</h2>
+            <ol class="breadcrumb">
+        		<li><a href="projectList">项目($!{project.name})</a></li>
+        		<li class="active"><a href="projectUserList?projectId=$!{project.id}">人员管理</a></li>
+        	</ol>
+        	<div>
+        		<button class="btn btn-default pull-right" 
+        			data-toggle="modal" data-target="#edit" >添加人员</button>
+    		</div>
+            <table class="table waiter-list">
+                <thead>
+                <tr>
+                    
+                    <th>姓名</th>
+                    <th>职务</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                #foreach($user in $userList)
+                <tr>
+                	<td>$!{user.name}</td>
+                	#if($user.role == 'manager')
+                		<td>项目经理</td>
+                	#else
+                		<td>开发人员</td>
+                	#end
+                	<td>
+                    	<button type="button" onclick='deleteUser($!{user.id})'
+                    		class="btn btn-warning pull-right fa fa-trash"></button>
+                    </td>
+                </tr>
+				#end
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    	<br>
+    </div>
+</div>
+
+<div class="modal fade" id="edit" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true" >×
+                </button>
+                <h4 class="modal-title" id="myModalLabel_1">
+                  	  添加项目人员
+                </h4>
+            </div>
+            <form class="form-horizontal" role="form" >
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="userName" class="col-sm-2 control-label">姓名:</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="userName" id="userName"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal" >
+                        	取消
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="edit()">
+                        	确认
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+	$(document).ready(function () {
+		loadUser();
+	});
+
+	var projectId = $!{project.id};
+   function deleteUser(userId) {
+	   var param = {};
+	   param.userId = userId;
+	   param.projectId = projectId;
+	   $.post('deleteUserByProjectUserId',param, function (r) {
+		   alert(r);
+		   location.replace(location.href);
+	});
+   }
+     
+   function loadUser() {
+		$('#userName').empty();
+		$.get('getUsersExcludedProject',{projectId : projectId},function(r){
+			if(r) {
+				$.each(r, function(index, item) {
+					
+					var role = '';
+					if(item.role == 'manager') {
+						role = "项目经理";
+					} else {
+						role = "开发人员";
+					}
+					$('#userName').append($('<option>', {value : item.id}).text(item.name+'/'+role));
+					
+				});
+			}
+		});
+	}
+   
+   function edit() {
+	  
+	   var param = {};   
+	   param.userId = $('#userName').val();
+	   param.projectId = projectId;
+	   $.post('addProjectUser', param, function (r) {
+			alert(r);
+			location.replace(location.href);
+		});
+   		
+   }
+</script>
+#parse("common/footer.html")
+</body>
+</html>

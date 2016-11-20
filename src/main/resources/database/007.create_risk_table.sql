@@ -1,0 +1,10 @@
+ CREATE DATABASE  IF NOT EXISTS `rms`;
+USE `rms`;
+
+DROP TABLE IF EXISTS `risk`;
+
+CREATE TABLE `rms`.`risk` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `type` VARCHAR(45) NOT NULL,
+  `content` VARCHAR(255) NULL,
+  PRIMARY KEY (`id`));
