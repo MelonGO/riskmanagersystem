@@ -22,16 +22,16 @@
                     <th>操作</th>
                 </tr>
                 </thead>
-                #foreach($user in $userList)
+                #foreach($u in $userList)
                 <tr>
-                	<td>$!{user.name}</td>
-                	#if($user.role == 'manager')
+                	<td>$!{u.name}</td>
+                	#if($!{u.role} == 'manager')
                 		<td>项目经理</td>
                 	#else
                 		<td>开发人员</td>
                 	#end
                 	<td>
-                    	<button type="button" onclick='deleteUser($!{user.id})'
+                    	<button type="button" onclick='deleteUser($!{u.id})'
                     		class="btn btn-warning pull-right fa fa-trash"></button>
                     </td>
                 </tr>
@@ -87,9 +87,9 @@
 	var projectId = $!{project.id};
    function deleteUser(userId) {
 	   var param = {};
-	   param.userId = userId;
 	   param.projectId = projectId;
-	   $.post('deleteUserByProjectUserId',param, function (r) {
+	   param.userId = userId;
+	   $.post('deleteUserByProjectUserId', param , function (r) {
 		   alert(r);
 		   location.replace(location.href);
 	});
