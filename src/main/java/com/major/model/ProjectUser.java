@@ -1,6 +1,6 @@
 package com.major.model;
 
-public class ProjectUser {
+public class ProjectUser extends Base{
 	private int projectId;
 	private int userId;
 

@@ -27,7 +27,7 @@ public interface ProjectUserDAO {
 	@Select({ "select ", ProjectUserDaoConstants.SELECT_FIELDS, " from ", ProjectUserDaoConstants.TABLE_NAME, " where id=#{id}" })
 	ProjectUser selectById(int id);
 
-	@Delete({ "delete from ", ProjectUserDaoConstants.TABLE_NAME, " where project_id=#{projectId} and user_id=#{userId}" })
+	@Delete({ "delete from ", ProjectUserDaoConstants.TABLE_NAME, " where project_id=#{0} and user_id=#{1}" })
 	void deleteById(int projectId,int userId);
 
 	@Select({ "select ", ProjectUserDaoConstants.SELECT_FIELDS, " from ", ProjectUserDaoConstants.TABLE_NAME })
