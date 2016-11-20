@@ -26,7 +26,11 @@
                 </thead>
                 #foreach($riskStateTrace in $riskStateTraceList)
                 <tr>
-                	<td>$!{riskStateTrace.state}</td>
+                	#if($!{riskStateTrace.state} == '0')
+                		<td>风险</td>
+                	#else
+                		<td>问题</td>
+                	#end
                 	<td>$!{riskStateTrace.description}</td>
                 	<td>$!{riskStateTrace.createTime}</td>
                 	<td>$!{riskStateTrace.updateTime}</td>
