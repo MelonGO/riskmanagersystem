@@ -1,9 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>项保天下 - 项目管理</title>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/login.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    
+	<!-- <script src="scripts/jquery.min.js"></script> -->
+	<script src="js/jquery-2.2.3.min.js"></script> 
+     
+     
+<!-- bxSlider Javascript file -->
+	<script src="plugins/bxslider/jquery.bxslider.js"></script>
+<!-- bxSlider CSS file -->
+	<link href="plugins/bxslider/jquery.bxslider.css" rel="stylesheet" />
+	<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
 
-#parse("common/header.html")
 <body>
+<div class="header">
+	<div class = "header-main">
+	    <a class = "header-logo" href ="indexHome"><img src="image/icon.png" alt="" /></a>
+	    <div class = "header-nav">
+		    <ul>
+		    
+		    	<li>
+		    	    <a href = "projectList" class="active">项目管理</a>
+		    	</li>
+		    	<li>
+		    	    <li><a href="riskList">风险管理</a></li>
+		    	</li>
+		    	    
+		    </ul>
+	    </div>
+	     #if(!$user)
+	    <div class = "header-login"  style = "color:white">
+	    	<a class ="nav-login" href= "login.html">登录</a>
+	    	/
+	    	<a class = "nav-regi" href= "register.html">注册</a>
+	    </div>
+	    #else
+	    <div class = "header-login" style = "color:white">
+	    	<label class ="nav-login" > $!{user.name}</label>	    	
+	    	<a class = "nav-regi" href= "logout">注销</a>
+	    </div>        
+        #end	    
+	</div>
+</div>
 <div class="container">
+
     <div class="row">
         <div class="col-md-12 risk-manager">
+        </br>
+        </br>
         <h2>项目风险计划管理</h2>
         	<ol class="breadcrumb">
         		<li><a href="projectList">项目($!{project.name})</a></li>
@@ -137,6 +189,6 @@
    		}	
    }
 </script>
-#parse("common/footer.html")
+
 </body>
 </html>
